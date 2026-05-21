@@ -1,0 +1,2039 @@
+/* ============================================================
+   Chelsea Man Spa — Premium Mobile Booking App Styles
+   Theme: "Dubai Marina Night"
+   Fonts: Playfair Display (headings) + Inter (body)
+   ============================================================
+   Table of Contents:
+   1.  CSS Custom Properties (Theme Variables)
+   2.  Reset & Base
+   3.  Loading Screen
+   4.  Typography
+   5.  Layout & App Shell
+   6.  Tab Bar Navigation
+   7.  Page Stack & Transitions
+   8.  Buttons
+   9.  Hero Section
+   10. Badges & Promo
+   11. Section Headers
+   12. Horizontal Scroll
+   13. Service Cards & Items
+   14. Stylist Cards
+   15. Chips & Filters (Date, Gender)
+   16. Time Grid & Slots
+   17. Add-On Items & Toggles
+   18. Input Fields
+   19. Payment Methods
+   20. Summary Rows
+   21. Search Bar
+   22. Authentication Screens
+   23. Booking Cards
+   24. Profile Screen
+   25. Utility Classes
+   26. Keyframe Animations
+   27. Reduced Motion
+   ============================================================ */
+
+/* ==========================================================
+   1. CSS Custom Properties (Theme Variables)
+   ========================================================== */
+:root {
+  --bg: #0A0907;
+  --card: #141210;
+  --card-alt: #1C1A16;
+  --cream: #E8E2D6;
+  --border: rgba(232, 226, 214, 0.07);
+  --sec: #9C958B;
+  --dim: #6B655E;
+  --gold: #C9A84C;
+  --gold-dim: rgba(201, 168, 76, 0.12);
+  --gold-light: rgba(201, 168, 76, 0.06);
+  --gold-glow: rgba(201, 168, 76, 0.2);
+  --primary: #1F3A54;
+  --primary-dim: rgba(31, 58, 84, 0.2);
+  --cta: #D4587A;
+  --success: #2D8A6E;
+  --error: #D63939;
+  --radius: 12px;
+  --display: 'Playfair Display', Georgia, serif;
+  --body: 'Inter', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+
+  /* Spacing tokens */
+  --pad: 16px;
+  --gutter: 12px;
+  --tab-h: 64px;
+  --btn-h: 56px;
+
+  /* Transition tokens */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ==========================================================
+   2. Reset & Base
+   ========================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--body);
+  background: var(--bg);
+  color: var(--cream);
+  line-height: 1.5;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+/* Scrollbar — minimal, dark */
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--dim);
+  border-radius: 10px;
+}
+
+/* ==========================================================
+   3. Loading Screen
+   ========================================================== */
+#loading {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#loading.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.load-brand {
+  font-family: var(--display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+  animation: brandReveal 1s ease-out both;
+}
+
+.load-bar-wrap {
+  width: 160px;
+  height: 2px;
+  background: var(--card-alt);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.load-bar {
+  width: 40%;
+  height: 100%;
+  background: var(--gold);
+  border-radius: 4px;
+  animation: loadBar 1.5s ease-in-out infinite;
+}
+
+/* ==========================================================
+   4. Typography
+   ========================================================== */
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.display-lg {
+  font-family: var(--display);
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+h1, .h1 {
+  font-size: 1.75rem;
+}
+
+h2, .h2 {
+  font-size: 1.375rem;
+}
+
+h3, .h3 {
+  font-family: var(--body);
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.body {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.small {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.tiny {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.gold {
+  color: var(--gold);
+}
+
+.sec {
+  color: var(--sec);
+}
+
+.dim {
+  color: var(--dim);
+}
+
+/* ==========================================================
+   5. Layout & App Shell
+   ========================================================== */
+#app {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(var(--tab-h) + env(safe-area-inset-bottom, 0px) + 8px);
+}
+
+.scroll.full {
+  padding-bottom: 0;
+}
+
+.content {
+  padding: 0 var(--pad) var(--pad);
+}
+
+.content-compact {
+  padding: 0 var(--pad);
+}
+
+/* Pages — each is a full-screen container */
+.page {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  z-index: 1;
+}
+
+.page.active {
+  display: flex;
+}
+
+.page-stack {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.page-stack .page {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.page-stack .page.active {
+  transform: translateX(0);
+  z-index: 2;
+}
+
+.page-stack .page.pop {
+  transform: translateX(100%);
+  z-index: 1;
+}
+
+/* Bottom sticky area for buttons */
+.sticky-bottom {
+  position: sticky;
+  bottom: 0;
+  background: var(--bg);
+  padding: var(--pad);
+  padding-bottom: calc(var(--pad) + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--border);
+  z-index: 5;
+}
+
+/* ==========================================================
+   6. Tab Bar Navigation
+   ========================================================== */
+.tab-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: calc(var(--tab-h) + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: rgba(10, 9, 7, 0.92);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  position: relative;
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.tab-bar.hide {
+  display: none;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex: 1;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: var(--dim);
+  font-family: var(--body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s ease;
+  position: relative;
+  padding: 0;
+}
+
+.tab-item svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+  transition: stroke 0.2s ease;
+}
+
+.tab-item.active {
+  color: var(--gold);
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 2px;
+  background: var(--gold);
+  border-radius: 0 0 4px 4px;
+}
+
+.tab-item:active {
+  opacity: 0.7;
+}
+
+/* ==========================================================
+   7. Page Stack & Transitions
+   ========================================================== */
+.page-header {
+  display: flex;
+  align-items: center;
+  padding: 12px var(--pad);
+  gap: 12px;
+  flex-shrink: 0;
+  min-height: 52px;
+}
+
+.page-header h2 {
+  font-size: 1.25rem;
+  flex: 1;
+}
+
+.back-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: var(--card);
+  border-radius: 50%;
+  color: var(--cream);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.back-btn:active {
+  background: var(--card-alt);
+  transform: scale(0.92);
+}
+
+.back-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+/* ==========================================================
+   8. Buttons
+   ========================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 24px;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--body);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--cream);
+}
+
+.btn-primary:active {
+  background: #2A4A6A;
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: var(--bg);
+  font-weight: 600;
+}
+
+.btn-gold:active {
+  background: #B8943A;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--cream);
+}
+
+.btn-outline:active {
+  background: var(--card-alt);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--sec);
+}
+
+.btn-ghost:active {
+  color: var(--cream);
+}
+
+.btn-full {
+  width: 100%;
+  height: var(--btn-h);
+}
+
+.btn-small {
+  height: 36px;
+  padding: 0 16px;
+  font-size: 0.8125rem;
+}
+
+.btn-lg {
+  height: 56px;
+  font-size: 1rem;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Sticky Continue Button */
+.sticky-btn {
+  position: sticky;
+  bottom: 0;
+  padding: var(--pad);
+  padding-bottom: calc(var(--pad) + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to top, var(--bg) 60%, transparent);
+  z-index: 5;
+}
+
+/* ==========================================================
+   9. Hero Section
+   ========================================================== */
+.hero {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background: var(--card);
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--bg) 0%, transparent 60%);
+}
+
+.hero-content {
+  position: absolute;
+  bottom: 20px;
+  left: var(--pad);
+  right: var(--pad);
+}
+
+.hero-content h1 {
+  margin-bottom: 4px;
+}
+
+.hero-content p {
+  color: var(--sec);
+  font-size: 0.875rem;
+}
+
+.hero-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.04) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: heroShimmer 3s ease-in-out infinite;
+}
+
+.hero-divider {
+  width: 60px;
+  height: 2px;
+  background: var(--gold);
+  margin: 12px 0;
+}
+
+/* ==========================================================
+   10. Badges & Promo
+   ========================================================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.badge-gold {
+  background: var(--gold-dim);
+  color: var(--gold);
+  border: 1px solid var(--gold-glow);
+}
+
+.badge-success {
+  background: rgba(45, 138, 110, 0.15);
+  color: var(--success);
+}
+
+.badge-primary {
+  background: var(--primary-dim);
+  color: #7FA9D4;
+}
+
+.badge-pulse {
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+/* ==========================================================
+   11. Section Headers
+   ========================================================== */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px var(--pad) 12px;
+}
+
+.section-header h2 {
+  font-size: 1.25rem;
+}
+
+.section-header a,
+.section-header button {
+  font-family: var(--body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--sec);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.section-header a:active,
+.section-header button:active {
+  color: var(--gold);
+}
+
+/* ==========================================================
+   12. Horizontal Scroll
+   ========================================================== */
+.h-scroll {
+  display: flex;
+  gap: var(--gutter);
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 var(--pad) 8px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.h-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.h-scroll > * {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+/* ==========================================================
+   13. Service Cards & Items
+   ========================================================== */
+.svc-card {
+  width: 200px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  scroll-snap-align: start;
+}
+
+.svc-card:active {
+  transform: scale(0.98);
+}
+
+.svc-card.selected {
+  border-color: var(--gold);
+  background: var(--gold-light);
+}
+
+.svc-card h3 {
+  font-family: var(--body);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: var(--cream);
+}
+
+.svc-card .price {
+  color: var(--gold);
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.svc-card .dur {
+  color: var(--dim);
+  font-size: 0.75rem;
+}
+
+.svc-card .svc-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--gold-dim);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  font-size: 1.25rem;
+}
+
+/* Service list items (full-width) */
+.svc-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.svc-item:active {
+  opacity: 0.7;
+}
+
+.svc-item:last-child {
+  border-bottom: none;
+}
+
+.svc-item .info {
+  flex: 1;
+}
+
+.svc-item .name {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.svc-item .meta {
+  font-size: 0.8125rem;
+  color: var(--dim);
+}
+
+.svc-item .price {
+  color: var(--cta);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  white-space: nowrap;
+}
+
+.svc-item.selected {
+  background: var(--gold-light);
+  margin: 0 -16px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  border-bottom-color: transparent;
+}
+
+.svc-item .check-circle {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.svc-item.selected .check-circle {
+  border-color: var(--gold);
+  background: var(--gold);
+}
+
+.svc-item.selected .check-circle::after {
+  content: '';
+  width: 8px;
+  height: 4px;
+  border-left: 2px solid var(--bg);
+  border-bottom: 2px solid var(--bg);
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+/* ==========================================================
+   14. Stylist Cards
+   ========================================================== */
+.stylist-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  min-width: 240px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.stylist-card:active {
+  transform: scale(0.98);
+}
+
+.stylist-card.selected {
+  border-color: var(--gold);
+  background: var(--gold-light);
+}
+
+.stylist-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--gold);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.stylist-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stylist-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.stylist-info .name {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.stylist-info .title {
+  font-size: 0.8125rem;
+  color: var(--sec);
+  margin-bottom: 4px;
+}
+
+.stylist-info .rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8125rem;
+  color: var(--gold);
+}
+
+.stylist-info .rating .num {
+  color: var(--dim);
+  font-size: 0.75rem;
+}
+
+.stylist-card .gender-badge {
+  font-size: 0.6875rem;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: var(--card-alt);
+  color: var(--sec);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+/* ==========================================================
+   15. Chips & Filters (Date, Gender)
+   ========================================================== */
+.chip-group {
+  display: flex;
+  gap: 8px;
+  padding: 0 var(--pad);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.chip-group::-webkit-scrollbar {
+  display: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--sec);
+  font-family: var(--body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.chip:active {
+  transform: scale(0.96);
+}
+
+.chip.active {
+  background: var(--gold-dim);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* Date picker chips */
+.date-row {
+  display: flex;
+  gap: 8px;
+  padding: 0 var(--pad) 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.date-row::-webkit-scrollbar {
+  display: none;
+}
+
+.date-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  height: 62px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--sec);
+  font-family: var(--body);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  gap: 2px;
+}
+
+.date-chip:active {
+  transform: scale(0.95);
+}
+
+.date-chip .day {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.date-chip .num {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.date-chip.selected {
+  border-color: var(--gold);
+  background: var(--gold-dim);
+  color: var(--gold);
+}
+
+.date-chip.selected .num {
+  color: var(--gold);
+}
+
+/* ==========================================================
+   16. Time Grid & Slots
+   ========================================================== */
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 0 var(--pad);
+}
+
+.time-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--cream);
+  font-family: var(--body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.time-slot:active {
+  transform: scale(0.96);
+}
+
+.time-slot.selected {
+  border-color: var(--gold);
+  background: var(--gold-dim);
+  color: var(--gold);
+}
+
+.time-slot:disabled,
+.time-slot.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+  text-decoration: line-through;
+}
+
+.time-slot.taken {
+  opacity: 0.4;
+  pointer-events: none;
+  background: var(--card-alt);
+  color: var(--dim);
+}
+
+.period-toggle {
+  display: flex;
+  gap: 0;
+  padding: 0 var(--pad) 16px;
+}
+
+.period-btn {
+  flex: 1;
+  height: 40px;
+  border: 1px solid var(--border);
+  background: transparent;
+  font-family: var(--body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--dim);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.period-btn:first-child {
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+
+.period-btn:last-child {
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.period-btn.active {
+  background: var(--gold-dim);
+  border-color: var(--gold);
+  color: var(--gold);
+  z-index: 1;
+}
+
+.period-btn:active {
+  transform: scale(0.97);
+}
+
+/* Prayer break notice */
+.prayer-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px var(--pad);
+  font-size: 0.75rem;
+  color: var(--dim);
+}
+
+.prayer-note::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+
+/* ==========================================================
+   17. Add-On Items & Toggles
+   ========================================================== */
+.addon-group {
+  padding: 0 var(--pad);
+}
+
+.addon-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.addon-item:last-child {
+  border-bottom: none;
+}
+
+.addon-item .info {
+  flex: 1;
+}
+
+.addon-item .name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.addon-item .price {
+  font-size: 0.8125rem;
+  color: var(--sec);
+}
+
+/* Custom toggle switch */
+.toggle {
+  position: relative;
+  width: 48px;
+  height: 28px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle .track {
+  position: absolute;
+  inset: 0;
+  background: var(--card-alt);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.toggle .thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  background: var(--dim);
+  border-radius: 50%;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.toggle input:checked + .track {
+  background: var(--gold-dim);
+  border-color: var(--gold);
+}
+
+.toggle input:checked + .track .thumb,
+.toggle input:checked ~ .thumb {
+  transform: translateX(20px);
+  background: var(--gold);
+}
+
+/* Checkbox-style check */
+.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.check-box {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.check input:checked + .check-box {
+  border-color: var(--gold);
+  background: var(--gold);
+}
+
+.check input:checked + .check-box::after {
+  content: '';
+  width: 8px;
+  height: 4px;
+  border-left: 2px solid var(--bg);
+  border-bottom: 2px solid var(--bg);
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+/* ==========================================================
+   18. Input Fields
+   ========================================================== */
+.input-group {
+  padding: 0 var(--pad);
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--sec);
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+
+.input {
+  width: 100%;
+  height: 50px;
+  padding: 0 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--cream);
+  font-family: var(--body);
+  font-size: 0.9375rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.input:focus {
+  border-color: var(--gold);
+}
+
+.input::placeholder {
+  color: var(--dim);
+}
+
+.input-error {
+  border-color: var(--error);
+}
+
+.error-text {
+  font-size: 0.75rem;
+  color: var(--error);
+  margin-top: 4px;
+}
+
+/* ==========================================================
+   19. Payment Methods
+   ========================================================== */
+.pay-group {
+  padding: 0 var(--pad);
+}
+
+.pay-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.pay-card:active {
+  transform: scale(0.98);
+}
+
+.pay-card.selected {
+  border-color: var(--gold);
+  background: var(--gold-light);
+}
+
+.pay-card .pay-icon {
+  width: 40px;
+  height: 28px;
+  background: var(--card-alt);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--sec);
+  flex-shrink: 0;
+}
+
+.pay-card .pay-name {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.pay-card .pay-desc {
+  font-size: 0.75rem;
+  color: var(--dim);
+}
+
+/* Radio button style */
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.radio-dot {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.radio-dot::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background 0.2s ease;
+}
+
+.radio input:checked + .radio-dot {
+  border-color: var(--gold);
+}
+
+.radio input:checked + .radio-dot::after {
+  background: var(--gold);
+}
+
+/* ==========================================================
+   20. Summary Rows
+   ========================================================== */
+.summary-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin: 0 var(--pad) 12px;
+  padding: 16px;
+}
+
+.summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 0.875rem;
+}
+
+.summary-row .label {
+  color: var(--sec);
+}
+
+.summary-row .value {
+  color: var(--cream);
+  font-weight: 500;
+  text-align: right;
+}
+
+.summary-row.total {
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+  padding-top: 12px;
+}
+
+.summary-row.total .label {
+  font-weight: 500;
+  color: var(--cream);
+}
+
+.summary-row.total .value {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+.summary-row .value.gold {
+  color: var(--gold);
+}
+
+/* ==========================================================
+   21. Search Bar
+   ========================================================== */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 var(--pad) 16px;
+  padding: 0 16px;
+  height: 44px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color 0.2s ease;
+}
+
+.search-bar:focus-within {
+  border-color: var(--gold);
+}
+
+.search-bar svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--dim);
+  fill: none;
+  stroke-width: 2;
+  flex-shrink: 0;
+}
+
+.search-bar input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--cream);
+  font-family: var(--body);
+  font-size: 0.875rem;
+  height: 100%;
+}
+
+.search-bar input::placeholder {
+  color: var(--dim);
+}
+
+/* ==========================================================
+   22. Authentication Screens
+   ========================================================== */
+.auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px var(--pad);
+  text-align: center;
+  min-height: 60vh;
+}
+
+.auth-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.auth-icon svg {
+  width: 36px;
+  height: 36px;
+  stroke: var(--gold);
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.auth h2 {
+  margin-bottom: 8px;
+}
+
+.auth p {
+  color: var(--sec);
+  font-size: 0.875rem;
+  max-width: 300px;
+  margin-bottom: 32px;
+}
+
+.auth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  height: 52px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--cream);
+  font-family: var(--body);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.auth-btn:active {
+  background: var(--card-alt);
+  border-color: var(--sec);
+}
+
+.auth-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  margin: 24px 0;
+  color: var(--dim);
+  font-size: 0.75rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ==========================================================
+   23. Booking Cards (My Bookings List)
+   ========================================================== */
+.booking-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin: 0 var(--pad) 12px;
+}
+
+.booking-card .b-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.booking-card .b-id {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--dim);
+  letter-spacing: 0.03em;
+}
+
+.booking-card .b-status {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.booking-card .b-status.confirmed {
+  background: rgba(45, 138, 110, 0.15);
+  color: var(--success);
+}
+
+.booking-card .b-status.pending {
+  background: var(--gold-dim);
+  color: var(--gold);
+}
+
+.booking-card .b-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  padding: 4px 0;
+  color: var(--sec);
+}
+
+.booking-card .b-detail svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--dim);
+  fill: none;
+  stroke-width: 1.5;
+  flex-shrink: 0;
+}
+
+.booking-card .b-detail strong {
+  color: var(--cream);
+  font-weight: 500;
+}
+
+/* ==========================================================
+   24. Profile Screen
+   ========================================================== */
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px var(--pad) 24px;
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-name {
+  font-family: var(--display);
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.profile-email {
+  font-size: 0.8125rem;
+  color: var(--sec);
+  margin-bottom: 16px;
+}
+
+.profile-links {
+  width: 100%;
+}
+
+.profile-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px var(--pad);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.profile-link:active {
+  background: var(--card);
+}
+
+.profile-link svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--dim);
+  fill: none;
+  stroke-width: 1.5;
+  flex-shrink: 0;
+}
+
+.profile-link .pl-label {
+  flex: 1;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.profile-link .pl-arrow {
+  color: var(--dim);
+  font-size: 1rem;
+}
+
+.profile-link:last-child {
+  border-bottom: none;
+}
+
+/* ==========================================================
+   25. Utility Classes
+   ========================================================== */
+.fade-in {
+  animation: fadeUp 0.4s var(--ease-out-expo) both;
+}
+
+.fade-in-d1 { animation-delay: 0.05s; }
+.fade-in-d2 { animation-delay: 0.1s; }
+.fade-in-d3 { animation-delay: 0.15s; }
+.fade-in-d4 { animation-delay: 0.2s; }
+.fade-in-d5 { animation-delay: 0.25s; }
+
+.pop-in {
+  animation: pop 0.35s var(--ease-pop) both;
+}
+
+.rise-in {
+  animation: rise 0.5s var(--ease-out-expo) both;
+}
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mt-4 { margin-top: 4px; }
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mb-8 { margin-bottom: 8px; }
+.mb-12 { margin-bottom: 12px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+
+.gap-8 { gap: 8px; }
+.gap-12 { gap: 12px; }
+
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.flex-1 { flex: 1; }
+
+.hidden { display: none !important; }
+
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px var(--pad);
+  text-align: center;
+}
+
+.empty-state svg {
+  width: 48px;
+  height: 48px;
+  stroke: var(--dim);
+  fill: none;
+  stroke-width: 1;
+  margin-bottom: 16px;
+}
+
+.empty-state h3 {
+  font-family: var(--body);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.empty-state p {
+  font-size: 0.8125rem;
+  color: var(--dim);
+  max-width: 240px;
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 16px var(--pad);
+}
+
+/* Toast / snackbar */
+.toast {
+  position: fixed;
+  bottom: 100px;
+  left: var(--pad);
+  right: var(--pad);
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 14px 18px;
+  background: var(--card-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.8125rem;
+  color: var(--cream);
+  z-index: 1000;
+  text-align: center;
+  animation: fadeUp 0.3s var(--ease-out-expo) both;
+}
+
+.toast.error {
+  border-color: var(--error);
+  background: rgba(214, 57, 57, 0.1);
+}
+
+.toast.success {
+  border-color: var(--success);
+  background: rgba(45, 138, 110, 0.1);
+}
+
+/* Confetti/checkmark for confirmation */
+.confirm-check {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  animation: pop 0.5s var(--ease-pop) both;
+}
+
+.confirm-check svg {
+  width: 36px;
+  height: 36px;
+  stroke: var(--gold);
+  fill: none;
+  stroke-width: 2.5;
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  animation: checkDraw 0.6s ease-in-out 0.3s forwards;
+}
+
+/* Stagger animation containers */
+.stagger > * {
+  animation: fadeUp 0.4s var(--ease-out-expo) both;
+}
+
+.stagger > *:nth-child(1) { animation-delay: 0.02s; }
+.stagger > *:nth-child(2) { animation-delay: 0.05s; }
+.stagger > *:nth-child(3) { animation-delay: 0.08s; }
+.stagger > *:nth-child(4) { animation-delay: 0.11s; }
+.stagger > *:nth-child(5) { animation-delay: 0.14s; }
+.stagger > *:nth-child(6) { animation-delay: 0.17s; }
+.stagger > *:nth-child(7) { animation-delay: 0.2s; }
+.stagger > *:nth-child(8) { animation-delay: 0.23s; }
+.stagger > *:nth-child(9) { animation-delay: 0.26s; }
+.stagger > *:nth-child(10) { animation-delay: 0.29s; }
+
+/* ==========================================================
+   26. Keyframe Animations
+   ========================================================== */
+
+/* Fade in + slide up */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero image shimmer sweep */
+@keyframes heroShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Subtle pulse on promo badges */
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--gold-glow); }
+  50% { box-shadow: 0 0 0 6px transparent; }
+}
+
+/* Elastic pop entrance */
+@keyframes pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  70% {
+    transform: scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Bottom sheet rise */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading pulse */
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* SVG checkmark stroke draw */
+@keyframes checkDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Brand name reveal on load */
+@keyframes brandReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Loading bar sweep */
+@keyframes loadBar {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(150%); }
+  100% { transform: translateX(350%); }
+}
+
+/* Shimmer skeleton loading */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Spin for loading indicators */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================
+   27. Reduced Motion
+   ========================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .load-bar {
+    animation: none;
+    width: 60%;
+  }
+}
+
+/* ==========================================================
+   28. Responsive / Safe Area
+   ========================================================== */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .tab-bar {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .sticky-bottom {
+    padding-bottom: calc(var(--pad) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .sticky-btn {
+    padding-bottom: calc(var(--pad) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .scroll {
+    padding-bottom: calc(var(--tab-h) + env(safe-area-inset-bottom, 0px) + 8px);
+  }
+}
+
+/* iPhone 5/SE small screen adjustments */
+@media (max-width: 340px) {
+  :root {
+    --pad: 12px;
+  }
+
+  .time-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .svc-card {
+    width: 160px;
+  }
+
+  .stylist-card {
+    min-width: 200px;
+  }
+}
+
+/* Larger phones / phablets */
+@media (min-width: 420px) {
+  .time-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Prevent text selection on interactive elements for mobile */
+.tab-item,
+.btn,
+.chip,
+.date-chip,
+.time-slot,
+.svc-card,
+.svc-item,
+.stylist-card,
+.pay-card {
+  -webkit-user-select: none;
+  user-select: none;
+}
