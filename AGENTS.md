@@ -15,11 +15,14 @@ Staff management platform for Chelsea Man Spa (men's salon). Started as a Fireba
 - ✅ Supabase credentials in gitignored `config.js`
 - ✅ Client signup page (`signup.html`) with `handleSignUp()` in auth.js
 - ✅ Client dashboard (`client-dashboard.html`) with gatekeeper + role check + services menu
+- ✅ Unified login flow — all roles redirect to `home.html`
+- ✅ SPA multi-step booking flow (home.html + app.js): services → stylist → date/time → checkout → success
 - ✅ AGENTS.md
 
 ### What's NOT Built
 - ❌ `customers` table not created in Supabase yet
-- ❌ Client booking view (client sees own appointments)
+- ❌ Bookings tab on bottom nav (placeholder)
+- ❌ Profile tab on bottom nav (placeholder)
 - ❌ Client profile management
 
 ### Known Issues / Gaps
@@ -27,6 +30,9 @@ Staff management platform for Chelsea Man Spa (men's salon). Started as a Fireba
 - ❌ **Management pages have NO role redirect** — services.html, roster.html, bookings.html don't have the `if (role !== admin) redirect to index.html` inline script. Staff users can access them directly by URL
 - ❌ `profiles` table doesn't exist in Supabase yet — login will fail until created
 - ❌ `bookings` table may not exist in Supabase yet
+- ❌ Bottom nav "Bookings" and "Profile" tabs are placeholders (no content yet)
+- ❌ `customer_id` column in bookings table may not exist — SPA inserts it, may error
+- ❌ Filter chips on stylist view (All/Male/Female) are cosmetic — stylists table has no gender column
 
 ## Tech Stack
 - **Auth & Database**: Supabase (`pzbiydpbwrkmjjvhfokm` project)
@@ -300,13 +306,12 @@ Columns: `id (uuid PK)`, `service_id (FK → services.id)`, `stylist_id (FK → 
 3. [ ] Create auth user(s) manually in Supabase, get UUID(s), insert into profiles with role='admin' or 'staff'
 4. [ ] Create `customers` table
 5. [ ] Create `bookings` table if not exists
-6. [ ] Test login flow: admin → full dashboard with nav + action hub; staff → minimal dashboard
+6. [ ] Test login flow: admin → dashboard button visible on home.html; staff → dashboard button visible; customer → dashboard button hidden
 7. [ ] Add role redirect inline script to services.html, roster.html, bookings.html
 8. [ ] Create `servicesManager.js` or add inline JS to services.html for CRUD
-9. [ ] Build `client-dashboard.html` for customer role
-10. [ ] Build client registration flow
-11. [ ] Build client booking view
-12. [ ] Push to GitHub: `git remote add origin https://github.com/jeremygideonbareh/chelsea-man-spa-mobile2.git && git push -u origin feature/ui-redesign`
+9. [ ] Build Bookings tab on bottom nav (list user's bookings from Supabase)
+10. [ ] Build Profile tab on bottom nav (user details, edit name/phone)
+11. [ ] Push to GitHub: `git push -u origin <branch-name>`
 
 ## Project Tree
 ```
@@ -319,11 +324,10 @@ chelsea-man-spa-mobile/
 ├── firebase.json                  # Old Firebase hosting config
 ├── README.md                      # Old README
 └── public/
+    ├── home.html                  # SPA multi-step booking flow (300+ lines)
     ├── client-dashboard.html      # Client dashboard with services menu (171 lines)
     ├── signup.html                # Client registration (109 lines)
-    ├── client-dashboard.html        # Client dashboard (171 lines)
-    ├── signup.html                  # Client registration (109 lines)
-    ├── index.html                   # Manager Dashboard (364 lines)
+    ├── index.html                 # Manager Dashboard (364 lines)
     ├── login.html                 # Login form (120 lines)
     ├── services.html              # Services — INCOMPLETE, shell only (124 lines)
     ├── roster.html                # Stylist roster with modals (191 lines)
@@ -332,8 +336,9 @@ chelsea-man-spa-mobile/
         ├── config.js              # Supabase creds (GITIGNORED)
         ├── config.example.js      # Placeholder template (committed)
         ├── supabaseClient.js      # Client init from window vars (4 lines)
-        ├── auth.js                # Auth functions (121 lines)
+        ├── auth.js                # Auth functions (150 lines)
         ├── authGuard.js           # Session guard IIFE (10 lines)
         ├── rosterManager.js       # Stylist CRUD (164 lines)
-        └── bookingsManager.js     # Bookings CRUD (144 lines)
+        ├── bookingsManager.js     # Bookings CRUD (144 lines)
+        └── app.js                 # SPA booking flow controller (419 lines)
 ```
