@@ -12,6 +12,7 @@ interface BookingSheetProps {
   isOpen: boolean;
   onClose: () => void;
   userId: string;
+  userName?: string;
 }
 
 const stepTitles: Record<number, string> = {
@@ -22,7 +23,7 @@ const stepTitles: Record<number, string> = {
   5: 'Confirmed',
 };
 
-export default function BookingSheet({ isOpen, onClose, userId }: BookingSheetProps) {
+export default function BookingSheet({ isOpen, onClose, userId, userName = 'Gentleman' }: BookingSheetProps) {
   const flow = useBookingFlow();
   const [bookingRef, setBookingRef] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -46,11 +47,40 @@ export default function BookingSheet({ isOpen, onClose, userId }: BookingSheetPr
   const handleConfirmBooking = useCallback(async () => {
     setError(null);
     try {
+      let realCustomerId = userId;
+
+      // If it's a mock user, we need to create/find a real customer record to satisfy foreign keys
+      if (userId.startsWith('mock-')) {
+        try {
+          const { data: custData } = await (supabase as any)
+            .from('customers')
+            .select('id')
+            .eq('full_name', userName)
+            .limit(1);
+
+          if (custData && custData[0]) {
+            realCustomerId = custData[0].id;
+          } else {
+            const { data: newCust } = await (supabase as any)
+              .from('customers')
+              .insert([{ 
+                full_name: userName, 
+                email: `${userName.toLowerCase().replace(/\\s+/g, '.')}@example.com` 
+              }])
+              .select('id')
+              .single();
+            if (newCust) realCustomerId = newCust.id;
+          }
+        } catch (e) {
+          console.warn('Failed to resolve mock customer:', e);
+        }
+      }
+
       const payload = {
-        customer_id: userId,
+        customer_id: realCustomerId,
         service_id: flow.selectedService?.id,
         booking_time: flow.bookingTime,
-        status: 'pending' as const,
+        status: 'confirmed' as const,
       };
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -77,6 +107,7 @@ export default function BookingSheet({ isOpen, onClose, userId }: BookingSheetPr
       const localBooking = {
         id: mockId,
         customer_id: userId,
+        customer_name: userName,
         service_id: flow.selectedService?.id,
         service_name: flow.selectedService?.name || 'Unknown Service',
         stylist_name: flow.selectedStylist?.name || 'Any Stylist',

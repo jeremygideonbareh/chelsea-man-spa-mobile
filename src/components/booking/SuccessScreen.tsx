@@ -113,11 +113,11 @@ export default function SuccessScreen({
       </div>
 
       <div
-        className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 rounded-full px-4 py-2 success-fade"
+        className="flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-full px-4 py-2 success-fade"
         style={{ animationDelay: '0.9s' }}
       >
-        <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-        <span className="text-amber-400 text-xs font-medium">Pending Confirmation</span>
+        <div className="w-2 h-2 rounded-full bg-green-400" />
+        <span className="text-green-400 text-xs font-medium">Confirmed</span>
       </div>
 
       <button

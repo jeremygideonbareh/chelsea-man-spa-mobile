@@ -251,6 +251,13 @@ supabase.from('bookings').delete().eq('id', id)
 - Added a custom GitHub Actions auto-deploy workflow (`deploy.yml`) to build and deploy `./dist` to GitHub Pages upon push to the `almost-done` branch.
 - Diagnosed GitHub Pages blank page/deployment issues caused by (1) environment protection rules blocking deployment from the `almost-done` branch to the `github-pages` environment, and (2) GitHub Pages settings using "Deploy from a branch" instead of "GitHub Actions" as the build source, causing the raw uncompiled TSX source code to be served.
 
+### Session 5 — Booking DB Sync & Confirmation Status Update
+- Updated `BookingSheet.tsx` to insert newly booked sessions with a `confirmed` status instead of `pending`.
+- Fixed the fallback caching logic to append the client's `customer_name` when offline, ensuring bookings appear correctly on the Admin Dashboard.
+- Handled mock/guest user database insertion properly. If the user doesn't exist in Supabase auth (i.e. is an unauthenticated client scheduling via the dashboard), it first inserts them silently into the `customers` table to satisfy the `bookings` foreign key constraint before committing the appointment.
+- Updated `SuccessScreen.tsx` badge to display "Confirmed" in green styling instead of amber "Pending Confirmation".
+- Re-verified that the `signOut` logout function correctly redirects back to `/` to avoid console errors and unmounted state updates.
+
 ## CSS Utilities Available
 - `.glass-card`, `.glass-card-gold`, `.glass-nav` — glass-morphism backgrounds
 - `.gold-gradient-text` — gold gradient on text

@@ -106,6 +106,7 @@ export default function Dashboard() {
           refetchBookings();
         }}
         userId={user.id}
+        userName={user.user_metadata?.full_name || 'Gentleman'}
       />
     </div>
   );
