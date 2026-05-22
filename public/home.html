@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chelsea Man Spa — Home</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0A0907;
+      color: #F5EDE3;
+      min-height: 100vh;
+      padding: 32px 24px;
+      display: none;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+
+    .nav-bar {
+      display: flex; align-items: center; gap: 24px;
+      margin-bottom: 32px; padding-bottom: 16px;
+      border-bottom: 1px solid #1E1C18;
+    }
+    .nav-bar .brand {
+      font-size: 1rem; font-weight: 700; color: #D4AF37;
+    }
+    .nav-bar .spacer { flex: 1; }
+    .btn-logout {
+      background: none; border: 1px solid #3D1A1A; color: #E87A7A;
+      padding: 6px 16px; border-radius: 6px; font-size: 0.8rem;
+      font-weight: 500; cursor: pointer; font-family: inherit;
+      transition: background 0.2s;
+    }
+    .btn-logout:hover { background: #3D1A1A; color: #E87A7A; }
+
+    .header { margin-bottom: 40px; }
+    .header h1 {
+      font-size: 1.5rem; font-weight: 700;
+      color: #D4AF37; letter-spacing: 0.02em;
+    }
+    .header .sub {
+      color: #9C927D; font-size: 0.875rem; margin-top: 4px;
+    }
+
+    .actions {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .action-card {
+      background: #12110E; border: 1px solid #1E1C18;
+      border-radius: 8px; padding: 32px 16px; text-align: center;
+      text-decoration: none; transition: border-color 0.2s;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+    }
+    .action-card:hover { border-color: #D4AF37; }
+    .action-card .icon { font-size: 2rem; line-height: 1; }
+    .action-card .alabel {
+      font-size: 1rem; font-weight: 600; color: #F5EDE3;
+    }
+    .action-card .adesc {
+      font-size: 0.75rem; color: #9C927D;
+    }
+
+    @media (max-width: 768px) {
+      .actions { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav-bar">
+      <span class="brand">Chelsea Man Spa</span>
+      <span class="spacer"></span>
+      <button class="btn-logout" id="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="header">
+      <h1>Welcome to Chelsea Man Spa</h1>
+      <div class="sub">Your grooming experience starts here.</div>
+    </div>
+
+    <div class="actions" id="action-hub">
+      <a class="action-card" href="index.html" id="btn-manager-dashboard">
+        <div class="icon">&#x1F4CA;</div>
+        <div class="alabel">Manager Dashboard</div>
+        <div class="adesc">Appointments, services, and staff management</div>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    (async function() {
+      var loginTime = localStorage.getItem('loginTime');
+      var now = Date.now();
+      var oneHour = 3600000;
+
+      if (!loginTime || (now - parseInt(loginTime)) > oneHour) {
+        console.log('Session expired. Redirecting...');
+        localStorage.clear();
+        window.location.replace('login.html');
+        return;
+      }
+
+      var role = (localStorage.getItem('userRole') || '').toLowerCase();
+
+      document.addEventListener('DOMContentLoaded', function () {
+        if (role === 'customer') {
+          var btn = document.getElementById('btn-manager-dashboard');
+          if (btn) btn.style.display = 'none';
+        }
+
+        document.body.style.display = 'block';
+        console.log('Home — session valid. Role:', role);
+      });
+    })();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

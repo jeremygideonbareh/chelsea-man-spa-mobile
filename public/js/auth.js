@@ -37,7 +37,7 @@ window.signIn = async function (email, password) {
 
     if (profile) {
       localStorage.setItem('userRole', profile.role);
-      window.location.href = 'index.html';
+      window.location.href = 'home.html';
       return;
     }
 
@@ -49,7 +49,7 @@ window.signIn = async function (email, password) {
 
     if (customer) {
       localStorage.setItem('userRole', 'customer');
-      window.location.href = 'client-dashboard.html';
+      window.location.href = 'home.html';
       return;
     }
 
@@ -74,15 +74,7 @@ window.handleSignUp = async function (fullName, email, password) {
       return;
     }
 
-    if (data && data.user) {
-      var { error: insertErr } = await window.supabaseClient
-        .from('customers')
-        .insert([{ id: data.user.id, email: email, name: fullName }]);
-
-      if (insertErr) console.warn('Could not save customer profile:', insertErr.message);
-    }
-
-    alert('Account created! You can now log in');
+    alert('Account created! You can now log in.');
     window.location.href = 'login.html';
 
   } catch (err) {
@@ -148,3 +140,8 @@ async function checkSessionExpiration() {
 }
 
 checkSessionExpiration();
+
+// Permission levels (to be implemented inside management pages):
+// - 'admin': full CRUD — can create, edit, delete services/stylists/bookings
+// - 'staff': read-only view — can see data but destructive actions are restricted
+// Check userRole from localStorage.getItem('userRole') and compare via .toLowerCase()
