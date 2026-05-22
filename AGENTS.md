@@ -13,13 +13,13 @@ Staff management platform for Chelsea Man Spa (men's salon). Started as a Fireba
 - ✅ Password visibility toggle (👁️ open / 🙈 closed)
 - ✅ Back-button prevention on dashboard
 - ✅ Supabase credentials in gitignored `config.js`
+- ✅ Client signup page (`signup.html`) with `handleSignUp()` in auth.js
+- ✅ Client dashboard (`client-dashboard.html`) with gatekeeper + role check + services menu
 - ✅ AGENTS.md
 
-### What's NOT Built (Client Features)
-- ❌ `customers` table not created in Supabase
-- ❌ `client-dashboard.html` — doesn't exist
+### What's NOT Built
+- ❌ `customers` table not created in Supabase yet
 - ❌ Client booking view (client sees own appointments)
-- ❌ Client self-registration (sign-up form)
 - ❌ Client profile management
 
 ### Known Issues / Gaps
@@ -121,18 +121,11 @@ window.supabaseClient = window.supabase.createClient(
 );
 ```
 
-#### auth.js — 121 lines
+#### auth.js — 150 lines
 Full function reference:
 - `getSession()` — wraps `supabaseClient.auth.getSession()`, returns session or null
-- `signIn(email, password)` — try/catch wrapper:
-  1. Remove old userRole + loginTime from localStorage
-  2. `signInWithPassword()` — if error, `alert(error.message)` and return
-  3. If no user → `alert('Login failed.')` and return
-  4. Set `loginTime = Date.now()` in localStorage
-  5. Query `profiles` table `.maybeSingle()` by user id → if found, set userRole, redirect to `index.html`
-  6. Query `customers` table `.maybeSingle()` by user email → if found, set userRole = 'customer', redirect to `client-dashboard.html`
-  7. If neither → `signOut()` + `alert('Account type not recognized.')`
-  8. Catch all → `alert('An unexpected error occurred.')`
+- `signIn(email, password)` — try/catch wrapper (see Login Flow below)
+- `handleSignUp(fullName, email, password)` — calls `supabase.auth.signUp()`, on error→alert, on success→alert + redirect to login.html. Does NOT insert into customers table (handled by Postgres trigger on backend)
 - `signOut()` — removes userRole from localStorage, calls `supabaseClient.auth.signOut()`
 - `logout()` — calls signOut, localStorage.clear(), sessionStorage.clear(), location.reload()
 - `onAuthStateChange(callback)` — wraps `supabaseClient.auth.onAuthStateChange()`, removes userRole on SIGNED_OUT
@@ -326,7 +319,11 @@ chelsea-man-spa-mobile/
 ├── firebase.json                  # Old Firebase hosting config
 ├── README.md                      # Old README
 └── public/
-    ├── index.html                 # Manager Dashboard (364 lines)
+    ├── client-dashboard.html      # Client dashboard with services menu (171 lines)
+    ├── signup.html                # Client registration (109 lines)
+    ├── client-dashboard.html        # Client dashboard (171 lines)
+    ├── signup.html                  # Client registration (109 lines)
+    ├── index.html                   # Manager Dashboard (364 lines)
     ├── login.html                 # Login form (120 lines)
     ├── services.html              # Services — INCOMPLETE, shell only (124 lines)
     ├── roster.html                # Stylist roster with modals (191 lines)
