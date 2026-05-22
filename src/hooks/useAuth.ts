@@ -29,7 +29,7 @@ export function useAuth() {
       .single();
 
     const timeoutPromise = new Promise<null>((resolve) => 
-      setTimeout(() => resolve(null), 2500)
+      setTimeout(() => resolve(null), 10000)
     );
 
     try {
@@ -66,7 +66,7 @@ export function useAuth() {
     try {
       const sessionPromise = supabase.auth.getSession();
       const timeoutPromise = new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error('Session fetch timeout')), 2500)
+        setTimeout(() => reject(new Error('Session fetch timeout')), 10000)
       );
 
       const raceResult = await Promise.race([sessionPromise, timeoutPromise]);

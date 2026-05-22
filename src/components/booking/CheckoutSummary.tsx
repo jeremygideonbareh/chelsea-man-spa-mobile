@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Check, ToggleLeft, ToggleRight } from 'lucide-react';
 import type { Service, Profile } from '@/types';
 import { ADDONS, VAT_RATE } from '@/types';
@@ -10,7 +10,7 @@ interface CheckoutSummaryProps {
   bookingTime: string;
   addons: { scalpMassage: boolean; luxuryTreatment: boolean };
   onToggleAddon: (key: 'scalpMassage' | 'luxuryTreatment') => void;
-  onConfirm: () => void;
+  onConfirm: (customerName: string) => void;
   userId: string;
 }
 
@@ -25,6 +25,14 @@ export default function CheckoutSummary({
 }: CheckoutSummaryProps) {
   const { customer } = useCustomer(userId);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [customerName, setCustomerName] = useState('');
+
+  // Auto-fill name if available from profile
+  useEffect(() => {
+    if (customer?.full_name && !customerName) {
+      setCustomerName(customer.full_name);
+    }
+  }, [customer, customerName]);
 
   const servicePrice = service.price || 0;
   const addonTotal = ADDONS.reduce((sum, addon) => {
@@ -48,8 +56,12 @@ export default function CheckoutSummary({
   });
 
   const handleConfirm = async () => {
+    if (!customerName.trim()) {
+      alert('Please enter your name to confirm booking.');
+      return;
+    }
     setIsSubmitting(true);
-    await onConfirm();
+    await onConfirm(customerName.trim());
     setIsSubmitting(false);
   };
 
@@ -78,19 +90,26 @@ export default function CheckoutSummary({
       </div>
 
       {/* Customer Info */}
-      {customer && (
-        <div className="glass-card rounded-2xl p-4 space-y-2">
-          <h3 className="text-white text-sm font-semibold">Your Details</h3>
-          <div className="flex justify-between items-center">
-            <span className="text-[#A3A3A3] text-xs">Name</span>
-            <span className="text-white text-xs font-medium">{customer.full_name}</span>
-          </div>
-          <div className="flex justify-between items-center">
+      <div className="glass-card rounded-2xl p-4 space-y-3">
+        <h3 className="text-white text-sm font-semibold">Your Details</h3>
+        <div>
+          <label className="block text-[#A3A3A3] text-xs mb-1.5">Full Name *</label>
+          <input
+            type="text"
+            value={customerName}
+            onChange={(e) => setCustomerName(e.target.value)}
+            placeholder="Enter your name"
+            className="w-full px-3 py-2.5 rounded-xl bg-[#0A0A0A] border border-white/10 text-white text-sm focus:outline-none focus:border-[#D4AF37] transition-colors"
+            required
+          />
+        </div>
+        {customer?.email && (
+          <div className="flex justify-between items-center mt-2">
             <span className="text-[#A3A3A3] text-xs">Email</span>
             <span className="text-white text-xs font-medium">{customer.email}</span>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Add-ons */}
       <div className="glass-card rounded-2xl p-4 space-y-3">
