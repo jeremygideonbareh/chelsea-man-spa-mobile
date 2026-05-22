@@ -22,14 +22,32 @@
 <body>
   <!-- App Container -->
   <div id="app">
-    <!-- Loading Screen -->
+    <!-- Loading Screen (contains brand + login form) -->
     <div id="loading">
       <div class="load-brand">Chelsea Man Spa</div>
       <div class="load-bar-wrap">
         <div class="load-bar"></div>
       </div>
+      <div class="load-login">
+        <div class="input-group">
+          <label for="custom-id">Staff ID</label>
+          <input type="text" id="custom-id" class="input" placeholder="Enter your staff ID" autocomplete="off">
+        </div>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" class="input" placeholder="Enter your password">
+        </div>
+        <button id="submit-login" class="btn btn-gold btn-full">Sign In</button>
+        <div id="login-error" class="error-text" style="display:none;text-align:center;margin-top:12px;"></div>
+      </div>
     </div>
   </div>
+
+  <!-- ============================================ -->
+  <!-- Supabase SDK -->
+  <!-- ============================================ -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+  </script>
 
   <!-- ============================================ -->
   <!-- Firebase SDKs (compat — global script loading) -->
@@ -54,7 +72,10 @@
   <!-- 3. State — Global STATE object, date utilities -->
   <script src="js/state.js"></script>
 
-  <!-- 4. Auth — Firebase auth: sign-in, sign-out, listener -->
+  <!-- 3b. Supabase Client — Staff ID login -->
+  <script src="js/supabaseClient.js"></script>
+
+  <!-- 4. Auth — Staff ID login handler (Supabase) -->
   <script src="js/auth.js"></script>
 
   <!-- 5. Navigation — Tab bar, page stack, boot -->
