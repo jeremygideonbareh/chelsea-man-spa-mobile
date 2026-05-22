@@ -61,7 +61,7 @@ export default function Login() {
     <SignInPage
       mode={mode}
       onModeChange={handleModeChange}
-      heroImageSrc="/images/signin.jpg"
+      heroImageSrc="images/signin.jpg"
       onSignIn={handleSubmit}
       onBack={() => navigate('/')}
       loading={loading}

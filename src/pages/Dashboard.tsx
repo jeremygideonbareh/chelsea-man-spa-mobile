@@ -248,7 +248,7 @@ function HomeView({
               <div className="flex">
                 <div className="w-24 h-24 flex-shrink-0 relative">
                   <img
-                    src={service.image_url || '/images/service-haircut.jpg'}
+                    src={service.image_url || 'images/service-haircut.jpg'}
                     alt={service.name || ''}
                     className="w-full h-full object-cover"
                   />

@@ -226,7 +226,7 @@ export default function WhyChooseUsSection() {
                 whileHover={{ scale: 1.03, transition: { duration: 0.3 } }}
               >
                 <img
-                  src="/images/image1.jpg"
+                  src="images/image1.jpg"
                   alt="Chelsea Man Spa Interior"
                   className="w-full h-full object-cover"
                 />

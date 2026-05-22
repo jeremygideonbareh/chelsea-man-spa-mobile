@@ -67,7 +67,7 @@ export default function ServiceSelection({ onSelect }: ServiceSelectionProps) {
             <div className="flex">
               <div className="w-28 h-28 flex-shrink-0 relative">
                 <img
-                  src={service.image_url || '/images/service-haircut.jpg'}
+                  src={service.image_url || 'images/service-haircut.jpg'}
                   alt={service.name || 'Service'}
                   className="w-full h-full object-cover"
                 />

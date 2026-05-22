@@ -111,7 +111,7 @@ export function useStylists() {
         id: stylist.id,
         full_name: stylist.name,
         role: stylist.role,
-        avatar_url: `/images/stylist-${(index % 4) + 1}.jpg`,
+        avatar_url: `images/stylist-${(index % 4) + 1}.jpg`,
       }));
 
       setStylists(stylistsWithAvatars);
@@ -134,7 +134,7 @@ export function useStylists() {
         id: stylist.id,
         full_name: stylist.name,
         role: stylist.role || 'Barber',
-        avatar_url: `/images/stylist-${(index % 4) + 1}.jpg`,
+        avatar_url: `images/stylist-${(index % 4) + 1}.jpg`,
       }));
 
       setStylists(stylistsWithAvatars);
