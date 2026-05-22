@@ -1,0 +1,299 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 9%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 43 65% 52%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 64%;
+    --accent: 43 65% 52%;
+    --accent-foreground: 0 0% 4%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 43 65% 52%;
+    --radius: 0.75rem;
+    --gold: #D4AF37;
+    --gold-light: #E5C76B;
+    --gold-dark: #B8960F;
+    --surface: #171717;
+    --surface-glass: rgba(255, 255, 255, 0.05);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #0A0A0A;
+    overflow-x: hidden;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-card-gold {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-nav {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .gold-gradient-text {
+    background: linear-gradient(135deg, #D4AF37 0%, #E5C76B 50%, #D4AF37 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gold-btn {
+    background: linear-gradient(135deg, #D4AF37 0%, #E5C76B 50%, #D4AF37 100%);
+    color: #0A0A0A;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .gold-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+  }
+
+  .gold-btn:active {
+    transform: scale(0.98);
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* ========== Sign-In Page Animations ========== */
+
+@keyframes signinFadeSlideIn {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0px);
+  }
+}
+
+@keyframes signinSlideRightIn {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateX(0px);
+  }
+}
+
+.signin-animate {
+  opacity: 0;
+  filter: blur(4px);
+  transform: translateY(16px);
+  animation: signinFadeSlideIn 0.7s ease forwards;
+}
+
+.signin-hero-slide {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateX(40px);
+  animation: signinSlideRightIn 0.9s ease 0.3s forwards;
+}
+
+.signin-delay-100 { animation-delay: 0.1s; }
+.signin-delay-200 { animation-delay: 0.2s; }
+.signin-delay-300 { animation-delay: 0.3s; }
+.signin-delay-400 { animation-delay: 0.4s; }
+.signin-delay-500 { animation-delay: 0.5s; }
+.signin-delay-600 { animation-delay: 0.6s; }
+.signin-delay-700 { animation-delay: 0.7s; }
+.signin-delay-800 { animation-delay: 0.8s; }
+.signin-delay-900 { animation-delay: 0.9s; }
+
+/* ========== Liquid Glass & Premium Animations ========== */
+
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+/* Liquid Glass Cards */
+.liquid-glass {
+  background: rgba(10, 10, 10, 0.45);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(212, 175, 55, 0.12);
+  box-shadow: 
+    0 8px 32px 0 rgba(0, 0, 0, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.05),
+    inset 0 -1px 20px rgba(212, 175, 55, 0.01);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.liquid-glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(212, 175, 55, 0.02) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.5s ease;
+}
+
+.liquid-glass:hover {
+  border-color: rgba(212, 175, 55, 0.35);
+  box-shadow: 
+    0 16px 48px 0 rgba(212, 175, 55, 0.08),
+    0 8px 32px 0 rgba(0, 0, 0, 0.5),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1),
+    inset 0 -1px 20px rgba(212, 175, 55, 0.03);
+  transform: translateY(-2px);
+}
+
+.liquid-glass:hover::after {
+  opacity: 0.8;
+}
+
+/* Float Animations for depth blobs */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+}
+
+@keyframes float-medium {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-40px, 40px) scale(1.15);
+  }
+}
+
+@keyframes float-fast {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  40% {
+    transform: translate(20px, 20px) scale(1.05);
+  }
+  70% {
+    transform: translate(-10px, -30px) scale(0.95);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 20s infinite ease-in-out;
+}
+
+.animate-float-medium {
+  animation: float-medium 15s infinite ease-in-out;
+}
+
+.animate-float-fast {
+  animation: float-fast 12s infinite ease-in-out;
+}
+
+/* Premium Gold Shimmer Loading */
+@keyframes shimmer-gold {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-gold-text {
+  background: linear-gradient(
+    90deg,
+    #B8960F 0%,
+    #D4AF37 25%,
+    #FFF2A1 50%,
+    #D4AF37 75%,
+    #B8960F 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer-gold 4s linear infinite;
+}
+
+/* Pulse Gold Glow button effects */
+@keyframes pulse-gold-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.6), 0 0 10px rgba(212, 175, 55, 0.2);
+  }
+}
+
+.pulse-gold {
+  animation: pulse-gold-glow 3s infinite ease-in-out;
+}
+
