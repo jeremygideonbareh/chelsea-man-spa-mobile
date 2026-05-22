@@ -8,37 +8,87 @@ async function getSession() {
 }
 
 window.signIn = async function (email, password) {
-  localStorage.removeItem('userRole');
-  localStorage.removeItem('loginTime');
+  try {
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('loginTime');
 
-  var { data, error } = await window.supabaseClient.auth.signInWithPassword({
-    email: email,
-    password: password
-  });
-  if (error) throw error;
+    var { data, error } = await window.supabaseClient.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
 
-  var role = 'staff';
-
-  if (data && data.user) {
-    try {
-      var { data: profile } = await window.supabaseClient
-        .from('profiles')
-        .select('role')
-        .eq('id', data.user.id)
-        .single();
-
-      console.log('User ID:', data.user.id, 'Profile role:', profile ? profile.role : 'no profile');
-      role = (profile && profile.role) || 'staff';
-    } catch (profileErr) {
-      console.warn('Could not fetch profile, defaulting to staff:', profileErr.message);
+    if (error) {
+      alert(error.message);
+      return;
     }
 
-    localStorage.setItem('userRole', role);
-    localStorage.setItem('loginTime', Date.now());
-    console.log('Role updated to:', role);
-  }
+    if (!data || !data.user) {
+      alert('Login failed. Please try again.');
+      return;
+    }
 
-  window.location.href = 'index.html';
+    localStorage.setItem('loginTime', Date.now());
+
+    var { data: profile, error: profileErr } = await window.supabaseClient
+      .from('profiles')
+      .select('role')
+      .eq('id', data.user.id)
+      .maybeSingle();
+
+    if (profile) {
+      localStorage.setItem('userRole', profile.role);
+      window.location.href = 'index.html';
+      return;
+    }
+
+    var { data: customer, error: custErr } = await window.supabaseClient
+      .from('customers')
+      .select('id')
+      .eq('email', data.user.email)
+      .maybeSingle();
+
+    if (customer) {
+      localStorage.setItem('userRole', 'customer');
+      window.location.href = 'client-dashboard.html';
+      return;
+    }
+
+    await window.supabaseClient.auth.signOut();
+    alert('Account type not recognized.');
+
+  } catch (err) {
+    console.error('Sign in error:', err);
+    alert('An unexpected error occurred. Please try again.');
+  }
+};
+
+window.handleSignUp = async function (fullName, email, password) {
+  try {
+    var { data, error } = await window.supabaseClient.auth.signUp({
+      email: email,
+      password: password
+    });
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    if (data && data.user) {
+      var { error: insertErr } = await window.supabaseClient
+        .from('customers')
+        .insert([{ id: data.user.id, email: email, name: fullName }]);
+
+      if (insertErr) console.warn('Could not save customer profile:', insertErr.message);
+    }
+
+    alert('Account created! You can now log in');
+    window.location.href = 'login.html';
+
+  } catch (err) {
+    console.error('Sign up error:', err);
+    alert('An unexpected error occurred. Please try again.');
+  }
 };
 
 async function signOut() {

@@ -84,6 +84,9 @@
       <button type="submit" class="btn-login" id="btn-login">Sign In</button>
     </form>
     <div class="error-msg" id="error-message"></div>
+    <div style="text-align:center;margin-top:20px;font-size:0.8rem;color:#9C927D;">
+      Don't have an account? <a href="signup.html" style="color:#D4AF37;text-decoration:none;font-weight:500;">Sign up</a>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -111,16 +114,9 @@
       btn.textContent = 'Signing in…';
       errorEl.style.display = 'none';
 
-      try {
-        await signIn(email, password);
-      } catch (err) {
-        console.error('Login error:', err);
-        document.getElementById('password').value = '';
-        errorEl.textContent = 'Wrong credentials, please try again.';
-        errorEl.style.display = 'block';
-        btn.disabled = false;
-        btn.textContent = 'Sign In';
-      }
+      await signIn(email, password);
+      btn.disabled = false;
+      btn.textContent = 'Sign In';
     });
   </script>
 </body>
