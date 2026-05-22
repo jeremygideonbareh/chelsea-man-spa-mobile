@@ -31,7 +31,7 @@ export default function Login() {
         let targetRoute = '/dashboard';
         const userMetadata = data?.user?.user_metadata;
         const lowerEmail = email.toLowerCase();
-        const isEmailAdmin = lowerEmail.startsWith('admin') || lowerEmail.includes('+admin') || lowerEmail.includes('admin@');
+        const isEmailAdmin = lowerEmail.startsWith('admin') || lowerEmail.includes('+admin') || lowerEmail.includes('admin@') || lowerEmail === 'princeraymondpaul911@gmail.com';
         const isEmailStaff = lowerEmail.startsWith('staff') || lowerEmail.includes('+staff') || lowerEmail.includes('staff@');
         
         if (userMetadata?.role === 'admin' || userMetadata?.role === 'staff' || isEmailAdmin || isEmailStaff) {
