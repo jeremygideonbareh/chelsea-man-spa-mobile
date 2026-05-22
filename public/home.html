@@ -3,93 +3,365 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chelsea Man Spa — Home</title>
-
+  <title>Chelsea Man Spa</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
-      background: #0A0907;
-      color: #F5EDE3;
-      min-height: 100vh;
-      padding: 32px 24px;
-      display: none;
+      background: #0F0F0F; color: #FFFFFF;
+      min-height: 100vh; padding-bottom: 80px; display: none;
     }
-    .container { max-width: 960px; margin: 0 auto; }
+    ::-webkit-scrollbar { height: 4px; }
+    ::-webkit-scrollbar-track { background: #1A1A1A; }
+    ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
 
-    .nav-bar {
-      display: flex; align-items: center; gap: 24px;
-      margin-bottom: 32px; padding-bottom: 16px;
-      border-bottom: 1px solid #1E1C18;
+    .top-bar {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 20px; border-bottom: 1px solid #1A1A1A;
+      position: sticky; top: 0; background: #0F0F0F; z-index: 10;
     }
-    .nav-bar .brand {
-      font-size: 1rem; font-weight: 700; color: #D4AF37;
+    .top-bar .brand { font-size: 1rem; font-weight: 700; color: #D4AF37; }
+    .top-bar .spacer { flex: 1; }
+    .top-bar .btn-mgr {
+      background: none; border: 1px solid #D4AF37; color: #D4AF37;
+      padding: 4px 12px; border-radius: 8px; font-size: 0.7rem;
+      font-weight: 600; cursor: pointer; font-family: inherit;
+      text-decoration: none; transition: 0.2s;
     }
-    .nav-bar .spacer { flex: 1; }
+    .top-bar .btn-mgr:hover { background: #D4AF37; color: #0F0F0F; }
     .btn-logout {
       background: none; border: 1px solid #3D1A1A; color: #E87A7A;
-      padding: 6px 16px; border-radius: 6px; font-size: 0.8rem;
+      padding: 4px 12px; border-radius: 8px; font-size: 0.7rem;
       font-weight: 500; cursor: pointer; font-family: inherit;
-      transition: background 0.2s;
     }
-    .btn-logout:hover { background: #3D1A1A; color: #E87A7A; }
+    .btn-logout:hover { background: #3D1A1A; }
 
-    .header { margin-bottom: 40px; }
-    .header h1 {
-      font-size: 1.5rem; font-weight: 700;
-      color: #D4AF37; letter-spacing: 0.02em;
-    }
-    .header .sub {
-      color: #9C927D; font-size: 0.875rem; margin-top: 4px;
+    .view { display: none; padding: 0 20px 20px; }
+    .view.active { display: block; }
+
+    .section-title {
+      font-size: 1.125rem; font-weight: 700; color: #FFFFFF;
+      margin: 24px 0 12px;
     }
 
-    .actions {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 16px;
+    .services-scroll, .stylists-scroll {
+      display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px;
+      scroll-snap-type: x mandatory;
     }
-    .action-card {
-      background: #12110E; border: 1px solid #1E1C18;
-      border-radius: 8px; padding: 32px 16px; text-align: center;
-      text-decoration: none; transition: border-color 0.2s;
-      display: flex; flex-direction: column; align-items: center; gap: 10px;
+    .service-card {
+      min-width: 180px; background: #1A1A1A; border-radius: 12px;
+      padding: 20px 16px; cursor: pointer; transition: border 0.2s;
+      border: 2px solid transparent; scroll-snap-align: start;
     }
-    .action-card:hover { border-color: #D4AF37; }
-    .action-card .icon { font-size: 2rem; line-height: 1; }
-    .action-card .alabel {
-      font-size: 1rem; font-weight: 600; color: #F5EDE3;
+    .service-card:hover, .service-card.selected { border-color: #D4AF37; }
+    .service-card .s-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
+    .service-card .s-price { color: #D4AF37; font-weight: 700; font-size: 1.1rem; }
+    .service-card .s-dur { color: #888; font-size: 0.8rem; margin-top: 2px; }
+
+    .stylist-preview-card {
+      min-width: 140px; background: #1A1A1A; border-radius: 12px;
+      padding: 16px; text-align: center; cursor: pointer;
+      border: 2px solid transparent; transition: border 0.2s;
+      scroll-snap-align: start;
     }
-    .action-card .adesc {
-      font-size: 0.75rem; color: #9C927D;
+    .stylist-preview-card:hover { border-color: #D4AF37; }
+    .stylist-preview-card .avatar {
+      width: 48px; height: 48px; border-radius: 50%; background: #D4AF37;
+      color: #0F0F0F; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1.1rem; margin: 0 auto 8px;
+    }
+    .stylist-preview-card .sp-name { font-weight: 600; font-size: 0.85rem; }
+    .stylist-preview-card .sp-role { color: #888; font-size: 0.75rem; }
+    .stylist-preview-card .sp-status {
+      display: inline-block; margin-top: 6px; font-size: 0.7rem;
+      color: #4CAF50; font-weight: 600;
     }
 
-    @media (max-width: 768px) {
-      .actions { grid-template-columns: 1fr; }
+    .promo-banner {
+      background: linear-gradient(135deg, #1A1A1A, #2A2418);
+      border: 1px solid #D4AF37; border-radius: 12px;
+      padding: 20px; margin-bottom: 8px; text-align: center;
+    }
+    .promo-banner .promo-title { font-size: 1.1rem; font-weight: 700; color: #D4AF37; }
+    .promo-banner .promo-sub { color: #aaa; font-size: 0.85rem; margin-top: 4px; }
+
+    .back-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 0; cursor: pointer; color: #D4AF37; font-weight: 500; font-size: 0.9rem;
+    }
+    .back-row:hover { opacity: 0.8; }
+
+    .filter-chips { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .chip {
+      padding: 6px 16px; border-radius: 20px; border: 1px solid #333;
+      background: transparent; color: #ccc; font-size: 0.8rem;
+      cursor: pointer; font-family: inherit; transition: 0.2s;
+    }
+    .chip.active { background: #D4AF37; color: #0F0F0F; border-color: #D4AF37; font-weight: 600; }
+
+    .stylist-list { display: flex; flex-direction: column; gap: 10px; }
+    .stylist-row {
+      display: flex; align-items: center; gap: 14px;
+      background: #1A1A1A; border-radius: 12px; padding: 14px 16px;
+      cursor: pointer; border: 2px solid transparent; transition: border 0.2s;
+    }
+    .stylist-row:hover, .stylist-row.selected { border-color: #D4AF37; }
+    .stylist-row .s-avatar {
+      width: 44px; height: 44px; border-radius: 50%; background: #D4AF37;
+      color: #0F0F0F; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1rem; flex-shrink: 0;
+    }
+    .stylist-row .s-info { flex: 1; }
+    .stylist-row .s-info .s-name { font-weight: 600; font-size: 0.9rem; }
+    .stylist-row .s-info .s-role { color: #888; font-size: 0.8rem; }
+    .stylist-row .s-tag { color: #4CAF50; font-size: 0.75rem; font-weight: 600; }
+
+    .date-strip { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px; }
+    .date-chip {
+      min-width: 60px; background: #1A1A1A; border-radius: 10px;
+      padding: 10px 6px; text-align: center; cursor: pointer;
+      border: 2px solid transparent; transition: 0.2s; flex-shrink: 0;
+    }
+    .date-chip:hover, .date-chip.selected { border-color: #D4AF37; }
+    .date-chip .day { font-size: 0.7rem; color: #888; }
+    .date-chip .num { font-size: 1.1rem; font-weight: 700; }
+    .date-chip .mon { font-size: 0.65rem; color: #888; }
+
+    .toggle-row { display: flex; gap: 12px; margin: 16px 0; }
+    .toggle-btn {
+      flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #333;
+      background: transparent; color: #ccc; font-size: 0.85rem;
+      font-weight: 600; cursor: pointer; font-family: inherit; transition: 0.2s;
+      text-align: center;
+    }
+    .toggle-btn.active { background: #D4AF37; color: #0F0F0F; border-color: #D4AF37; }
+
+    .slots-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 10px; margin-bottom: 20px;
+    }
+    .slot-chip {
+      padding: 10px 4px; border-radius: 10px; border: 1px solid #333;
+      background: transparent; color: #ccc; font-size: 0.8rem;
+      cursor: pointer; text-align: center; font-family: inherit; transition: 0.2s;
+    }
+    .slot-chip:hover, .slot-chip.selected { border-color: #D4AF37; color: #D4AF37; font-weight: 600; }
+    .slot-chip.full { opacity: 0.3; cursor: not-allowed; text-decoration: line-through; }
+
+    .summary-card {
+      background: #1A1A1A; border-radius: 12px; padding: 16px; margin-bottom: 12px;
+    }
+    .summary-card .row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 6px 0; font-size: 0.85rem;
+    }
+    .summary-card .row.label { color: #888; font-size: 0.8rem; }
+    .summary-card .divider { height: 1px; background: #333; margin: 8px 0; }
+
+    .addon-row {
+      display: flex; align-items: center; gap: 12px;
+      background: #1A1A1A; border-radius: 10px; padding: 12px 14px; margin-bottom: 8px;
+    }
+    .addon-row .a-info { flex: 1; }
+    .addon-row .a-name { font-weight: 600; font-size: 0.85rem; }
+    .addon-row .a-price { color: #D4AF37; font-weight: 600; font-size: 0.8rem; }
+    .switch {
+      width: 40px; height: 22px; background: #333; border-radius: 12px;
+      position: relative; cursor: pointer; transition: 0.2s; flex-shrink: 0;
+    }
+    .switch.on { background: #D4AF37; }
+    .switch::after {
+      content: ''; position: absolute; width: 18px; height: 18px;
+      background: #fff; border-radius: 50%; top: 2px; left: 2px; transition: 0.2s;
+    }
+    .switch.on::after { left: 20px; }
+
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 0.8rem; color: #888; margin-bottom: 4px; font-weight: 500; }
+    .form-group input {
+      width: 100%; padding: 12px 14px; border-radius: 10px;
+      border: 1px solid #333; background: #1A1A1A; color: #fff;
+      font-size: 0.9rem; font-family: inherit; outline: none;
+    }
+    .form-group input:focus { border-color: #D4AF37; }
+
+    .payment-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .payment-opt {
+      display: flex; align-items: center; gap: 10px;
+      background: #1A1A1A; border-radius: 10px; padding: 12px 14px;
+      cursor: pointer; border: 2px solid transparent; transition: 0.2s;
+    }
+    .payment-opt.selected { border-color: #D4AF37; }
+    .payment-opt .radio {
+      width: 18px; height: 18px; border-radius: 50%; border: 2px solid #555;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .payment-opt.selected .radio { border-color: #D4AF37; }
+    .payment-opt.selected .radio::after {
+      content: ''; width: 10px; height: 10px; border-radius: 50%; background: #D4AF37;
+    }
+    .payment-opt .p-label { flex: 1; font-weight: 500; font-size: 0.9rem; }
+
+    .btn-primary {
+      width: 100%; padding: 14px; border-radius: 12px;
+      background: #D4AF37; color: #0F0F0F; border: none;
+      font-size: 1rem; font-weight: 700; cursor: pointer; font-family: inherit;
+      transition: opacity 0.2s; margin-top: 12px;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .fixed-bottom {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 20;
+    }
+    .bottom-nav {
+      display: flex; background: #1A1A1A; border-top: 1px solid #2A2A2A;
+      padding: 8px 0; padding-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+    .bottom-nav .tab {
+      flex: 1; text-align: center; cursor: pointer; padding: 4px 0;
+      color: #666; font-size: 0.7rem; font-weight: 500; transition: 0.2s;
+      border: none; background: none; font-family: inherit;
+    }
+    .bottom-nav .tab .tab-icon { font-size: 1.3rem; display: block; margin-bottom: 2px; }
+    .bottom-nav .tab.active { color: #D4AF37; }
+
+    .success-screen {
+      text-align: center; padding: 60px 20px;
+    }
+    .success-screen .check {
+      width: 72px; height: 72px; border-radius: 50%; background: #D4AF37;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px; font-size: 2rem; color: #0F0F0F;
+    }
+    .success-screen h2 { font-size: 1.5rem; color: #D4AF37; margin-bottom: 8px; }
+    .success-screen .ref-code {
+      font-size: 1.8rem; font-weight: 700; letter-spacing: 6px;
+      color: #fff; margin: 16px 0;
+    }
+    .success-screen .ref-label { color: #888; font-size: 0.8rem; }
+    .success-screen .summary-box {
+      background: #1A1A1A; border-radius: 12px; padding: 16px;
+      text-align: left; margin: 20px 0; font-size: 0.85rem;
+    }
+    .success-screen .summary-box .row { display: flex; justify-content: space-between; padding: 4px 0; }
+
+    @media (max-width: 480px) {
+      .service-card { min-width: 150px; }
+      .slots-grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="nav-bar">
-      <span class="brand">Chelsea Man Spa</span>
-      <span class="spacer"></span>
-      <button class="btn-logout" id="logout-btn" onclick="logout()">Logout</button>
+  <div class="top-bar">
+    <span class="brand">Chelsea Man Spa</span>
+    <span class="spacer"></span>
+    <a class="btn-mgr" id="btn-manager-dashboard" href="index.html" style="display:none">&#x1F4CA; Dashboard</a>
+    <button class="btn-logout" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="view active" id="view-home">
+    <div class="promo-banner">
+      <div class="promo-title">20% Off Your First Visit</div>
+      <div class="promo-sub">Premium grooming &amp; wellness in Dubai Marina</div>
     </div>
 
-    <div class="header">
-      <h1>Welcome to Chelsea Man Spa</h1>
-      <div class="sub">Your grooming experience starts here.</div>
+    <div class="section-title">Available Treatments</div>
+    <div class="services-scroll" id="services-scroll"></div>
+
+    <div class="section-title">Our Stylists</div>
+    <div class="stylists-scroll" id="stylists-scroll"></div>
+  </div>
+
+  <div class="view" id="view-stylist">
+    <div class="back-row" onclick="goHome()">&#x2190; Back</div>
+    <div class="section-title">Choose Your Stylist</div>
+    <div class="filter-chips" id="filter-chips">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="male">Male</button>
+      <button class="chip" data-filter="female">Female</button>
+    </div>
+    <div class="stylist-list" id="stylist-list"></div>
+    <button class="btn-primary" id="btn-continue-stylist" disabled>Continue</button>
+  </div>
+
+  <div class="view" id="view-datetime">
+    <div class="back-row" onclick="viewStylist()">&#x2190; Back</div>
+    <div class="section-title">Select Date &amp; Time</div>
+    <div class="date-strip" id="date-strip"></div>
+    <div class="toggle-row">
+      <button class="toggle-btn active" data-period="am" onclick="togglePeriod('am')">AM</button>
+      <button class="toggle-btn" data-period="pm" onclick="togglePeriod('pm')">PM</button>
+    </div>
+    <div class="slots-grid" id="slots-grid"></div>
+    <button class="btn-primary" id="btn-continue-time" disabled>Continue</button>
+  </div>
+
+  <div class="view" id="view-checkout">
+    <div class="back-row" onclick="viewDatetime()">&#x2190; Back</div>
+    <div class="section-title">Booking Summary</div>
+
+    <div class="summary-card" id="checkout-summary"></div>
+
+    <div class="section-title" style="margin-top:20px">Add-Ons</div>
+    <div id="addons-list"></div>
+
+    <div class="section-title" style="margin-top:20px">Your Details</div>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="customer-name" placeholder="Enter your name" />
+    </div>
+    <div class="form-group">
+      <label>Phone</label>
+      <input type="tel" id="customer-phone" placeholder="+971 50 000 0000" />
     </div>
 
-    <div class="actions" id="action-hub">
-      <a class="action-card" href="index.html" id="btn-manager-dashboard">
-        <div class="icon">&#x1F4CA;</div>
-        <div class="alabel">Manager Dashboard</div>
-        <div class="adesc">Appointments, services, and staff management</div>
-      </a>
+    <div class="section-title" style="margin-top:20px">Payment Method</div>
+    <div class="payment-group" id="payment-group">
+      <div class="payment-opt selected" data-method="cash" onclick="selectPayment('cash')">
+        <div class="radio"></div><span class="p-label">Cash</span>
+      </div>
+      <div class="payment-opt" data-method="credit" onclick="selectPayment('credit')">
+        <div class="radio"></div><span class="p-label">Credit Card</span>
+      </div>
+      <div class="payment-opt" data-method="tabby" onclick="selectPayment('tabby')">
+        <div class="radio"></div><span class="p-label">Tabby</span>
+      </div>
+      <div class="payment-opt" data-method="tamara" onclick="selectPayment('tamara')">
+        <div class="radio"></div><span class="p-label">Tamara</span>
+      </div>
+    </div>
+
+    <div class="summary-card" id="price-breakdown" style="margin-top:12px"></div>
+
+    <button class="btn-primary" id="btn-confirm-booking">Confirm Booking</button>
+  </div>
+
+  <div class="view" id="view-success">
+    <div class="success-screen">
+      <div class="check">&#x2713;</div>
+      <h2>Booking Confirmed!</h2>
+      <div class="ref-label">Reference Code</div>
+      <div class="ref-code" id="ref-code">------</div>
+      <div class="summary-box" id="success-summary"></div>
+      <button class="btn-primary" onclick="resetBooking()">Book Another</button>
+    </div>
+  </div>
+
+  <div class="fixed-bottom">
+    <div class="bottom-nav">
+      <button class="tab active" data-tab="home" onclick="switchTab('home')">
+        <span class="tab-icon">&#x1F3E0;</span>Home
+      </button>
+      <button class="tab" data-tab="bookings" onclick="switchTab('bookings')">
+        <span class="tab-icon">&#x1F4C5;</span>Bookings
+      </button>
+      <button class="tab" data-tab="profile" onclick="switchTab('profile')">
+        <span class="tab-icon">&#x1F464;</span>Profile
+      </button>
     </div>
   </div>
 
@@ -98,30 +370,18 @@
       var loginTime = localStorage.getItem('loginTime');
       var now = Date.now();
       var oneHour = 3600000;
-
       if (!loginTime || (now - parseInt(loginTime)) > oneHour) {
-        console.log('Session expired. Redirecting...');
         localStorage.clear();
         window.location.replace('login.html');
         return;
       }
-
-      var role = (localStorage.getItem('userRole') || '').toLowerCase();
-
-      document.addEventListener('DOMContentLoaded', function () {
-        if (role === 'customer') {
-          var btn = document.getElementById('btn-manager-dashboard');
-          if (btn) btn.style.display = 'none';
-        }
-
-        document.body.style.display = 'block';
-        console.log('Home — session valid. Role:', role);
-      });
+      document.addEventListener('DOMContentLoaded', function() { document.body.style.display = 'block'; });
     })();
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/supabaseClient.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
