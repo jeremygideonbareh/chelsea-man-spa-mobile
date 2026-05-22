@@ -244,6 +244,13 @@ supabase.from('bookings').delete().eq('id', id)
 - Preserved gradient overlays for text readability
 - Scroll-based fade transition remains for smooth video-to-content transition
 
+### Session 4 — PWA Sync, Logout Fix & GitHub Pages Setup
+- Refactored `useServices.ts` and `admin/Services.tsx` to handle database and local storage synchronization robustly. Added a safe `getLocalStorageArray` parser that corrects corrupted/non-array data and falls back to defaults.
+- Updated services merging to ensure custom localStorage edits (categories and descriptions) take precedence and merge correctly with database-saved service items (since the Supabase `services` table has no `category` column).
+- Resolved double-redirect/navigation collision race condition during Sign Out by changing handlers in `AdminLayout.tsx` and `Dashboard.tsx` to navigate to the public home route (`/`) first, before calling the async `signOut()` function.
+- Added a custom GitHub Actions auto-deploy workflow (`deploy.yml`) to build and deploy `./dist` to GitHub Pages upon push to the `almost-done` branch.
+- Diagnosed GitHub Pages blank page/deployment issues caused by (1) environment protection rules blocking deployment from the `almost-done` branch to the `github-pages` environment, and (2) GitHub Pages settings using "Deploy from a branch" instead of "GitHub Actions" as the build source, causing the raw uncompiled TSX source code to be served.
+
 ## CSS Utilities Available
 - `.glass-card`, `.glass-card-gold`, `.glass-nav` — glass-morphism backgrounds
 - `.gold-gradient-text` — gold gradient on text

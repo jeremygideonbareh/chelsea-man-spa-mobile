@@ -19,6 +19,13 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('home');
   const [bookingOpen, setBookingOpen] = useState(false);
 
+  const handleLogout = async () => {
+    navigate('/', { replace: true });
+    setTimeout(async () => {
+      await signOut();
+    }, 0);
+  };
+
   useEffect(() => {
     if (!loading && !isAuthenticated) {
       navigate('/login');
@@ -78,7 +85,7 @@ export default function Dashboard() {
           <ProfileView
             user={user}
             role={role}
-            onSignOut={signOut}
+            onSignOut={handleLogout}
           />
         )}
         {activeTab === 'manager' && showManagerIcon && (

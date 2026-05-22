@@ -303,12 +303,7 @@ export function useAuth() {
   };
 
   const signOut = async () => {
-    localStorage.removeItem('chelsea_mock_session');
-    try {
-      await supabase.auth.signOut();
-    } catch {
-      // Ignore signOut errors
-    }
+    // 1. Optimistic UI update: instantly update state to unauthenticated
     setState({
       user: null,
       session: null,
@@ -316,6 +311,14 @@ export function useAuth() {
       loading: false,
       isAuthenticated: false,
     });
+    // 2. Clear mock session
+    localStorage.removeItem('chelsea_mock_session');
+    // 3. Trigger Supabase signOut in background
+    try {
+      supabase.auth.signOut().catch(() => {});
+    } catch {
+      // Ignore
+    }
   };
 
   return {

@@ -39,7 +39,17 @@ export default function AdminRoster() {
       if (error) throw error;
 
       const dbStylists = data || [];
-      const localCustom = JSON.parse(localStorage.getItem('chelsea_local_stylists') || '[]');
+      let localCustom = JSON.parse(localStorage.getItem('chelsea_local_stylists') || '[]');
+      if (localCustom.length === 0) {
+        const defaultStylists = [
+          { id: 'st-1', name: 'Alex', role: 'Barber', is_active: true },
+          { id: 'st-2', name: 'Marco', role: 'Barber', is_active: true },
+          { id: 'st-3', name: 'Giovanni', role: 'Stylist', is_active: true },
+          { id: 'st-4', name: 'Ricardo', role: 'Massage Therapist', is_active: true },
+        ];
+        localStorage.setItem('chelsea_local_stylists', JSON.stringify(defaultStylists));
+        localCustom = defaultStylists;
+      }
       const combined = [...dbStylists];
       localCustom.forEach((customSty: any) => {
         if (!combined.some(s => s.id === customSty.id)) {
@@ -49,17 +59,18 @@ export default function AdminRoster() {
       setStylists(combined);
     } catch (err) {
       console.warn('Failed to load stylists from DB, using localStorage:', err);
-      const localStylists = JSON.parse(localStorage.getItem('chelsea_local_stylists') || '[]');
+      let localStylists = JSON.parse(localStorage.getItem('chelsea_local_stylists') || '[]');
       if (localStylists.length === 0) {
         const defaultStylists = [
           { id: 'st-1', name: 'Alex', role: 'Barber', is_active: true },
           { id: 'st-2', name: 'Marco', role: 'Barber', is_active: true },
+          { id: 'st-3', name: 'Giovanni', role: 'Stylist', is_active: true },
+          { id: 'st-4', name: 'Ricardo', role: 'Massage Therapist', is_active: true },
         ];
         localStorage.setItem('chelsea_local_stylists', JSON.stringify(defaultStylists));
-        setStylists(defaultStylists);
-      } else {
-        setStylists(localStylists);
+        localStylists = defaultStylists;
       }
+      setStylists(localStylists);
     } finally {
       setLoading(false);
     }

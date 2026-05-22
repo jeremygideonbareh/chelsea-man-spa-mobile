@@ -17,8 +17,10 @@ export default function AdminLayout() {
   const { role, loading, isAuthenticated, signOut } = useAuth();
 
   const handleLogout = async () => {
-    await signOut();
-    navigate('/');
+    navigate('/', { replace: true });
+    setTimeout(async () => {
+      await signOut();
+    }, 0);
   };
 
   if (loading) {

@@ -10,11 +10,95 @@ interface StylistWithAvatar {
 }
 
 const DEFAULT_SERVICES: Service[] = [
-  { id: 'svc-1', name: 'Classic Haircut', price: 95, duration_minutes: 45 },
-  { id: 'svc-2', name: 'Beard Grooming & Trim', price: 65, duration_minutes: 30 },
-  { id: 'svc-3', name: 'Signature Facial Spa', price: 150, duration_minutes: 60 },
-  { id: 'svc-4', name: 'Royal Hot Stone Massage', price: 220, duration_minutes: 90 },
+  {
+    id: 'svc-1',
+    name: 'Classic Haircut',
+    price: 95,
+    duration_minutes: 45,
+    category: 'Hair',
+    image_url: 'images/service-haircut.jpg',
+    description: 'Premium haircut tailored to your style.'
+  },
+  {
+    id: 'svc-2',
+    name: 'Beard Grooming & Trim',
+    price: 65,
+    duration_minutes: 30,
+    category: 'Beard',
+    image_url: 'images/service-beard.jpg',
+    description: 'Beard shaping, line-up, and beard oil treatment.'
+  },
+  {
+    id: 'svc-3',
+    name: 'Signature Facial Spa',
+    price: 150,
+    duration_minutes: 60,
+    category: 'Spa',
+    image_url: 'images/service-facial.jpg',
+    description: 'Deep cleansing and skin rejuvenation facial.'
+  },
+  {
+    id: 'svc-4',
+    name: 'Royal Hot Stone Massage',
+    price: 220,
+    duration_minutes: 90,
+    category: 'Spa',
+    image_url: 'images/service-massage.jpg',
+    description: 'Ultimate relaxation massage using heated volcanic stones.'
+  },
 ];
+
+const DEFAULT_STYLISTS = [
+  { id: 'st-1', name: 'Alex', role: 'Barber', is_active: true },
+  { id: 'st-2', name: 'Marco', role: 'Barber', is_active: true },
+  { id: 'st-3', name: 'Giovanni', role: 'Stylist', is_active: true },
+  { id: 'st-4', name: 'Ricardo', role: 'Massage Therapist', is_active: true },
+];
+
+function getLocalStorageArray<T>(key: string, defaultVal: T[]): T[] {
+  try {
+    const val = localStorage.getItem(key);
+    if (!val) {
+      localStorage.setItem(key, JSON.stringify(defaultVal));
+      return defaultVal;
+    }
+    const parsed = JSON.parse(val);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed;
+    }
+    localStorage.setItem(key, JSON.stringify(defaultVal));
+    return defaultVal;
+  } catch (e) {
+    console.warn(`Failed to parse localStorage key "${key}":`, e);
+    localStorage.setItem(key, JSON.stringify(defaultVal));
+    return defaultVal;
+  }
+}
+
+function getServiceCategory(name: string): string {
+  const n = name.toLowerCase();
+  if (n.includes('beard') || n.includes('shave') || n.includes('mustache') || n.includes('trim')) {
+    return 'Beard';
+  }
+  if (n.includes('spa') || n.includes('facial') || n.includes('massage') || n.includes('scrub') || n.includes('towel') || n.includes('stone') || n.includes('wash')) {
+    return 'Spa';
+  }
+  return 'Hair';
+}
+
+function getServiceImageUrl(name: string, category: string): string {
+  const cat = category.toLowerCase();
+  if (cat === 'beard') {
+    return 'images/service-beard.jpg';
+  }
+  if (cat === 'spa') {
+    if (name.toLowerCase().includes('massage')) {
+      return 'images/service-massage.jpg';
+    }
+    return 'images/service-facial.jpg';
+  }
+  return 'images/service-haircut.jpg';
+}
 
 export function useServices() {
   const [services, setServices] = useState<Service[]>([]);
@@ -39,10 +123,40 @@ export function useServices() {
       if (dbError) throw dbError;
 
       const dbServices = data || [];
-      const localCustom = JSON.parse(localStorage.getItem('chelsea_local_services') || '[]');
-      const combined = [...dbServices];
-      
-      localCustom.forEach((customSvc: any) => {
+      const mappedDbServices = dbServices.map((svc: any) => {
+        const category = svc.category || getServiceCategory(svc.name || '');
+        const image_url = svc.image_url || getServiceImageUrl(svc.name || '', category);
+        return {
+          ...svc,
+          category,
+          image_url
+        };
+      });
+
+      const localCustom = getLocalStorageArray('chelsea_local_services', DEFAULT_SERVICES);
+      const mappedLocalCustom = localCustom.map((svc: any) => {
+        const category = svc.category || getServiceCategory(svc.name || '');
+        const image_url = svc.image_url || getServiceImageUrl(svc.name || '', category);
+        return {
+          ...svc,
+          category,
+          image_url
+        };
+      });
+
+      // Merge: local customized versions take precedence (override database categories/descriptions/etc.)
+      const combined = mappedDbServices.map((dbSvc) => {
+        const localVersion = mappedLocalCustom.find((s: any) => s.id === dbSvc.id);
+        if (localVersion) {
+          return {
+            ...dbSvc,
+            ...localVersion,
+          };
+        }
+        return dbSvc;
+      });
+
+      mappedLocalCustom.forEach((customSvc: any) => {
         if (!combined.some(s => s.id === customSvc.id)) {
           combined.push(customSvc);
         }
@@ -51,13 +165,17 @@ export function useServices() {
       setServices(combined);
     } catch (err) {
       console.warn('Failed to fetch services from DB, using localStorage:', err);
-      const localServices = JSON.parse(localStorage.getItem('chelsea_local_services') || '[]');
-      if (localServices.length === 0) {
-        localStorage.setItem('chelsea_local_services', JSON.stringify(DEFAULT_SERVICES));
-        setServices(DEFAULT_SERVICES);
-      } else {
-        setServices(localServices);
-      }
+      const localServices = getLocalStorageArray('chelsea_local_services', DEFAULT_SERVICES);
+      const mappedLocal = localServices.map((svc: any) => {
+        const category = svc.category || getServiceCategory(svc.name || '');
+        const image_url = svc.image_url || getServiceImageUrl(svc.name || '', category);
+        return {
+          ...svc,
+          category,
+          image_url
+        };
+      });
+      setServices(mappedLocal);
       setError(err instanceof Error ? err.message : 'Failed to fetch services');
     } finally {
       setLoading(false);
@@ -80,10 +198,9 @@ export function useStylists() {
     try {
       setLoading(true);
       const fetchPromise = supabase
-        .from('profiles')
-        .select('id, full_name, role')
-        .eq('role', 'staff')
-        .order('full_name', { ascending: true });
+        .from('stylists')
+        .select('id, name, role, is_active')
+        .order('name', { ascending: true });
 
       const timeoutPromise = new Promise<never>((_, reject) =>
         setTimeout(() => reject(new Error('Stylists fetch timed out')), 2500)
@@ -95,18 +212,40 @@ export function useStylists() {
 
       if (supabaseError) throw supabaseError;
 
-      const results = (data as Array<{ id: string; full_name: string | null; role: string | null }> | null) || [];
-      const localCustom = JSON.parse(localStorage.getItem('chelsea_local_stylists') || '[]');
+      const results = (data as Array<{ id: string; name: string | null; role: string | null; is_active: boolean }> | null) || [];
+      
+      const localCustom = getLocalStorageArray('chelsea_local_stylists', DEFAULT_STYLISTS);
 
-      // Merge
-      const combined = [...results.map(r => ({ id: r.id, name: r.full_name || 'Staff', role: r.role || 'Stylist', is_active: true }))];
+      // Merge: DB active state and name/role. Local custom edits override.
+      const combined = results.map(r => {
+        const localVersion = localCustom.find((c: any) => c.id === r.id);
+        const baseSty = {
+          id: r.id,
+          name: r.name || 'Staff',
+          role: r.role || 'Stylist',
+          is_active: r.is_active !== false,
+        };
+        if (localVersion) {
+          return {
+            ...baseSty,
+            ...localVersion,
+          };
+        }
+        return baseSty;
+      });
+
       localCustom.forEach((c: any) => {
         if (!combined.some(s => s.id === c.id)) {
-          combined.push({ id: c.id, name: c.name, role: c.role, is_active: c.is_active });
+          combined.push({
+            id: c.id,
+            name: c.name || 'Staff',
+            role: c.role || 'Stylist',
+            is_active: c.is_active !== false,
+          });
         }
       });
 
-      const activeStylists = combined.filter(s => s.is_active);
+      const activeStylists = combined.filter(s => s.is_active !== false);
       const stylistsWithAvatars: StylistWithAvatar[] = activeStylists.map((stylist, index) => ({
         id: stylist.id,
         full_name: stylist.name,
@@ -117,19 +256,9 @@ export function useStylists() {
       setStylists(stylistsWithAvatars);
     } catch (err) {
       console.warn('Failed to fetch stylists from DB, using localStorage:', err);
-      let localStylists = JSON.parse(localStorage.getItem('chelsea_local_stylists') || '[]');
-      if (localStylists.length === 0) {
-        const defaultStylists = [
-          { id: 'st-1', name: 'Alex', role: 'Barber', is_active: true },
-          { id: 'st-2', name: 'Marco', role: 'Barber', is_active: true },
-          { id: 'st-3', name: 'Giovanni', role: 'Stylist', is_active: true },
-          { id: 'st-4', name: 'Ricardo', role: 'Massage Therapist', is_active: true },
-        ];
-        localStorage.setItem('chelsea_local_stylists', JSON.stringify(defaultStylists));
-        localStylists = defaultStylists;
-      }
+      const localStylists = getLocalStorageArray('chelsea_local_stylists', DEFAULT_STYLISTS);
 
-      const activeStylists = localStylists.filter((s: any) => s.is_active);
+      const activeStylists = localStylists.filter((s: any) => s.is_active !== false);
       const stylistsWithAvatars: StylistWithAvatar[] = activeStylists.map((stylist: any, index: number) => ({
         id: stylist.id,
         full_name: stylist.name,
@@ -245,7 +374,7 @@ export function useBookings(userId: string | undefined) {
       }));
 
       // Merge with localStorage bookings for this user
-      const localCustom = JSON.parse(localStorage.getItem('chelsea_local_bookings') || '[]');
+      const localCustom = getLocalStorageArray('chelsea_local_bookings', []);
       const userLocalBookings = localCustom
         .filter((b: any) => b.customer_id === userId || !b.customer_id)
         .map((b: any) => ({
@@ -266,7 +395,7 @@ export function useBookings(userId: string | undefined) {
       setBookings(combined);
     } catch (err) {
       console.warn('Failed to fetch bookings from DB, using localStorage fallback:', err);
-      const localCustom = JSON.parse(localStorage.getItem('chelsea_local_bookings') || '[]');
+      const localCustom = getLocalStorageArray('chelsea_local_bookings', []);
       const userLocalBookings = localCustom
         .filter((b: any) => b.customer_id === userId || !b.customer_id)
         .map((b: any) => ({
