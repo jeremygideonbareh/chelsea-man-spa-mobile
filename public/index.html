@@ -2,104 +2,363 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <meta name="theme-color" content="#0A0907" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="Chelsea Man Spa — Premium grooming and wellness in Dubai Marina. Book your appointment." />
-  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chelsea Man Spa — Manager Dashboard</title>
 
-  <title>Chelsea Man Spa</title>
-
-  <!-- Google Fonts: Playfair Display for headings, Inter for body -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0A0907;
+      color: #F5EDE3;
+      min-height: 100vh;
+      padding: 32px 24px;
+      display: none;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+
+    .nav-bar {
+      display: flex; align-items: center; gap: 24px;
+      margin-bottom: 32px; padding-bottom: 16px;
+      border-bottom: 1px solid #1E1C18;
+    }
+    .nav-bar a {
+      color: #9C927D; text-decoration: none; font-size: 0.875rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-bar a:hover { color: #D4AF37; }
+    .nav-bar .spacer { flex: 1; }
+    .btn-logout {
+      background: none; border: 1px solid #3D1A1A; color: #E87A7A;
+      padding: 6px 16px; border-radius: 6px; font-size: 0.8rem;
+      font-weight: 500; cursor: pointer; font-family: inherit;
+      transition: background 0.2s; display: none;
+    }
+    .btn-logout:hover { background: #3D1A1A; color: #E87A7A; }
+
+    .header {
+      margin-bottom: 32px;
+    }
+    .header h1 {
+      font-size: 1.5rem; font-weight: 700;
+      color: #D4AF37; letter-spacing: 0.02em;
+    }
+
+    .metrics {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+      margin-bottom: 48px;
+    }
+    .metric-card {
+      background: #12110E; border: 1px solid #1E1C18;
+      border-radius: 8px; padding: 24px; text-align: center;
+    }
+    .metric-card .number {
+      font-size: 2.5rem; font-weight: 700; color: #D4AF37;
+      line-height: 1.1; margin-bottom: 4px;
+    }
+    .metric-card .label {
+      font-size: 0.8rem; color: #9C927D; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .metric-card .sub {
+      font-size: 0.75rem; color: #6B655A; margin-top: 2px;
+    }
+    .metric-wide { grid-column: span 1; }
+
+    .section-title {
+      font-size: 1.125rem; font-weight: 600; color: #D4AF37;
+      margin-bottom: 16px;
+    }
+
+    .today-wrap {
+      background: #12110E; border: 1px solid #1E1C18;
+      border-radius: 8px; overflow: hidden; margin-bottom: 48px;
+    }
+    .today-wrap table {
+      width: 100%; border-collapse: collapse;
+    }
+    .today-wrap th, .today-wrap td {
+      text-align: left; padding: 12px 16px; font-size: 0.875rem;
+    }
+    .today-wrap th {
+      background: #1A1814; color: #D4AF37; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .today-wrap td {
+      color: #F5EDE3; border-bottom: 1px solid #1E1C18;
+    }
+    .today-wrap .empty td {
+      text-align: center; color: #6B655A; padding: 32px 16px; font-style: italic;
+    }
+
+    .action-hub {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    .action-card {
+      background: #12110E; border: 1px solid #1E1C18;
+      border-radius: 8px; padding: 32px 16px; text-align: center;
+      text-decoration: none; transition: border-color 0.2s;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+    }
+    .action-card:hover { border-color: #D4AF37; }
+    .action-card .icon {
+      font-size: 2rem; line-height: 1;
+    }
+    .action-card .alabel {
+      font-size: 1rem; font-weight: 600; color: #F5EDE3;
+    }
+    .action-card .adesc {
+      font-size: 0.75rem; color: #9C927D;
+    }
+
+    @media (max-width: 768px) {
+      .nav-bar { flex-wrap: wrap; gap: 12px; }
+      .metrics { grid-template-columns: 1fr; }
+      .action-hub { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-  <!-- App Container -->
-  <div id="app">
-    <!-- Loading Screen -->
-    <div id="loading">
-      <div class="load-brand">Chelsea Man Spa</div>
-      <div class="load-bar-wrap">
-        <div class="load-bar"></div>
+  <div class="container">
+    <div class="nav-bar">
+      <span class="admin-only" id="admin-controls">
+        <a href="services.html">Services</a>
+        <a href="roster.html">Roster</a>
+        <a href="bookings.html">Bookings</a>
+      </span>
+      <span class="spacer"></span>
+      <button class="btn-logout" id="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="header">
+      <h1>Manager Dashboard</h1>
+    </div>
+
+    <div class="metrics" id="metrics">
+      <div class="metric-card">
+        <div class="number" id="m-total-bookings">—</div>
+        <div class="label">Total Bookings</div>
       </div>
+      <div class="metric-card">
+        <div class="number" id="m-active-services">—</div>
+        <div class="label">Active Services</div>
+      </div>
+      <div class="metric-card">
+        <div class="number" id="m-active-stylists">—</div>
+        <div class="label">Active Stylists</div>
+      </div>
+      <div class="metric-card">
+        <div class="number" id="m-revenue">—</div>
+        <div class="label">Total Revenue</div>
+        <div class="sub">AED</div>
+      </div>
+      <div class="metric-card">
+        <div class="number" id="m-popular-service">—</div>
+        <div class="label">Most Popular Service</div>
+      </div>
+    </div>
+
+    <div class="section-title">Bookings Today</div>
+    <div class="today-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Service</th>
+            <th>Stylist</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody id="today-bookings-body">
+          <tr class="empty">
+            <td colspan="4">No bookings today.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="action-hub admin-only">
+      <a class="action-card" href="services.html">
+        <div class="icon">&#x1F4CB;</div>
+        <div class="alabel">Manage Services</div>
+        <div class="adesc">Service menu and pricing</div>
+      </a>
+      <a class="action-card" href="roster.html">
+        <div class="icon">&#x1F464;</div>
+        <div class="alabel">Manage Roster</div>
+        <div class="adesc">Stylist profiles and status</div>
+      </a>
+      <a class="action-card" href="bookings.html">
+        <div class="icon">&#x1F4C5;</div>
+        <div class="alabel">Manage Bookings</div>
+        <div class="adesc">Appointments and scheduling</div>
+      </a>
     </div>
   </div>
 
-  <!-- ============================================ -->
-  <!-- Firebase SDKs (compat — global script loading) -->
-  <!-- ============================================ -->
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js">
-  </script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js">
-  </script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js">
-  </script>
-
-  <!-- ============================================ -->
-  <!-- Core Modules (load order is critical)        -->
-  <!-- ============================================ -->
-
-  <!-- 1. Config — Firebase constants, time slots -->
-  <script src="js/config.js"></script>
-
-  <!-- 2. Data — Hardcoded services, stylists, addons -->
-  <script src="js/data.js"></script>
-
-  <!-- 3. State — Global STATE object, date utilities -->
-  <script src="js/state.js"></script>
-
-  <!-- 4. Auth — Firebase auth: sign-in, sign-out, listener -->
-  <script src="js/auth.js"></script>
-
-  <!-- 5. Navigation — Tab bar, page stack, boot -->
-  <script src="js/navigation.js"></script>
-
-  <!-- 6. UI — Shared rendering utilities -->
-  <script src="js/ui.js"></script>
-
-  <!-- 7. Views — One file per screen -->
-  <script src="js/views/auth.js"></script>
-  <script src="js/views/home.js"></script>
-  <script src="js/views/services.js"></script>
-  <script src="js/views/stylists.js"></script>
-  <script src="js/views/datetime.js"></script>
-  <script src="js/views/checkout.js"></script>
-  <script src="js/views/confirmed.js"></script>
-  <script src="js/views/bookings.js"></script>
-  <script src="js/views/profile.js"></script>
-
-  <!-- 8. App — Entry point: Firebase init, auth listener, boot -->
-  <script src="js/app.js"></script>
-
-  <!-- ============================================ -->
-  <!-- Global Error Catcher                         -->
-  <!-- ============================================ -->
   <script>
-    /**
-     * Global error handler — catches unhandled JS errors
-     * and displays a user-friendly message in the app.
-     */
-    window.onerror = function (msg, url, line, col, err) {
-      console.error('Global error:', msg, 'at', url, line, ':', col);
-      const app = document.getElementById('app');
-      if (app) {
-        app.innerHTML = ''
-          + '<div style="padding:40px 24px;text-align:center;">'
-          + '<div style="font-family:var(--display);font-size:1.5rem;color:var(--cream);margin-bottom:12px;">Something went wrong</div>'
-          + '<div style="font-family:var(--body);font-size:0.875rem;color:var(--sec);margin-bottom:24px;">'
-          + 'Please refresh the page or try again later.</div>'
-          + '<button onclick="location.reload()" class="btn btn-primary btn-full" '
-          + 'style="max-width:240px;margin:0 auto;">Refresh</button>'
-          + '</div>';
+    (async function() {
+      var loginTime = localStorage.getItem('loginTime');
+      var now = Date.now();
+      var oneHour = 3600000;
+
+      if (!loginTime || (now - parseInt(loginTime)) > oneHour) {
+        console.log('Session expired. Redirecting...');
+        localStorage.clear();
+        window.location.replace('login.html');
+        return;
       }
-      return true;
-    };
+
+      document.addEventListener('DOMContentLoaded', function () {
+        document.body.style.display = 'block';
+        console.log('Session valid. Dashboard loaded.');
+      });
+    })();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/authGuard.js"></script>
+  <script>
+    window.history.pushState(null, '', window.location.href);
+    window.onpopstate = function () { window.history.pushState(null, '', window.location.href); };
+
+    async function loadMetrics() {
+      var totalBookings = 0;
+      var activeServices = 0;
+      var activeStylists = 0;
+      var totalRevenue = 0;
+      var popularName = '—';
+
+      var { data: bookings, error: bErr } = await window.supabaseClient
+        .from('bookings')
+        .select('id, service_id');
+
+      if (!bErr && bookings) {
+        totalBookings = bookings.length;
+
+        var svcCounts = {};
+        bookings.forEach(function (b) {
+          svcCounts[b.service_id] = (svcCounts[b.service_id] || 0) + 1;
+        });
+      }
+
+      var { data: services, error: sErr } = await window.supabaseClient
+        .from('services')
+        .select('id, name, price');
+
+      if (!sErr && services) {
+        activeServices = services.length;
+
+        var svcMap = {};
+        services.forEach(function (s) {
+          svcMap[s.id] = { name: s.name, price: s.price || 0 };
+        });
+
+        bookings.forEach(function (b) {
+          var svc = svcMap[b.service_id];
+          if (svc) totalRevenue += svc.price;
+        });
+
+        var maxCount = 0;
+        for (var sid in svcCounts) {
+          if (svcCounts[sid] > maxCount) {
+            maxCount = svcCounts[sid];
+            popularName = svcMap[sid] ? svcMap[sid].name : '—';
+          }
+        }
+      }
+
+      var { data: stylists, error: stErr } = await window.supabaseClient
+        .from('stylists')
+        .select('id')
+        .eq('is_active', true);
+
+      if (!stErr && stylists) {
+        activeStylists = stylists.length;
+      }
+
+      document.getElementById('m-total-bookings').textContent = totalBookings;
+      document.getElementById('m-active-services').textContent = activeServices;
+      document.getElementById('m-active-stylists').textContent = activeStylists;
+      document.getElementById('m-revenue').textContent = totalRevenue.toLocaleString();
+      document.getElementById('m-popular-service').textContent = popularName;
+    }
+
+    async function loadTodayBookings() {
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+      var tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      var { data, error } = await window.supabaseClient
+        .from('bookings')
+        .select('*, services(name), stylists(name)')
+        .gte('start_time', today.toISOString())
+        .lt('start_time', tomorrow.toISOString())
+        .order('start_time', { ascending: true });
+
+      var tbody = document.getElementById('today-bookings-body');
+      tbody.innerHTML = '';
+
+      if (error || !data || data.length === 0) {
+        tbody.innerHTML = '<tr class="empty"><td colspan="4">No bookings today.</td></tr>';
+        return;
+      }
+
+      data.forEach(function (b) {
+        var tr = document.createElement('tr');
+        var time = new Date(b.start_time);
+        var formatted = time.toLocaleString('en-GB', {
+          hour: '2-digit', minute: '2-digit'
+        });
+
+        tr.innerHTML = ''
+          + '<td>' + (b.customer_name || '') + '</td>'
+          + '<td>' + (b.services ? b.services.name : '') + '</td>'
+          + '<td>' + (b.stylists ? b.stylists.name : '') + '</td>'
+          + '<td>' + formatted + '</td>';
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      console.log('Current userRole:', localStorage.getItem('userRole'));
+      document.getElementById('logout-btn').style.display = 'inline-block';
+      loadMetrics();
+      loadTodayBookings();
+      applyRoleBasedUI();
+    });
+
+    function applyRoleBasedUI() {
+      var role = localStorage.getItem('userRole') || '';
+      console.log('Comparing:', role, 'against: admin');
+
+      var items = document.querySelectorAll('.admin-only');
+
+      if (role.toLowerCase() === 'admin') {
+        document.getElementById('admin-controls').style.setProperty('display', 'block', 'important');
+        items.forEach(function (el) {
+          if (el.id !== 'admin-controls') el.style.display = '';
+        });
+        console.log('Admin buttons now visible');
+      } else {
+        items.forEach(function (el) { el.style.display = 'none'; });
+        console.log('Staff view — admin buttons hidden');
+      }
+    }
+
+    async function showLogoutButton() {
+      var session = await getSession();
+      if (session) {
+        document.getElementById('logout-btn').style.display = 'inline-block';
+      }
+    }
   </script>
 </body>
 </html>

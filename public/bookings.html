@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chelsea Man Spa — Bookings</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0A0907;
+      color: #F5EDE3;
+      min-height: 100vh;
+      padding: 32px 24px;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+
+    .nav-bar {
+      display: flex; align-items: center; gap: 24px;
+      margin-bottom: 32px; padding-bottom: 16px;
+      border-bottom: 1px solid #1E1C18;
+    }
+    .nav-bar a {
+      color: #9C927D; text-decoration: none; font-size: 0.875rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-bar a:hover { color: #D4AF37; }
+    .nav-bar .current {
+      color: #D4AF37; font-weight: 600; font-size: 1.5rem;
+    }
+
+    .header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 32px;
+    }
+    .header h1 {
+      font-size: 1.5rem; font-weight: 700;
+      color: #D4AF37; letter-spacing: 0.02em;
+    }
+
+    .booking-form {
+      background: #12110E; border: 1px solid #1E1C18;
+      border-radius: 8px; padding: 24px; margin-bottom: 32px;
+    }
+    .booking-form h2 {
+      font-size: 1.125rem; color: #D4AF37; margin-bottom: 20px;
+    }
+    .form-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block; font-size: 0.8rem; color: #9C927D;
+      margin-bottom: 4px; font-weight: 500;
+    }
+    .form-group input, .form-group select {
+      width: 100%; padding: 10px 12px; border-radius: 6px;
+      border: 1px solid #1E1C18; background: #0A0907;
+      color: #F5EDE3; font-size: 0.875rem; font-family: inherit;
+      outline: none; transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus { border-color: #D4AF37; }
+    .form-group select option { background: #0A0907; }
+    .form-full { grid-column: 1 / -1; }
+
+    .btn-confirm {
+      background: #D4AF37; color: #0A0907; border: none;
+      padding: 12px 28px; border-radius: 6px;
+      font-size: 0.875rem; font-weight: 600; cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-confirm:hover { opacity: 0.85; }
+
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%; border-collapse: collapse;
+      background: #12110E; border-radius: 8px; overflow: hidden;
+    }
+    th, td {
+      text-align: left; padding: 14px 16px; font-size: 0.875rem;
+    }
+    th {
+      background: #1A1814; color: #D4AF37; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    td { color: #F5EDE3; border-bottom: 1px solid #1E1C18; }
+    .empty td { text-align: center; color: #6B655A; padding: 40px 16px; font-style: italic; }
+    .btn-delete {
+      padding: 8px 16px; border-radius: 6px; border: none;
+      font-size: 0.8rem; font-weight: 600; cursor: pointer;
+      background: #3D1A1A; color: #E87A7A;
+    }
+
+    @media (max-width: 768px) {
+      .nav-bar { flex-wrap: wrap; gap: 12px; }
+      .nav-bar .current { font-size: 1.25rem; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <script>if ((localStorage.getItem('userRole') || '').toLowerCase() !== 'admin') { window.location.href = 'index.html'; }</script>
+  <div class="container">
+    <div class="nav-bar">
+      <span id="admin-nav-links">
+        <a href="index.html">Dashboard</a>
+        <a href="services.html">Services</a>
+        <a href="roster.html">Roster</a>
+      </span>
+      <span class="current">Bookings</span>
+    </div>
+
+    <div class="booking-form">
+      <h2>New Booking</h2>
+      <form id="booking-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="service-select">Service</label>
+            <select id="service-select" required>
+              <option value="">Select a service</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="stylist-select">Stylist</label>
+            <select id="stylist-select" required>
+              <option value="">Select a stylist</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="customer-name">Customer Name</label>
+            <input type="text" id="customer-name" placeholder="e.g. John Doe" required />
+          </div>
+          <div class="form-group">
+            <label for="appointment-time">Appointment Time</label>
+            <input type="datetime-local" id="appointment-time" required />
+          </div>
+        </div>
+        <button type="submit" class="btn-confirm" id="btn-add-booking">Confirm Booking</button>
+      </form>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Service</th>
+            <th>Stylist</th>
+            <th>Time</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="bookings-table-body">
+          <tr class="empty">
+            <td colspan="5">No bookings found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/authGuard.js"></script>
+  <script src="js/bookingsManager.js"></script>
+</body>
+</html>

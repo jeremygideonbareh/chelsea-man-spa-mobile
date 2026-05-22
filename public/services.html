@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chelsea Man Spa — Services</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0A0907;
+      color: #F5EDE3;
+      min-height: 100vh;
+      padding: 32px 24px;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+
+    .nav-bar {
+      display: flex; align-items: center; gap: 24px;
+      margin-bottom: 32px; padding-bottom: 16px;
+      border-bottom: 1px solid #1E1C18;
+    }
+    .nav-bar a {
+      color: #9C927D; text-decoration: none; font-size: 0.875rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-bar a:hover { color: #D4AF37; }
+    .nav-bar .current {
+      color: #D4AF37; font-weight: 600; font-size: 1.5rem;
+    }
+
+    .header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 32px;
+    }
+    .header h1 {
+      font-size: 1.5rem; font-weight: 700;
+      color: #D4AF37; letter-spacing: 0.02em;
+    }
+
+    .btn-add {
+      background: #D4AF37; color: #0A0907; border: none;
+      padding: 14px 28px; border-radius: 6px;
+      font-size: 0.875rem; font-weight: 600; cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-add:hover { opacity: 0.85; }
+
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%; border-collapse: collapse;
+      background: #12110E; border-radius: 8px; overflow: hidden;
+    }
+    th, td {
+      text-align: left; padding: 14px 16px; font-size: 0.875rem;
+    }
+    th {
+      background: #1A1814; color: #D4AF37; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    td { color: #F5EDE3; border-bottom: 1px solid #1E1C18; }
+    .empty td { text-align: center; color: #6B655A; padding: 40px 16px; font-style: italic; }
+
+    .btn-edit, .btn-delete {
+      padding: 8px 16px; border-radius: 6px; border: none;
+      font-size: 0.8rem; font-weight: 600; cursor: pointer;
+    }
+    .btn-edit { background: #D4AF37; color: #0A0907; }
+    .btn-delete { background: #3D1A1A; color: #E87A7A; }
+
+    @media (max-width: 768px) {
+      .nav-bar { flex-wrap: wrap; gap: 12px; }
+      .nav-bar .current { font-size: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <script>if ((localStorage.getItem('userRole') || '').toLowerCase() !== 'admin') { window.location.href = 'index.html'; }</script>
+  <div class="container">
+    <div class="nav-bar">
+      <span class="current">Services</span>
+      <span id="admin-nav-links">
+        <a href="index.html">Dashboard</a>
+        <a href="roster.html">Roster</a>
+        <a href="bookings.html">Bookings</a>
+      </span>
+    </div>
+
+    <div class="header">
+      <h1>Services Manager</h1>
+      <button class="btn-add" id="btn-add-service">+ Add New Service</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Duration</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="services-table-body">
+          <tr class="empty">
+            <td colspan="4">No services loaded yet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/authGuard.js"></script>
+</body>
+</html>
