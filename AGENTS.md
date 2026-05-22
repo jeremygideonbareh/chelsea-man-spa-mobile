@@ -118,6 +118,22 @@ chelsea-man-spa-mobile/
 └── README.md
 ```
 
+## What's Built
+- ✅ Admin dashboard (`index.html`) with metrics, today's bookings, action hub
+- ✅ Staff login + role-based UI (staff see minimal dashboard, admin sees all)
+- ✅ Services management (`services.html`)
+- ✅ Stylist roster (`roster.html`) with soft-delete
+- ✅ Bookings management (`bookings.html`)
+- ✅ Session lock (1-hour timeout)
+- ✅ Credentials extracted to gitignored `config.js`
+
+## What's Still Needed (Not Built)
+- ❌ **Client login flow** — `customers` table exists in code but needs setup
+- ❌ **Client dashboard** — `client-dashboard.html` doesn't exist yet
+- ❌ Client-facing booking view (view own appointments)
+- ❌ Client self-registration flow
+- ❌ Client profile management
+
 ## Remaining Setup
 - [ ] Enable Email auth provider in Supabase Dashboard
 - [ ] Create `profiles` table and insert admin user row
@@ -125,3 +141,4 @@ chelsea-man-spa-mobile/
 - [ ] Create `bookings` table if not exists
 - [ ] Test full login/logout flow as admin and staff
 - [ ] Test role-based redirect: staff → dashboard, admin → all pages
+- [ ] Build client dashboard and client-specific features
