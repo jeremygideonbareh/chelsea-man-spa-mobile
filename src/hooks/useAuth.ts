@@ -62,7 +62,36 @@ export function useAuth() {
   }, []);
 
   const refreshSession = useCallback(async () => {
-    // 1. Check local storage for mock session first
+    // 1. Check Supabase session with a timeout first
+    try {
+      const sessionPromise = supabase.auth.getSession();
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Session fetch timeout')), 2500)
+      );
+
+      const raceResult = await Promise.race([sessionPromise, timeoutPromise]);
+      const session = raceResult?.data?.session;
+
+      if (session) {
+        const role = await fetchRole(session.user.id, session.user.email, session.user.user_metadata);
+        
+        // Clear mock session since we have a real active session
+        localStorage.removeItem('chelsea_mock_session');
+
+        setState({
+          user: session.user,
+          session,
+          role,
+          loading: false,
+          isAuthenticated: true,
+        });
+        return;
+      }
+    } catch (err) {
+      console.warn('Supabase session refresh failed/timed out, checking mock fallback:', err);
+    }
+
+    // 2. Check local storage for mock session fallback if Supabase is offline/no session
     try {
       const savedMock = localStorage.getItem('chelsea_mock_session');
       if (savedMock) {
@@ -82,45 +111,14 @@ export function useAuth() {
       console.warn('Failed to parse mock session from localStorage:', e);
     }
 
-    // 2. Check Supabase session with a timeout to prevent hanging
-    try {
-      const sessionPromise = supabase.auth.getSession();
-      const timeoutPromise = new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error('Session fetch timeout')), 2500)
-      );
-
-      const raceResult = await Promise.race([sessionPromise, timeoutPromise]);
-      const session = raceResult?.data?.session;
-
-      if (!session) {
-        setState({
-          user: null,
-          session: null,
-          role: null,
-          loading: false,
-          isAuthenticated: false,
-        });
-        return;
-      }
-
-      const role = await fetchRole(session.user.id, session.user.email, session.user.user_metadata);
-      setState({
-        user: session.user,
-        session,
-        role,
-        loading: false,
-        isAuthenticated: true,
-      });
-    } catch (err) {
-      console.warn('Supabase session refresh failed/timed out:', err);
-      setState({
-        user: null,
-        session: null,
-        role: null,
-        loading: false,
-        isAuthenticated: false,
-      });
-    }
+    // 3. No session found at all
+    setState({
+      user: null,
+      session: null,
+      role: null,
+      loading: false,
+      isAuthenticated: false,
+    });
   }, [fetchRole]);
 
   useEffect(() => {
