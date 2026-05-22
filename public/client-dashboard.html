@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chelsea Man Spa — Client Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0A0907;
+      color: #F5EDE3;
+      min-height: 100vh;
+      padding: 32px 24px;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+
+    .nav-bar {
+      display: flex; align-items: center; gap: 24px;
+      margin-bottom: 32px; padding-bottom: 16px;
+      border-bottom: 1px solid #1E1C18;
+    }
+    .nav-bar .brand {
+      font-size: 1rem; font-weight: 700; color: #D4AF37;
+    }
+    .nav-bar .spacer { flex: 1; }
+    .btn-logout {
+      background: none; border: 1px solid #3D1A1A; color: #E87A7A;
+      padding: 6px 16px; border-radius: 6px; font-size: 0.8rem;
+      font-weight: 500; cursor: pointer; font-family: inherit;
+      transition: background 0.2s;
+    }
+    .btn-logout:hover { background: #3D1A1A; color: #E87A7A; }
+
+    .header { margin-bottom: 32px; }
+    .header h1 {
+      font-size: 1.5rem; font-weight: 700;
+      color: #D4AF37; letter-spacing: 0.02em;
+    }
+    .header .greeting { color: #9C927D; font-size: 0.875rem; margin-top: 4px; }
+
+    .section-title {
+      font-size: 1.125rem; font-weight: 600; color: #D4AF37;
+      margin-bottom: 16px;
+    }
+
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px; margin-bottom: 48px;
+    }
+    .service-card {
+      background: #12110E; border: 1px solid #1E1C18;
+      border-radius: 8px; padding: 24px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .service-card .name {
+      font-size: 1rem; font-weight: 600; color: #F5EDE3;
+    }
+    .service-card .price {
+      font-size: 1.25rem; font-weight: 700; color: #D4AF37;
+    }
+    .service-card .duration {
+      font-size: 0.8rem; color: #9C927D;
+    }
+    .service-card .empty {
+      color: #6B655A; font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      .services-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav-bar">
+      <span class="brand">Chelsea Man Spa</span>
+      <span class="spacer"></span>
+      <button class="btn-logout" id="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="header">
+      <h1>Welcome to Chelsea Man Spa</h1>
+      <div class="greeting">Browse our treatments and book your next appointment.</div>
+    </div>
+
+    <div class="section-title">Available Treatments</div>
+    <div class="services-grid" id="services-grid">
+      <div class="service-card">
+        <div class="empty">Loading services…</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (async function() {
+      var loginTime = localStorage.getItem('loginTime');
+      var now = Date.now();
+      var oneHour = 3600000;
+
+      if (!loginTime || (now - parseInt(loginTime)) > oneHour) {
+        console.log('Session expired. Redirecting...');
+        localStorage.clear();
+        window.location.replace('login.html');
+        return;
+      }
+
+      var role = localStorage.getItem('userRole') || '';
+      if (role.toLowerCase() !== 'customer') {
+        window.location.replace('login.html');
+        return;
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        document.body.style.display = 'block';
+        console.log('Client session valid. Dashboard loaded.');
+      });
+    })();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    async function loadServices() {
+      var { data, error } = await window.supabaseClient
+        .from('services')
+        .select('*')
+        .order('name', { ascending: true });
+
+      var grid = document.getElementById('services-grid');
+      grid.innerHTML = '';
+
+      if (error) {
+        console.error('Failed to load services:', error.message);
+        grid.innerHTML = '<div class="service-card"><div class="empty">Could not load services.</div></div>';
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        grid.innerHTML = '<div class="service-card"><div class="empty">No treatments available at this time.</div></div>';
+        return;
+      }
+
+      data.forEach(function (s) {
+        var card = document.createElement('div');
+        card.className = 'service-card';
+
+        var price = s.price != null ? 'AED ' + Number(s.price).toLocaleString() : '—';
+        var duration = s.duration_minutes ? s.duration_minutes + ' min' : '';
+
+        card.innerHTML = ''
+          + '<div class="name">' + (s.name || '') + '</div>'
+          + '<div class="price">' + price + '</div>'
+          + (duration ? '<div class="duration">' + duration + '</div>' : '');
+
+        grid.appendChild(card);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      loadServices();
+    });
+  </script>
+</body>
+</html>
