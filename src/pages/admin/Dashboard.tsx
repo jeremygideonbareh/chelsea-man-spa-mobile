@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { supabase } from '@/lib/supabase';
-import { Scissors, Users, CalendarCheck, ArrowRight, DollarSign, Star } from 'lucide-react';
+import { Scissors, Users, CalendarCheck, ArrowRight, DollarSign, Star, RefreshCw } from 'lucide-react';
 
 interface Metrics {
   totalBookings: number;
@@ -102,13 +102,8 @@ export default function AdminDashboard() {
         console.warn('Dashboard services load failed/timed out:', e);
       }
 
-      const localServices = JSON.parse(localStorage.getItem('chelsea_local_services') || '[]');
-      const combinedServices = [...dbServices];
-      localServices.forEach((localSvc: any) => {
-        if (!combinedServices.some(s => s.id === localSvc.id)) {
-          combinedServices.push(localSvc);
-        }
-      });
+      // Use Supabase services directly; fallback to empty array if DB is down
+      const combinedServices = dbServices;
 
       let dbStylists: any[] = [];
       try {
@@ -129,13 +124,7 @@ export default function AdminDashboard() {
         console.warn('Dashboard stylists load failed/timed out:', e);
       }
 
-      const localStylists = JSON.parse(localStorage.getItem('chelsea_local_stylists') || '[]');
-      const combinedStylists = [...dbStylists];
-      localStylists.forEach((localSty: any) => {
-        if (localSty.is_active && !combinedStylists.some(s => s.id === localSty.id)) {
-          combinedStylists.push(localSty);
-        }
-      });
+      const combinedStylists = dbStylists;
 
       const totalBookings = combinedBookings.length;
       const activeServices = combinedServices.length;
