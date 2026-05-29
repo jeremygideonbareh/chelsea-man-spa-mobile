@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Search, MapPin } from 'lucide-react';
 
 export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -19,81 +19,72 @@ export default function HeroSection() {
   }, []);
 
   const opacity = 1 - scrollProgress * 1.2;
-  const artOfY = -scrollProgress * 120;
-  const groomingY = scrollProgress * 120;
-  const theOpacity = 1 - scrollProgress * 3;
 
   return (
     <section
       ref={containerRef}
-      className="relative h-[100dvh] w-full overflow-hidden bg-[#0A0A0A]"
+      className="relative min-h-[90dvh] w-full overflow-hidden bg-slate-900"
       style={{ opacity: Math.max(0, opacity) }}
     >
-      {/* Background Video */}
-      <div className="absolute inset-0 z-0">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="w-full h-full object-cover"
-        >
-          <source src="videos/hero.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/70 via-transparent to-[#0A0A0A]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/60 via-transparent to-[#0A0A0A]/60" />
+      {/* Full background image with dark overlay */}
+      <div className="absolute inset-0">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('images/hero-bg.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-900/60 to-slate-900" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/40 to-transparent" />
       </div>
 
-      {/* Hero Typography */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-center px-6">
-        <span
-          className="text-[#A3A3A3] text-xs tracking-[0.35em] uppercase mb-4 font-medium"
-          style={{
-            opacity: Math.max(0, theOpacity),
-            transform: `translateY(${(1 - theOpacity) * 20}px)`,
-            transition: 'opacity 0.3s ease',
-          }}
-        >
-          The
-        </span>
+      {/* Hero Content */}
+      <div className="relative z-10 h-full flex flex-col items-center justify-center px-6 pt-24 pb-20">
+        <div className="text-center max-w-3xl mx-auto">
+          <span
+            className="text-amber-400 text-xs tracking-[0.35em] uppercase mb-4 font-medium block hero-fade-in"
+            style={{ animationDelay: '0.2s' }}
+          >
+            The
+          </span>
 
-        <h1
-          className="font-display italic text-5xl sm:text-6xl md:text-7xl font-bold gold-gradient-text leading-tight"
-          style={{
-            transform: `translateY(${artOfY}px)`,
-            transition: 'transform 0.1s linear',
-          }}
-        >
-          Art of
-        </h1>
+          <h1
+            className="font-display italic text-5xl sm:text-6xl md:text-7xl font-bold text-white leading-tight hero-fade-in"
+            style={{ animationDelay: '0.4s' }}
+          >
+            Art of
+          </h1>
 
-        <h1
-          className="font-display italic text-5xl sm:text-6xl md:text-7xl font-bold gold-gradient-text leading-tight mt-1"
-          style={{
-            transform: `translateY(${groomingY}px)`,
-            transition: 'transform 0.1s linear',
-          }}
-        >
-          Grooming
-        </h1>
+          <h1
+            className="font-display italic text-5xl sm:text-6xl md:text-7xl font-bold text-white leading-tight mt-1 hero-fade-in"
+            style={{ animationDelay: '0.6s' }}
+          >
+            Grooming
+          </h1>
 
-        <p
-          className="text-[#A3A3A3] text-sm mt-6 max-w-md text-center leading-relaxed hero-fade-in"
+          <p
+            className="text-slate-300 text-sm sm:text-base mt-6 max-w-md mx-auto leading-relaxed hero-fade-in"
+            style={{ animationDelay: '0.8s' }}
+          >
+            London-style sophistication meets Dubai luxury.
+            Experience the finest in men's grooming and wellness.
+          </p>
+        </div>
+
+        {/* Book Button */}
+        <div
+          className="mt-10 hero-fade-in"
           style={{ animationDelay: '1s' }}
         >
-          London-style sophistication meets Dubai luxury.
-          Experience the finest in men's grooming and wellness.
-        </p>
-
-        <button
-          onClick={() => navigate('/login')}
-          className="gold-btn mt-10 px-8 py-4 rounded-full text-sm flex items-center gap-2 hero-fade-in hover:scale-105 active:scale-95 transition-transform"
-          style={{ animationDelay: '1.2s' }}
-        >
-          Book Experience
-          <ChevronRight className="w-4 h-4" />
-        </button>
+          <button
+            onClick={() => navigate('/login')}
+            className="amber-btn px-8 py-4 rounded-full text-sm font-semibold flex items-center gap-2 mx-auto"
+          >
+            Book Your Appointment <ChevronRight className="w-4 h-4" />
+          </button>
+          <p className="text-slate-400 text-xs mt-4 text-center">
+            <MapPin className="w-3 h-3 inline mr-1" />
+            Dubai Marina &middot; Open daily 9AM - 10PM
+          </p>
+        </div>
       </div>
 
       {/* Scroll Indicator */}
@@ -101,9 +92,9 @@ export default function HeroSection() {
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 hero-fade-in"
         style={{ animationDelay: '1.5s' }}
       >
-        <span className="text-[#A3A3A3] text-[10px] tracking-widest uppercase">Scroll</span>
-        <div className="w-5 h-8 rounded-full border border-[#D4AF37]/40 flex justify-center pt-1.5 animate-bounce">
-          <div className="w-1 h-2 bg-[#D4AF37] rounded-full" />
+        <span className="text-slate-400 text-[10px] tracking-widest uppercase">Scroll</span>
+        <div className="w-5 h-8 rounded-full border border-slate-500/60 flex justify-center pt-1.5 animate-bounce">
+          <div className="w-1 h-2 bg-slate-400 rounded-full" />
         </div>
       </div>
 

@@ -68,31 +68,31 @@ export default function CheckoutSummary({
     <div className="space-y-5">
       {/* Booking Summary Card */}
       <div className="white-card rounded-2xl p-4 space-y-3">
-        <h3 className="text-gray-900 text-sm font-semibold">Booking Summary</h3>
+        <h3 className="text-slate-900 text-sm font-semibold">Booking Summary</h3>
 
         <div className="space-y-2.5">
           <div className="flex justify-between items-center">
-            <span className="text-gray-500 text-xs">Service</span>
-            <span className="text-gray-900 text-xs font-medium">{service.name}</span>
+            <span className="text-slate-500 text-xs">Service</span>
+            <span className="text-slate-900 text-xs font-medium">{service.name}</span>
           </div>
           <div className="refined-divider" />
           <div className="flex justify-between items-center">
-            <span className="text-gray-500 text-xs">Stylist</span>
-            <span className="text-gray-900 text-xs font-medium">{stylist.full_name}</span>
+            <span className="text-slate-500 text-xs">Stylist</span>
+            <span className="text-slate-900 text-xs font-medium">{stylist.full_name}</span>
           </div>
           <div className="refined-divider" />
           <div className="flex justify-between items-center">
-            <span className="text-gray-500 text-xs">Date & Time</span>
-            <span className="text-gray-900 text-xs font-medium">{formattedDate}, {formattedTime}</span>
+            <span className="text-slate-500 text-xs">Date & Time</span>
+            <span className="text-slate-900 text-xs font-medium">{formattedDate}, {formattedTime}</span>
           </div>
         </div>
       </div>
 
       {/* Customer Info */}
       <div className="white-card rounded-2xl p-4 space-y-3">
-        <h3 className="text-gray-900 text-sm font-semibold">Your Details</h3>
+        <h3 className="text-slate-900 text-sm font-semibold">Your Details</h3>
         <div>
-          <label className="block text-gray-500 text-xs mb-1.5">Full Name *</label>
+          <label className="block text-slate-500 text-xs mb-1.5">Full Name *</label>
           <input
             type="text"
             value={customerName}
@@ -104,16 +104,16 @@ export default function CheckoutSummary({
         </div>
         {customer?.email && (
           <div className="flex justify-between items-center mt-2">
-            <span className="text-gray-500 text-xs">Email</span>
-            <span className="text-gray-900 text-xs font-medium">{customer.email}</span>
+            <span className="text-slate-500 text-xs">Email</span>
+            <span className="text-slate-900 text-xs font-medium">{customer.email}</span>
           </div>
         )}
       </div>
 
       {/* Add-ons */}
       <div className="white-card rounded-2xl p-4 space-y-3">
-        <h3 className="text-gray-900 text-sm font-semibold">Enhance Your Visit</h3>
-        <p className="text-gray-400 text-[10px]">Optional add-ons to elevate your experience</p>
+        <h3 className="text-slate-900 text-sm font-semibold">Enhance Your Visit</h3>
+        <p className="text-slate-400 text-[10px]">Optional add-ons to elevate your experience</p>
 
         {ADDONS.map((addon) => {
           const isActive = addon.id === 'scalp-massage' ? addons.scalpMassage : addons.luxuryTreatment;
@@ -122,18 +122,18 @@ export default function CheckoutSummary({
             <button
               key={addon.id}
               className={`w-full flex items-center justify-between p-3 rounded-xl transition-all active:scale-[0.98] ${
-                isActive ? 'bg-gray-50 border border-gray-300' : 'bg-white border border-gray-100'
+                isActive ? 'bg-amber-50 border border-amber-200' : 'bg-white border border-slate-100'
               }`}
               onClick={() => onToggleAddon(toggleKey as 'scalpMassage' | 'luxuryTreatment')}
             >
               <div className="text-left">
-                <span className={`text-xs font-medium ${isActive ? 'text-gray-900' : 'text-gray-700'}`}>
+                <span className={`text-xs font-medium ${isActive ? 'text-amber-700' : 'text-slate-700'}`}>
                   {addon.name}
                 </span>
-                <p className="text-gray-400 text-[10px]">+{addon.duration} min</p>
+                <p className="text-slate-400 text-[10px]">+{addon.duration} min</p>
               </div>
               <div className="flex items-center gap-2">
-                <span className={`text-xs font-semibold ${isActive ? 'text-gray-900' : 'text-gray-500'}`}>
+                <span className={`text-xs font-semibold ${isActive ? 'text-amber-700' : 'text-slate-500'}`}>
                   +AED {addon.price}
                 </span>
                 <div className={`toggle-track ${isActive ? 'active' : ''}`}>
@@ -148,33 +148,33 @@ export default function CheckoutSummary({
       {/* Price Breakdown */}
       <div className="white-card rounded-2xl p-4 space-y-2.5">
         <div className="flex justify-between items-center">
-          <span className="text-gray-500 text-xs">Service</span>
-          <span className="text-gray-900 text-xs">AED {servicePrice.toFixed(2)}</span>
+          <span className="text-slate-500 text-xs">Service</span>
+          <span className="text-slate-900 text-xs">AED {servicePrice.toFixed(2)}</span>
         </div>
         {addonTotal > 0 && (
           <div className="flex justify-between items-center">
-            <span className="text-gray-500 text-xs">Add-ons</span>
-            <span className="text-gray-900 text-xs">AED {addonTotal.toFixed(2)}</span>
+            <span className="text-slate-500 text-xs">Add-ons</span>
+            <span className="text-slate-900 text-xs">AED {addonTotal.toFixed(2)}</span>
           </div>
         )}
         <div className="flex justify-between items-center">
-          <span className="text-gray-500 text-xs">Subtotal</span>
-          <span className="text-gray-900 text-xs">AED {subtotal.toFixed(2)}</span>
+          <span className="text-slate-500 text-xs">Subtotal</span>
+          <span className="text-slate-900 text-xs">AED {subtotal.toFixed(2)}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-gray-500 text-xs">VAT (5%)</span>
-          <span className="text-gray-900 text-xs">AED {vat.toFixed(2)}</span>
+          <span className="text-slate-500 text-xs">VAT (5%)</span>
+          <span className="text-slate-900 text-xs">AED {vat.toFixed(2)}</span>
         </div>
         <div className="refined-divider" />
         <div className="flex justify-between items-center">
-          <span className="text-gray-900 text-sm font-semibold">Grand Total</span>
-          <span className="text-gray-900 text-lg font-bold">AED {grandTotal.toFixed(2)}</span>
+          <span className="text-slate-900 text-sm font-semibold">Grand Total</span>
+          <span className="text-slate-900 text-lg font-bold">AED {grandTotal.toFixed(2)}</span>
         </div>
       </div>
 
       {/* Confirm Button */}
       <button
-        className="black-btn w-full h-14 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
+        className="amber-btn w-full h-14 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
         onClick={handleConfirm}
         disabled={isSubmitting}
       >

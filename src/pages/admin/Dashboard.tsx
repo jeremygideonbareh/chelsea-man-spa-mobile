@@ -23,7 +23,7 @@ const iconColors: Record<string, string> = {
   'Total Bookings': 'text-blue-600 bg-blue-50',
   'Active Services': 'text-emerald-600 bg-emerald-50',
   'Active Stylists': 'text-purple-600 bg-purple-50',
-  'Total Revenue': 'text-gray-900 bg-gray-100',
+  'Total Revenue': 'text-amber-600 bg-amber-50',
   'Most Popular': 'text-amber-600 bg-amber-50',
 };
 
@@ -197,19 +197,19 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-gray-900 mb-6">Dashboard</h1>
+      <h1 className="text-xl font-bold text-slate-900 mb-6">Dashboard</h1>
 
       {/* Metrics */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
         {metricCards.map((card) => {
-          const colors = iconColors[card.label] || 'text-gray-600 bg-gray-100';
+          const colors = iconColors[card.label] || 'text-slate-600 bg-slate-100';
           const [textColor, bgColor] = colors.split(' ');
           return (
             <div
@@ -219,8 +219,8 @@ export default function AdminDashboard() {
               <div className={`w-9 h-9 rounded-lg ${bgColor} flex items-center justify-center mb-3`}>
                 <card.icon className={`w-5 h-5 ${textColor}`} />
               </div>
-              <p className="text-xl font-bold text-gray-900">{card.value}</p>
-              <p className="text-xs text-gray-500 mt-1">{card.label}</p>
+              <p className="text-xl font-bold text-slate-900">{card.value}</p>
+              <p className="text-xs text-slate-500 mt-1">{card.label}</p>
             </div>
           );
         })}
@@ -228,11 +228,11 @@ export default function AdminDashboard() {
 
       {/* Today's Bookings */}
       <div className="white-card rounded-xl p-4 lg:p-6 mb-8">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Bookings Today</h2>
+        <h2 className="text-lg font-semibold text-slate-900 mb-4">Bookings Today</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-gray-500 border-b border-gray-100">
+              <tr className="text-left text-slate-500 border-b border-slate-100">
                 <th className="pb-3 font-medium text-xs uppercase tracking-wider">Customer</th>
                 <th className="pb-3 font-medium text-xs uppercase tracking-wider">Service</th>
                 <th className="pb-3 font-medium text-xs uppercase tracking-wider">Stylist</th>
@@ -242,7 +242,7 @@ export default function AdminDashboard() {
             <tbody>
               {todayBookings.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="pt-6 pb-6 text-center text-gray-400 italic">
+                  <td colSpan={4} className="pt-6 pb-6 text-center text-slate-400 italic">
                     No bookings today.
                   </td>
                 </tr>
@@ -254,11 +254,11 @@ export default function AdminDashboard() {
                     minute: '2-digit',
                   });
                   return (
-                    <tr key={b.id} className="border-b border-gray-50">
-                      <td className="py-3 text-gray-900 font-medium">{b.customer_name}</td>
-                      <td className="py-3 text-gray-500">{b.service_name}</td>
-                      <td className="py-3 text-gray-500">{b.stylist_name}</td>
-                      <td className="py-3 text-gray-500">{formatted}</td>
+                    <tr key={b.id} className="border-b border-slate-50">
+                      <td className="py-3 text-slate-900 font-medium">{b.customer_name}</td>
+                      <td className="py-3 text-slate-500">{b.service_name}</td>
+                      <td className="py-3 text-slate-500">{b.stylist_name}</td>
+                      <td className="py-3 text-slate-500">{formatted}</td>
                     </tr>
                   );
                 })
@@ -269,7 +269,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Quick Actions */}
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+      <h2 className="text-lg font-semibold text-slate-900 mb-4">Quick Actions</h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           { label: 'Manage Services', desc: 'Add, edit or remove services', to: '/admin/services', icon: Scissors },
@@ -281,9 +281,9 @@ export default function AdminDashboard() {
             onClick={() => navigate(action.to)}
             className="text-left white-card rounded-xl p-5 hover:shadow-md transition-all group"
           >
-            <action.icon className="w-5 h-5 text-gray-700 mb-3" />
-            <p className="text-gray-900 font-medium text-sm mb-1">{action.label}</p>
-            <p className="text-gray-500 text-xs">{action.desc}</p>
+            <action.icon className="w-5 h-5 text-slate-700 mb-3" />
+            <p className="text-slate-900 font-medium text-sm mb-1">{action.label}</p>
+            <p className="text-slate-500 text-xs">{action.desc}</p>
           </button>
         ))}
       </div>

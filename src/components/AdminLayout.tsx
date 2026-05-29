@@ -25,8 +25,8 @@ export default function AdminLayout() {
 
   if (loading) {
     return (
-      <div className="min-h-[100dvh] bg-gray-50 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-[100dvh] bg-slate-50 flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -42,8 +42,8 @@ export default function AdminLayout() {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
       isActive
-        ? 'bg-gray-100 text-gray-900'
-        : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+        ? 'bg-amber-50 text-amber-600'
+        : 'text-slate-500 hover:text-amber-600 hover:bg-amber-50'
     }`;
 
   const navContent = (
@@ -64,7 +64,7 @@ export default function AdminLayout() {
   );
 
   return (
-    <div className="min-h-[100dvh] bg-gray-50 flex">
+    <div className="min-h-[100dvh] bg-slate-50 flex">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -75,19 +75,19 @@ export default function AdminLayout() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white border-r border-gray-200 p-6 flex flex-col transition-transform lg:translate-x-0 lg:static lg:z-auto shadow-sm ${
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white border-r border-slate-200 p-6 flex flex-col transition-transform lg:translate-x-0 lg:static lg:z-auto shadow-sm ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center">
               <span className="text-sm font-bold text-white">C</span>
             </div>
-            <span className="text-gray-900 font-semibold text-sm">Admin Panel</span>
+            <span className="text-slate-900 font-semibold text-sm">Admin Panel</span>
           </div>
           <button
-            className="lg:hidden text-gray-400 hover:text-gray-900"
+            className="lg:hidden text-slate-400 hover:text-slate-900"
             onClick={() => setSidebarOpen(false)}
           >
             <X className="w-5 h-5" />
@@ -108,15 +108,15 @@ export default function AdminLayout() {
       {/* Main content */}
       <main className="flex-1 min-w-0">
         {/* Top bar (mobile) */}
-        <div className="sticky top-0 z-30 bg-white/90 backdrop-blur-lg border-b border-gray-200 px-4 py-3 flex items-center justify-between lg:hidden">
+        <div className="sticky top-0 z-30 bg-white/90 backdrop-blur-lg border-b border-slate-200 px-4 py-3 flex items-center justify-between lg:hidden">
           <div className="flex items-center gap-3">
             <button
-              className="text-gray-500 hover:text-gray-900"
+              className="text-slate-500 hover:text-slate-900"
               onClick={() => setSidebarOpen(true)}
             >
               <Menu className="w-5 h-5" />
             </button>
-            <span className="text-gray-900 font-semibold text-sm">Admin Panel</span>
+            <span className="text-slate-900 font-semibold text-sm">Admin Panel</span>
           </div>
           <button
             onClick={handleLogout}

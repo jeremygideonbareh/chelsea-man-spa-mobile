@@ -34,8 +34,8 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-[100dvh] bg-gray-50 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-[100dvh] bg-slate-50 flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -49,7 +49,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-gray-50 pb-28 relative grid-bg overflow-hidden">
+    <div className="min-h-[100dvh] bg-slate-50 pb-28 relative grid-bg overflow-hidden">
       <style>{`
         @keyframes tabFade {
           from { opacity: 0; transform: translateY(8px); }
@@ -159,38 +159,38 @@ function HomeView({
     >
       <motion.div variants={itemVariants} className="flex items-center justify-between mb-6">
         <div>
-          <p className="text-gray-500 text-xs">Welcome back,</p>
-          <h1 className="text-gray-900 text-xl font-bold mt-0.5">{userName}</h1>
+          <p className="text-slate-500 text-xs">Welcome back,</p>
+          <h1 className="text-slate-900 text-xl font-bold mt-0.5">{userName}</h1>
         </div>
         <div className="flex items-center gap-2">
           {(role === 'admin' || role === 'staff') && (
-            <div className="w-8 h-8 rounded-full bg-gray-900/5 flex items-center justify-center">
-              <Settings className="w-4 h-4 text-gray-600" />
+            <div className="w-8 h-8 rounded-full bg-slate-900/5 flex items-center justify-center">
+              <Settings className="w-4 h-4 text-slate-600" />
             </div>
           )}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center relative shadow-sm"
+            className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center relative shadow-sm"
           >
-            <Bell className="w-4 h-4 text-gray-500" />
-            <div className="absolute top-2 right-2.5 w-1.5 h-1.5 bg-gray-900 rounded-full" />
+            <Bell className="w-4 h-4 text-slate-500" />
+            <div className="absolute top-2 right-2.5 w-1.5 h-1.5 bg-slate-900 rounded-full" />
           </motion.button>
         </div>
       </motion.div>
 
       {bookings.length > 0 && (
         <motion.div variants={itemVariants} className="mb-6">
-          <h2 className="text-gray-900 text-sm font-semibold mb-3">Upcoming Bookings</h2>
+          <h2 className="text-slate-900 text-sm font-semibold mb-3">Upcoming Bookings</h2>
           <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-1">
             {bookings.slice(0, 3).map((booking) => (
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 key={booking.id}
-                className="white-card rounded-xl p-3 min-w-[200px] border-l-2 border-l-gray-900"
+                className="white-card rounded-xl p-3 min-w-[200px] border-l-2 border-l-amber-500"
               >
-                <p className="text-gray-900 text-xs font-medium">{booking.service_name}</p>
-                <div className="flex items-center gap-1 mt-1.5 text-gray-400 text-[10px]">
+                <p className="text-slate-900 text-xs font-medium">{booking.service_name}</p>
+                <div className="flex items-center gap-1 mt-1.5 text-slate-400 text-[10px]">
                   <Calendar className="w-3 h-3" />
                   {booking.booking_time
                     ? new Date(booking.booking_time).toLocaleDateString('en-US', {
@@ -212,7 +212,7 @@ function HomeView({
                     ? 'bg-green-50 text-green-700'
                     : booking.status === 'pending'
                     ? 'bg-amber-50 text-amber-700'
-                    : 'bg-gray-100 text-gray-500'
+                    : 'bg-slate-100 text-slate-500'
                 }`}>
                   {booking.status}
                 </span>
@@ -226,7 +226,7 @@ function HomeView({
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full black-btn h-14 rounded-2xl text-sm font-semibold mb-6 flex items-center justify-center gap-2"
+          className="w-full amber-btn h-14 rounded-2xl text-sm font-semibold mb-6 flex items-center justify-center gap-2"
           onClick={onBook}
         >
           <Scissors className="w-4 h-4" />
@@ -235,7 +235,7 @@ function HomeView({
       </motion.div>
 
       <motion.div variants={itemVariants}>
-        <h2 className="text-gray-900 text-sm font-semibold mb-3">Our Services</h2>
+        <h2 className="text-slate-900 text-sm font-semibold mb-3">Our Services</h2>
         <div className="space-y-3">
           {services.map((service, index) => (
             <motion.button
@@ -259,14 +259,14 @@ function HomeView({
                 </div>
                 <div className="flex-1 p-3.5 flex flex-col justify-between">
                   <div>
-                    <h3 className="text-gray-900 text-sm font-semibold">{service.name}</h3>
-                    <p className="text-gray-500 text-[10px] mt-0.5 line-clamp-2">
+                    <h3 className="text-slate-900 text-sm font-semibold">{service.name}</h3>
+                    <p className="text-slate-500 text-[10px] mt-0.5 line-clamp-2">
                       {service.description}
                     </p>
                   </div>
                   <div className="flex items-center justify-between mt-2">
-                    <span className="text-gray-400 text-[10px]">{service.duration_minutes} min</span>
-                    <span className="text-gray-900 text-sm font-semibold">AED {service.price}</span>
+                    <span className="text-slate-400 text-[10px]">{service.duration_minutes} min</span>
+                    <span className="text-slate-900 text-sm font-semibold">AED {service.price}</span>
                   </div>
                 </div>
               </div>
@@ -326,13 +326,13 @@ function AppointmentsView({
       animate="show"
       className="px-5 pt-6"
     >
-      <motion.h1 variants={itemVariants} className="text-gray-900 text-xl font-bold mb-6">My Bookings</motion.h1>
+      <motion.h1 variants={itemVariants} className="text-slate-900 text-xl font-bold mb-6">My Bookings</motion.h1>
 
       {bookings.length === 0 ? (
         <motion.div variants={itemVariants} className="flex flex-col items-center justify-center py-20">
-          <Calendar className="w-12 h-12 text-gray-300 mb-4" />
-          <p className="text-gray-500 text-sm">No bookings yet</p>
-          <p className="text-gray-400 text-xs mt-1">Book your first appointment</p>
+          <Calendar className="w-12 h-12 text-slate-300 mb-4" />
+          <p className="text-slate-500 text-sm">No bookings yet</p>
+          <p className="text-slate-400 text-xs mt-1">Book your first appointment</p>
         </motion.div>
       ) : (
         <div className="space-y-3">
@@ -345,20 +345,20 @@ function AppointmentsView({
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-900 text-sm font-semibold">{booking.service_name}</p>
-                  <p className="text-gray-500 text-xs mt-0.5">{booking.stylist_name}</p>
+                  <p className="text-slate-900 text-sm font-semibold">{booking.service_name}</p>
+                  <p className="text-slate-500 text-xs mt-0.5">{booking.stylist_name}</p>
                 </div>
                 <span className={`text-[9px] px-2.5 py-1 rounded-full font-medium ${
                   booking.status === 'confirmed'
                     ? 'bg-green-50 text-green-700'
                     : booking.status === 'pending'
                     ? 'bg-amber-50 text-amber-700'
-                    : 'bg-gray-100 text-gray-500'
+                    : 'bg-slate-100 text-slate-500'
                 }`}>
                   {booking.status}
                 </span>
               </div>
-              <div className="flex items-center gap-3 mt-3 text-gray-400 text-xs">
+              <div className="flex items-center gap-3 mt-3 text-slate-400 text-xs">
                 <div className="flex items-center gap-1">
                   <Calendar className="w-3.5 h-3.5" />
                   {booking.booking_time
@@ -428,19 +428,19 @@ function ProfileView({
       animate="show"
       className="px-5 pt-6"
     >
-      <motion.h1 variants={itemVariants} className="text-gray-900 text-xl font-bold mb-6">Profile</motion.h1>
+      <motion.h1 variants={itemVariants} className="text-slate-900 text-xl font-bold mb-6">Profile</motion.h1>
 
       <motion.div variants={itemVariants} className="white-card rounded-2xl p-5 flex items-center gap-4 mb-6">
-        <div className="w-16 h-16 rounded-full bg-gray-900 flex items-center justify-center shadow-lg">
+        <div className="w-16 h-16 rounded-full bg-amber-500 flex items-center justify-center shadow-lg">
           <span className="text-white text-xl font-bold">
             {(user.user_metadata?.full_name || user.email || 'U').charAt(0).toUpperCase()}
           </span>
         </div>
         <div>
-          <h2 className="text-gray-900 font-semibold">{user.user_metadata?.full_name || 'Guest'}</h2>
-          <p className="text-gray-500 text-xs">{user.email}</p>
+          <h2 className="text-slate-900 font-semibold">{user.user_metadata?.full_name || 'Guest'}</h2>
+          <p className="text-slate-500 text-xs">{user.email}</p>
           {role && (
-            <span className="inline-block mt-1.5 text-[9px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 capitalize">
+            <span className="inline-block mt-1.5 text-[9px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 capitalize">
               {role}
             </span>
           )}
@@ -476,10 +476,10 @@ function MenuItem({ icon: Icon, label }: { icon: React.ElementType; label: strin
       className="w-full white-card rounded-xl p-4 flex items-center justify-between text-left"
     >
       <div className="flex items-center gap-3">
-        <Icon className="w-4 h-4 text-gray-400" />
-        <span className="text-gray-900 text-sm">{label}</span>
+        <Icon className="w-4 h-4 text-slate-400" />
+        <span className="text-slate-900 text-sm">{label}</span>
       </div>
-      <ChevronRight className="w-4 h-4 text-gray-300" />
+      <ChevronRight className="w-4 h-4 text-slate-300" />
     </motion.button>
   );
 }
@@ -518,35 +518,35 @@ function ManagerView() {
       animate="show"
       className="px-5 pt-6"
     >
-      <motion.h1 variants={itemVariants} className="text-gray-900 text-xl font-bold mb-6">Manager Dashboard</motion.h1>
+      <motion.h1 variants={itemVariants} className="text-slate-900 text-xl font-bold mb-6">Manager Dashboard</motion.h1>
 
       <motion.div variants={itemVariants} className="grid grid-cols-2 gap-3 mb-6">
         <div className="white-card rounded-2xl p-4 text-center">
-          <p className="text-2xl font-bold text-gray-900">142</p>
-          <p className="text-gray-500 text-[10px] mt-1">Total Bookings</p>
+          <p className="text-2xl font-bold text-slate-900">142</p>
+          <p className="text-slate-500 text-[10px] mt-1">Total Bookings</p>
         </div>
         <div className="white-card rounded-2xl p-4 text-center">
-          <p className="text-2xl font-bold text-gray-900">28</p>
-          <p className="text-gray-500 text-[10px] mt-1">Today</p>
+          <p className="text-2xl font-bold text-slate-900">28</p>
+          <p className="text-slate-500 text-[10px] mt-1">Today</p>
         </div>
         <div className="white-card rounded-2xl p-4 text-center">
           <p className="text-2xl font-bold text-green-600">AED 12.4K</p>
-          <p className="text-gray-500 text-[10px] mt-1">Revenue</p>
+          <p className="text-slate-500 text-[10px] mt-1">Revenue</p>
         </div>
         <div className="white-card rounded-2xl p-4 text-center">
           <p className="text-2xl font-bold text-amber-600">4.9</p>
-          <p className="text-gray-500 text-[10px] mt-1">Rating</p>
+          <p className="text-slate-500 text-[10px] mt-1">Rating</p>
         </div>
       </motion.div>
 
       <motion.div variants={itemVariants} className="white-card rounded-2xl p-4">
-        <h3 className="text-gray-900 text-sm font-semibold mb-3">Quick Actions</h3>
+        <h3 className="text-slate-900 text-sm font-semibold mb-3">Quick Actions</h3>
         <div className="space-y-2">
           <motion.button
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             onClick={() => navigate('/admin/bookings')}
-            className="w-full py-3 rounded-xl bg-gray-100 text-gray-700 text-xs font-medium hover:bg-gray-200 transition-colors"
+            className="w-full py-3 rounded-xl bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200 transition-colors"
           >
             View All Bookings
           </motion.button>
@@ -554,7 +554,7 @@ function ManagerView() {
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             onClick={() => navigate('/admin/services')}
-            className="w-full py-3 rounded-xl bg-gray-100 text-gray-700 text-xs font-medium hover:bg-gray-200 transition-colors"
+            className="w-full py-3 rounded-xl bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200 transition-colors"
           >
             Manage Services
           </motion.button>
@@ -562,7 +562,7 @@ function ManagerView() {
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             onClick={() => navigate('/admin/roster')}
-            className="w-full py-3 rounded-xl bg-gray-100 text-gray-700 text-xs font-medium hover:bg-gray-200 transition-colors"
+            className="w-full py-3 rounded-xl bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200 transition-colors"
           >
             Staff Schedule
           </motion.button>

@@ -9,7 +9,7 @@ export default function LandingNav() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 100);
+      setScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -27,30 +27,30 @@ export default function LandingNav() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-[#0A0A0A]/90 backdrop-blur-xl border-b border-white/5'
+            ? 'bg-white/90 backdrop-blur-xl border-b border-slate-200 shadow-sm'
             : 'bg-transparent'
         }`}
       >
-        <div className="max-w-lg mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <button
             onClick={() => setMenuOpen(true)}
-            className="w-10 h-10 flex items-center justify-center text-white"
+            className={`w-10 h-10 flex items-center justify-center ${scrolled ? 'text-slate-800' : 'text-white'}`}
           >
             <Menu className="w-5 h-5" />
           </button>
 
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="font-display italic text-xl font-bold gold-gradient-text"
+            className="font-display italic text-xl font-bold text-amber-500"
           >
             Chelsea
           </button>
 
           <button
             onClick={() => navigate('/login')}
-            className="w-10 h-10 flex items-center justify-center text-white"
+            className={`w-10 h-10 flex items-center justify-center ${scrolled ? 'text-slate-800' : 'text-white'}`}
           >
             <User className="w-5 h-5" />
           </button>
@@ -60,24 +60,14 @@ export default function LandingNav() {
       {/* Mobile Menu Overlay */}
       {menuOpen && (
         <div
-          className="fixed inset-0 z-[60] bg-[#0A0A0A]/98 backdrop-blur-xl animate-fade-in"
+          className="fixed inset-0 z-[60] bg-white/98 backdrop-blur-xl"
           style={{ animation: 'fadeIn 0.3s ease' }}
         >
-          <style>{`
-            @keyframes fadeIn {
-              from { opacity: 0; }
-              to { opacity: 1; }
-            }
-            @keyframes slideUp {
-              from { opacity: 0; transform: translateY(20px); }
-              to { opacity: 1; transform: translateY(0); }
-            }
-          `}</style>
           <div className="h-full flex flex-col px-6 py-6">
             <div className="flex justify-end">
               <button
                 onClick={() => setMenuOpen(false)}
-                className="w-10 h-10 flex items-center justify-center text-white"
+                className="w-10 h-10 flex items-center justify-center text-slate-800"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -92,7 +82,7 @@ export default function LandingNav() {
                     const el = document.getElementById(item.toLowerCase());
                     el?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="font-display text-3xl text-white hover:text-[#D4AF37] transition-colors"
+                  className="font-display text-3xl text-slate-800 hover:text-amber-500 transition-colors"
                   style={{ animation: `slideUp 0.4s ease ${index * 0.1}s both` }}
                 >
                   {item}
@@ -105,7 +95,7 @@ export default function LandingNav() {
                 setMenuOpen(false);
                 navigate('/login');
               }}
-              className="gold-btn w-full py-4 rounded-full text-sm font-semibold"
+              className="amber-btn w-full py-4 rounded-full text-sm font-semibold"
               style={{ animation: 'slideUp 0.4s ease 0.4s both' }}
             >
               Book Now
@@ -113,6 +103,13 @@ export default function LandingNav() {
           </div>
         </div>
       )}
+
+      <style>{`
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </>
   );
 }

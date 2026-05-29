@@ -167,27 +167,27 @@ export default function BookingSheet({ isOpen, onClose, userId, userName = 'Gent
 
       <div className="fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-3xl max-h-[92dvh] flex flex-col sheet-slide-in shadow-2xl">
         <div className="flex justify-center pt-3 pb-1">
-          <div className="w-10 h-1 bg-gray-300 rounded-full" />
+          <div className="w-10 h-1 bg-slate-300 rounded-full" />
         </div>
 
-        <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-slate-100">
           <div className="flex items-center gap-3">
             {flow.step < 5 && flow.step > 1 && (
               <button
                 onClick={flow.goBack}
-                className="w-8 h-8 flex items-center justify-center text-gray-700"
+                className="w-8 h-8 flex items-center justify-center text-slate-700"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
             )}
-            <h2 className="text-gray-900 text-base font-semibold">
+            <h2 className="text-slate-900 text-base font-semibold">
               {stepTitles[flow.step] || 'Booking'}
             </h2>
           </div>
           {flow.step < 5 && (
             <button
               onClick={handleClose}
-              className="w-8 h-8 flex items-center justify-center text-gray-400"
+              className="w-8 h-8 flex items-center justify-center text-slate-400"
             >
               <X className="w-5 h-5" />
             </button>
@@ -201,7 +201,7 @@ export default function BookingSheet({ isOpen, onClose, userId, userName = 'Gent
                 <div
                   key={s}
                   className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                    s <= flow.step ? 'bg-gray-900' : 'bg-gray-200'
+                    s <= flow.step ? 'bg-amber-500' : 'bg-slate-200'
                   }`}
                 />
               ))}

@@ -14,7 +14,7 @@ export default function StylistSelection({ onSelect }: StylistSelectionProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-40">
-        <div className="w-6 h-6 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -36,7 +36,7 @@ export default function StylistSelection({ onSelect }: StylistSelectionProps) {
         }
       `}</style>
 
-      <p className="text-gray-500 text-xs">
+      <p className="text-slate-500 text-xs">
         Choose your preferred specialist
       </p>
 
@@ -48,14 +48,14 @@ export default function StylistSelection({ onSelect }: StylistSelectionProps) {
               key={stylist.id}
               className={`w-full rounded-2xl p-4 flex items-center gap-4 text-left transition-all stylist-item active:scale-[0.98] ${
                 isSelected
-                  ? 'white-card-selected'
-                  : 'white-card'
+                  ? 'amber-card-selected'
+                  : 'amber-card'
               }`}
               style={{ animationDelay: `${index * 0.08}s` }}
               onClick={() => setSelectedId(stylist.id)}
             >
               <div className={`w-16 h-16 rounded-full overflow-hidden flex-shrink-0 ring-2 transition-all ${
-                isSelected ? 'ring-gray-900' : 'ring-gray-200'
+                isSelected ? 'ring-amber-500' : 'ring-slate-200'
               }`}>
                 <img
                   src={stylist.avatar_url}
@@ -65,21 +65,21 @@ export default function StylistSelection({ onSelect }: StylistSelectionProps) {
               </div>
 
               <div className="flex-1 min-w-0">
-                <h3 className="text-gray-900 text-sm font-semibold">{stylist.full_name}</h3>
-                <p className="text-gray-500 text-xs mt-0.5 capitalize">{stylist.role}</p>
+                <h3 className="text-slate-900 text-sm font-semibold">{stylist.full_name}</h3>
+                <p className="text-slate-500 text-xs mt-0.5 capitalize">{stylist.role}</p>
                 <div className="flex items-center gap-1 mt-1.5">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`w-3 h-3 ${i < 4 ? 'text-gray-900 fill-gray-900' : 'text-gray-200'}`}
+                      className={`w-3 h-3 ${i < 4 ? 'text-amber-500 fill-amber-500' : 'text-slate-200'}`}
                     />
                   ))}
-                  <span className="text-gray-400 text-[10px] ml-1">4.8</span>
+                  <span className="text-slate-400 text-[10px] ml-1">4.8</span>
                 </div>
               </div>
 
               <ChevronRight className={`w-5 h-5 flex-shrink-0 transition-colors ${
-                isSelected ? 'text-gray-900' : 'text-gray-300'
+                isSelected ? 'text-amber-500' : 'text-slate-300'
               }`} />
             </button>
           );
@@ -95,7 +95,7 @@ export default function StylistSelection({ onSelect }: StylistSelectionProps) {
         }}
       >
         <button
-          className="black-btn w-full h-14 rounded-2xl text-sm font-semibold"
+          className="amber-btn w-full h-14 rounded-2xl text-sm font-semibold"
           onClick={() => {
             const stylist = stylists.find(s => s.id === selectedId);
             if (stylist) {

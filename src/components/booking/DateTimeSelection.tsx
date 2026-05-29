@@ -59,8 +59,8 @@ export default function DateTimeSelection({ onSelect }: DateTimeSelectionProps) 
       {/* Date Selector */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-gray-900 text-sm font-semibold">Select Date</h3>
-          <span className="text-gray-400 text-xs">
+          <h3 className="text-slate-900 text-sm font-semibold">Select Date</h3>
+          <span className="text-slate-400 text-xs">
             {monthNames[dates[selectedDateIndex].getMonth()]} {dates[selectedDateIndex].getFullYear()}
           </span>
         </div>
@@ -74,13 +74,13 @@ export default function DateTimeSelection({ onSelect }: DateTimeSelectionProps) 
                 key={index}
                 className={`flex flex-col items-center justify-center w-14 h-16 rounded-xl flex-shrink-0 transition-all slot-item ${
                   isSelected
-                    ? 'bg-gray-900 text-white'
-                    : 'bg-white border border-gray-200 text-gray-700'
+                    ? 'bg-amber-500 text-white'
+                    : 'bg-white border border-slate-200 text-slate-700'
                 }`}
                 style={{ animationDelay: `${index * 0.05}s` }}
                 onClick={() => setSelectedDateIndex(index)}
               >
-                <span className={`text-[9px] font-medium ${isSelected ? 'text-white/70' : 'text-gray-400'}`}>
+                <span className={`text-[9px] font-medium ${isSelected ? 'text-white/70' : 'text-slate-400'}`}>
                   {isToday ? 'Today' : dayNames[date.getDay()]}
                 </span>
                 <span className="text-lg font-bold mt-0.5">{date.getDate()}</span>
@@ -92,7 +92,7 @@ export default function DateTimeSelection({ onSelect }: DateTimeSelectionProps) 
 
       {/* Time Slots */}
       <div>
-        <h3 className="text-gray-900 text-sm font-semibold mb-3">Select Time</h3>
+        <h3 className="text-slate-900 text-sm font-semibold mb-3">Select Time</h3>
         <div className="grid grid-cols-4 gap-2">
           {TIME_SLOTS.map((time, index) => {
             const isSelected = selectedTime === time;
@@ -102,10 +102,10 @@ export default function DateTimeSelection({ onSelect }: DateTimeSelectionProps) 
                 key={time}
                 className={`py-2.5 rounded-xl text-xs font-medium transition-all slot-item ${
                   isSelected
-                    ? 'bg-gray-900 text-white shadow-sm'
+                    ? 'bg-amber-500 text-white shadow-sm'
                     : isDisabled
-                    ? 'bg-gray-50 text-gray-300 cursor-not-allowed'
-                    : 'bg-white border border-gray-200 text-gray-700 hover:border-gray-400'
+                    ? 'bg-slate-50 text-slate-300 cursor-not-allowed'
+                    : 'bg-white border border-slate-200 text-slate-700 hover:border-slate-400'
                 }`}
                 style={{ animationDelay: `${index * 0.02}s` }}
                 onClick={() => !isDisabled && setSelectedTime(time)}
@@ -127,7 +127,7 @@ export default function DateTimeSelection({ onSelect }: DateTimeSelectionProps) 
         }}
       >
         <button
-          className="black-btn w-full h-14 rounded-2xl text-sm font-semibold disabled:opacity-50"
+          className="amber-btn w-full h-14 rounded-2xl text-sm font-semibold disabled:opacity-50"
           onClick={handleContinue}
           disabled={!selectedTime}
         >

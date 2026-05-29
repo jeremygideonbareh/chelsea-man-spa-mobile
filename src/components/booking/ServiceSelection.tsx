@@ -22,7 +22,7 @@ export default function ServiceSelection({ onSelect }: ServiceSelectionProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-40">
-        <div className="w-6 h-6 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -47,8 +47,8 @@ export default function ServiceSelection({ onSelect }: ServiceSelectionProps) {
             onClick={() => setActiveCategory(cat)}
             className={`px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
               activeCategory === cat
-                ? 'bg-gray-900 text-white'
-                : 'bg-gray-100 text-gray-500 border border-gray-200'
+                ? 'bg-amber-500 text-white'
+                    : 'bg-slate-100 text-slate-500 border border-slate-200'
             }`}
           >
             {cat}
@@ -75,21 +75,21 @@ export default function ServiceSelection({ onSelect }: ServiceSelectionProps) {
               </div>
               <div className="flex-1 p-4 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-gray-900 text-sm font-semibold">{service.name}</h3>
-                  <p className="text-gray-500 text-[10px] mt-1 line-clamp-2 leading-relaxed">
+                  <h3 className="text-slate-900 text-sm font-semibold">{service.name}</h3>
+                  <p className="text-slate-500 text-[10px] mt-1 line-clamp-2 leading-relaxed">
                     {service.description}
                   </p>
                 </div>
                 <div className="flex items-center justify-between mt-2">
-                  <div className="flex items-center gap-1 text-gray-400">
+                  <div className="flex items-center gap-1 text-slate-400">
                     <Clock className="w-3 h-3" />
                     <span className="text-[10px]">{service.duration_minutes} min</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <span className="text-gray-900 text-sm font-semibold">
+                    <span className="text-slate-900 text-sm font-semibold">
                       AED {service.price}
                     </span>
-                    <ChevronRight className="w-3.5 h-3.5 text-gray-300" />
+                    <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
                   </div>
                 </div>
               </div>

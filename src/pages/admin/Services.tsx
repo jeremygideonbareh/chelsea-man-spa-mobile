@@ -285,7 +285,7 @@ export default function AdminServices() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -293,10 +293,10 @@ export default function AdminServices() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-bold text-gray-900">Services Manager</h1>
+        <h1 className="text-xl font-bold text-slate-900">Services Manager</h1>
         <button
           onClick={openAdd}
-          className="px-4 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
+          className="px-4 py-2.5 rounded-xl bg-amber-500 text-white text-sm font-semibold hover:bg-amber-600 transition-colors"
         >
           + Add New Service
         </button>
@@ -306,7 +306,7 @@ export default function AdminServices() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-gray-600 border-b border-gray-100 bg-gray-50">
+              <tr className="text-left text-slate-600 border-b border-slate-100 bg-slate-50">
                 <th className="p-4 font-semibold text-xs uppercase tracking-wider">Name</th>
                 <th className="p-4 font-semibold text-xs uppercase tracking-wider">Category</th>
                 <th className="p-4 font-semibold text-xs uppercase tracking-wider">Description</th>
@@ -318,26 +318,26 @@ export default function AdminServices() {
             <tbody>
               {services.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-gray-400 italic">No services found.</td>
+                  <td colSpan={6} className="p-8 text-center text-slate-400 italic">No services found.</td>
                 </tr>
               ) : (
                 services.map((svc) => (
-                  <tr key={svc.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
-                    <td className="p-4 text-gray-900 font-medium">{svc.name}</td>
+                  <tr key={svc.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                    <td className="p-4 text-slate-900 font-medium">{svc.name}</td>
                     <td className="p-4">
-                      <span className="inline-block text-[10px] px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600 font-medium">
+                      <span className="inline-block text-[10px] px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">
                         {svc.category || getServiceCategory(svc.name || '')}
                       </span>
                     </td>
-                    <td className="p-4 text-gray-500 text-xs max-w-[220px] truncate" title={svc.description || ''}>
+                    <td className="p-4 text-slate-500 text-xs max-w-[220px] truncate" title={svc.description || ''}>
                       {svc.description || '—'}
                     </td>
-                    <td className="p-4 text-gray-700">AED {svc.price}</td>
-                    <td className="p-4 text-gray-500">{svc.duration_minutes} min</td>
+                    <td className="p-4 text-slate-700">AED {svc.price}</td>
+                    <td className="p-4 text-slate-500">{svc.duration_minutes} min</td>
                     <td className="p-4 flex gap-2">
                       <button
                         onClick={() => openEdit(svc)}
-                        className="px-3 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-semibold hover:bg-gray-800 transition-colors"
+                        className="px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-colors"
                       >
                         Edit
                       </button>
@@ -362,13 +362,13 @@ export default function AdminServices() {
           className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4"
           onClick={(e) => { if (e.target === e.currentTarget) setModalOpen(false); }}
         >
-          <div className="bg-white border border-gray-200 rounded-xl p-6 w-full max-w-md shadow-lg">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          <div className="bg-white border border-slate-200 rounded-xl p-6 w-full max-w-md shadow-lg">
+            <h2 className="text-lg font-semibold text-slate-900 mb-4">
               {editingId ? 'Edit Service' : 'Add New Service'}
             </h2>
             <form onSubmit={handleSave} className="space-y-4">
               <div>
-                <label className="block text-sm text-gray-600 mb-1.5">Name</label>
+                <label className="block text-sm text-slate-600 mb-1.5">Name</label>
                 <input
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -378,7 +378,7 @@ export default function AdminServices() {
               </div>
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-sm text-gray-600 mb-1.5">Category</label>
+                  <label className="block text-sm text-slate-600 mb-1.5">Category</label>
                   <select
                     value={form.category}
                     onChange={(e) => setForm({ ...form, category: e.target.value })}
@@ -390,7 +390,7 @@ export default function AdminServices() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-600 mb-1.5">Price (AED)</label>
+                  <label className="block text-sm text-slate-600 mb-1.5">Price (AED)</label>
                   <input
                     type="number"
                     step="0.01"
@@ -401,7 +401,7 @@ export default function AdminServices() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-600 mb-1.5">Duration (min)</label>
+                  <label className="block text-sm text-slate-600 mb-1.5">Duration (min)</label>
                   <input
                     type="number"
                     min="5"
@@ -413,7 +413,7 @@ export default function AdminServices() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm text-gray-600 mb-1.5">Description</label>
+                <label className="block text-sm text-slate-600 mb-1.5">Description</label>
                 <textarea
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
@@ -426,13 +426,13 @@ export default function AdminServices() {
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="flex-1 px-4 py-2.5 rounded-lg border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors"
+                  className="flex-1 px-4 py-2.5 rounded-lg border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2.5 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
+                  className="flex-1 px-4 py-2.5 rounded-lg bg-amber-500 text-white text-sm font-semibold hover:bg-amber-600 transition-colors"
                 >
                   {editingId ? 'Update Service' : 'Save Service'}
                 </button>
@@ -448,13 +448,13 @@ export default function AdminServices() {
           className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4"
           onClick={(e) => { if (e.target === e.currentTarget) setDeleteModalOpen(false); }}
         >
-          <div className="bg-white border border-gray-200 rounded-xl p-6 w-full max-w-sm shadow-lg">
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">Delete Service</h2>
-            <p className="text-sm text-gray-500 mb-6">Are you sure you want to delete this service? This cannot be undone.</p>
+          <div className="bg-white border border-slate-200 rounded-xl p-6 w-full max-w-sm shadow-lg">
+            <h2 className="text-lg font-semibold text-slate-900 mb-2">Delete Service</h2>
+            <p className="text-sm text-slate-500 mb-6">Are you sure you want to delete this service? This cannot be undone.</p>
             <div className="flex gap-3">
               <button
                 onClick={() => setDeleteModalOpen(false)}
-                className="flex-1 px-4 py-2.5 rounded-lg border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors"
+                className="flex-1 px-4 py-2.5 rounded-lg border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 transition-colors"
               >
                 Cancel
               </button>

@@ -6,7 +6,7 @@ import FooterSection from '@/sections/FooterSection';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A]">
+    <div className="min-h-screen bg-slate-50">
       <LandingNav />
       <HeroSection />
       <div id="services">

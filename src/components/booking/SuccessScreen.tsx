@@ -51,62 +51,62 @@ export default function SuccessScreen({
 
       {/* Black Checkmark */}
       <div className="success-scale">
-        <div className="w-24 h-24 rounded-full bg-gray-900/5 flex items-center justify-center">
-          <CheckCircle2 className="w-14 h-14 text-gray-900" />
+        <div className="w-24 h-24 rounded-full bg-amber-500/10 flex items-center justify-center">
+          <CheckCircle2 className="w-14 h-14 text-amber-500" />
         </div>
       </div>
 
       <div className="text-center success-fade" style={{ animationDelay: '0.3s' }}>
-        <h2 className="font-display text-2xl font-bold text-gray-900">Booking Confirmed</h2>
-        <p className="text-gray-500 text-xs mt-2">Your appointment has been scheduled</p>
+        <h2 className="font-display text-2xl font-bold text-slate-900">Booking Confirmed</h2>
+        <p className="text-slate-500 text-xs mt-2">Your appointment has been scheduled</p>
       </div>
 
       <div className="white-card rounded-2xl p-4 text-center w-full success-fade" style={{ animationDelay: '0.5s' }}>
-        <p className="text-gray-400 text-[10px] tracking-widest uppercase">Booking Reference</p>
-        <p className="text-gray-900 text-xl font-bold tracking-wider mt-1">{bookingRef}</p>
+        <p className="text-slate-400 text-[10px] tracking-widest uppercase">Booking Reference</p>
+        <p className="text-slate-900 text-xl font-bold tracking-wider mt-1">{bookingRef}</p>
       </div>
 
       <div className="white-card rounded-2xl p-4 w-full space-y-3 success-fade" style={{ animationDelay: '0.7s' }}>
-        <h3 className="text-gray-900 text-sm font-semibold">Appointment Details</h3>
+        <h3 className="text-slate-900 text-sm font-semibold">Appointment Details</h3>
 
         <div className="space-y-2.5">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gray-900/5 flex items-center justify-center">
-              <Scissors className="w-4 h-4 text-gray-700" />
+            <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <Scissors className="w-4 h-4 text-amber-600" />
             </div>
             <div>
-              <p className="text-gray-400 text-[10px]">Service</p>
-              <p className="text-gray-900 text-xs font-medium">{service.name}</p>
+              <p className="text-slate-400 text-[10px]">Service</p>
+              <p className="text-slate-900 text-xs font-medium">{service.name}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gray-900/5 flex items-center justify-center">
-              <User className="w-4 h-4 text-gray-700" />
+            <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <User className="w-4 h-4 text-amber-600" />
             </div>
             <div>
-              <p className="text-gray-400 text-[10px]">Stylist</p>
-              <p className="text-gray-900 text-xs font-medium">{stylist.full_name}</p>
+              <p className="text-slate-400 text-[10px]">Stylist</p>
+              <p className="text-slate-900 text-xs font-medium">{stylist.full_name}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gray-900/5 flex items-center justify-center">
-              <Calendar className="w-4 h-4 text-gray-700" />
+            <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <Calendar className="w-4 h-4 text-amber-600" />
             </div>
             <div>
-              <p className="text-gray-400 text-[10px]">Date</p>
-              <p className="text-gray-900 text-xs font-medium">{formattedDate}</p>
+              <p className="text-slate-400 text-[10px]">Date</p>
+              <p className="text-slate-900 text-xs font-medium">{formattedDate}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gray-900/5 flex items-center justify-center">
-              <Clock className="w-4 h-4 text-gray-700" />
+            <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <Clock className="w-4 h-4 text-amber-600" />
             </div>
             <div>
-              <p className="text-gray-400 text-[10px]">Time</p>
-              <p className="text-gray-900 text-xs font-medium">{formattedTime}</p>
+              <p className="text-slate-400 text-[10px]">Time</p>
+              <p className="text-slate-900 text-xs font-medium">{formattedTime}</p>
             </div>
           </div>
         </div>
@@ -121,7 +121,7 @@ export default function SuccessScreen({
       </div>
 
       <button
-        className="w-full h-14 rounded-2xl black-btn-outline text-sm font-semibold success-fade"
+        className="w-full h-14 rounded-2xl amber-btn-outline text-sm font-semibold success-fade"
         onClick={onBookAnother}
         style={{ animationDelay: '1s' }}
       >
