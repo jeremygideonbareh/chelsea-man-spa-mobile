@@ -75,7 +75,6 @@ export default function AdminBookings() {
         }
       }
     } catch {
-      // Fallback
       setServices([
         { id: 'svc-1', name: 'Classic Haircut' },
         { id: 'svc-2', name: 'Beard Grooming & Trim' },
@@ -131,7 +130,6 @@ export default function AdminBookings() {
         status: b.status || 'confirmed',
       }));
 
-      // Merge with localStorage custom bookings
       const localCustom = JSON.parse(localStorage.getItem('chelsea_local_bookings') || '[]');
       const combined = [...dbBookings];
       localCustom.forEach((customBk: any) => {
@@ -181,7 +179,6 @@ export default function AdminBookings() {
     };
 
     try {
-      // 1. Try to find customer by name
       const { data: customerData } = await supabase
         .from('customers')
         .select('id')
@@ -191,7 +188,6 @@ export default function AdminBookings() {
       let customerId = customerData?.[0]?.id;
 
       if (!customerId) {
-        // Try creating customer profile
         const { data: newCust, error: custErr } = await supabase
           .from('customers')
           .insert([{ 
@@ -206,7 +202,6 @@ export default function AdminBookings() {
 
       if (!customerId) throw new Error('Could not resolve customer ID');
 
-      // 2. Try inserting booking in Supabase
       const { error } = await supabase.from('bookings').insert([
         {
           service_id: form.service_id,
@@ -259,25 +254,25 @@ export default function AdminBookings() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-white mb-6">Bookings Manager</h1>
+      <h1 className="text-xl font-bold text-gray-900 mb-6">Bookings Manager</h1>
 
       {/* Create Booking Form */}
-      <div className="bg-[#0F0F0F] border border-white/5 rounded-xl p-4 lg:p-6 mb-8">
-        <h2 className="text-lg font-semibold text-white mb-4">Create Booking</h2>
+      <div className="white-card rounded-xl p-4 lg:p-6 mb-8">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Create Booking</h2>
         <form onSubmit={handleCreate} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm text-[#A3A3A3] mb-1.5">Service</label>
+            <label className="block text-sm text-gray-600 mb-1.5">Service</label>
             <select
               value={form.service_id}
               onChange={(e) => setForm({ ...form, service_id: e.target.value })}
-              className="w-full px-3 py-2.5 rounded-lg bg-[#0A0A0A] border border-white/10 text-white text-sm focus:outline-none focus:border-[#D4AF37] transition-colors"
+              className="w-full px-3 py-2.5 rounded-lg refined-input"
               required
             >
               <option value="">Select a service</option>
@@ -287,12 +282,11 @@ export default function AdminBookings() {
             </select>
           </div>
           <div>
-            <label className="block text-sm text-[#A3A3A3] mb-1.5">Stylist</label>
+            <label className="block text-sm text-gray-600 mb-1.5">Stylist</label>
             <select
               value={form.stylist_id}
               onChange={(e) => setForm({ ...form, stylist_id: e.target.value })}
-              className="w-full px-3 py-2.5 rounded-lg bg-[#0A0A0A] border border-white/10 text-white text-sm focus:outline-none focus:border-[#D4AF37] transition-colors"
-              required
+              className="w-full px-3 py-2.5 rounded-lg refined-input"
             >
               <option value="any">Any Stylist</option>
               {stylists.map((s) => (
@@ -301,28 +295,28 @@ export default function AdminBookings() {
             </select>
           </div>
           <div>
-            <label className="block text-sm text-[#A3A3A3] mb-1.5">Customer Name</label>
+            <label className="block text-sm text-gray-600 mb-1.5">Customer Name</label>
             <input
               value={form.customer_name}
               onChange={(e) => setForm({ ...form, customer_name: e.target.value })}
-              className="w-full px-3 py-2.5 rounded-lg bg-[#0A0A0A] border border-white/10 text-white text-sm focus:outline-none focus:border-[#D4AF37] transition-colors"
+              className="w-full px-3 py-2.5 rounded-lg refined-input"
               required
             />
           </div>
           <div>
-            <label className="block text-sm text-[#A3A3A3] mb-1.5">Appointment Time</label>
+            <label className="block text-sm text-gray-600 mb-1.5">Appointment Time</label>
             <input
               type="datetime-local"
               value={form.start_time}
               onChange={(e) => setForm({ ...form, start_time: e.target.value })}
-              className="w-full px-3 py-2.5 rounded-lg bg-[#0A0A0A] border border-white/10 text-white text-sm focus:outline-none focus:border-[#D4AF37] transition-colors [color-scheme:dark]"
+              className="w-full px-3 py-2.5 rounded-lg refined-input"
               required
             />
           </div>
           <div className="sm:col-span-2 lg:col-span-4">
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-[#D4AF37] text-black text-sm font-semibold hover:opacity-85 transition-opacity"
+              className="px-6 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
             >
               Confirm Booking
             </button>
@@ -331,34 +325,46 @@ export default function AdminBookings() {
       </div>
 
       {/* Bookings Table */}
-      <div className="bg-[#0F0F0F] border border-white/5 rounded-xl overflow-hidden">
+      <div className="white-card rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-[#D4AF37] border-b border-white/5 bg-[#1A1814]">
+              <tr className="text-left text-gray-600 border-b border-gray-100 bg-gray-50">
                 <th className="p-4 font-semibold text-xs uppercase tracking-wider">Customer</th>
                 <th className="p-4 font-semibold text-xs uppercase tracking-wider">Service</th>
                 <th className="p-4 font-semibold text-xs uppercase tracking-wider">Stylist</th>
                 <th className="p-4 font-semibold text-xs uppercase tracking-wider">Time</th>
+                <th className="p-4 font-semibold text-xs uppercase tracking-wider">Status</th>
                 <th className="p-4 font-semibold text-xs uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody>
               {bookings.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="p-8 text-center text-[#6B655A] italic">No bookings found.</td>
+                  <td colSpan={6} className="p-8 text-center text-gray-400 italic">No bookings found.</td>
                 </tr>
               ) : (
                 bookings.map((b) => (
-                  <tr key={b.id} className="border-b border-white/5">
-                    <td className="p-4 text-white">{b.customer_name}</td>
-                    <td className="p-4 text-[#A3A3A3]">{b.service_name}</td>
-                    <td className="p-4 text-[#A3A3A3]">{b.stylist_name}</td>
-                    <td className="p-4 text-[#A3A3A3]">{formatDateTime(b.booking_time)}</td>
+                  <tr key={b.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                    <td className="p-4 text-gray-900 font-medium">{b.customer_name}</td>
+                    <td className="p-4 text-gray-500">{b.service_name}</td>
+                    <td className="p-4 text-gray-500">{b.stylist_name}</td>
+                    <td className="p-4 text-gray-500">{formatDateTime(b.booking_time)}</td>
+                    <td className="p-4">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        b.status === 'confirmed'
+                          ? 'bg-green-50 text-green-700'
+                          : b.status === 'pending'
+                          ? 'bg-amber-50 text-amber-700'
+                          : 'bg-gray-100 text-gray-500'
+                      }`}>
+                        {b.status}
+                      </span>
+                    </td>
                     <td className="p-4">
                       <button
                         onClick={() => handleDelete(b.id)}
-                        className="px-3 py-1.5 rounded-lg bg-[#3D1A1A] text-[#E87A7A] text-xs font-semibold hover:bg-red-500/20 transition-colors"
+                        className="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 text-xs font-semibold hover:bg-red-100 transition-colors"
                       >
                         Delete
                       </button>

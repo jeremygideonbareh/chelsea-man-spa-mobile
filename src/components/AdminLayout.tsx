@@ -25,8 +25,8 @@ export default function AdminLayout() {
 
   if (loading) {
     return (
-      <div className="min-h-[100dvh] bg-[#0A0A0A] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-[100dvh] bg-gray-50 flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -42,8 +42,8 @@ export default function AdminLayout() {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
       isActive
-        ? 'bg-[#D4AF37]/10 text-[#D4AF37]'
-        : 'text-[#A3A3A3] hover:text-white hover:bg-white/5'
+        ? 'bg-gray-100 text-gray-900'
+        : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
     }`;
 
   const navContent = (
@@ -64,30 +64,30 @@ export default function AdminLayout() {
   );
 
   return (
-    <div className="min-h-[100dvh] bg-[#0A0A0A] flex">
+    <div className="min-h-[100dvh] bg-gray-50 flex">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/60 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-[#0F0F0F] border-r border-white/5 p-6 flex flex-col transition-transform lg:translate-x-0 lg:static lg:z-auto ${
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white border-r border-gray-200 p-6 flex flex-col transition-transform lg:translate-x-0 lg:static lg:z-auto shadow-sm ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-[#D4AF37]/20 flex items-center justify-center">
-              <span className="text-sm font-bold text-[#D4AF37]">C</span>
+            <div className="w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center">
+              <span className="text-sm font-bold text-white">C</span>
             </div>
-            <span className="text-white font-semibold text-sm">Admin Panel</span>
+            <span className="text-gray-900 font-semibold text-sm">Admin Panel</span>
           </div>
           <button
-            className="lg:hidden text-[#A3A3A3] hover:text-white"
+            className="lg:hidden text-gray-400 hover:text-gray-900"
             onClick={() => setSidebarOpen(false)}
           >
             <X className="w-5 h-5" />
@@ -98,7 +98,7 @@ export default function AdminLayout() {
 
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-red-400 hover:bg-red-500/10 transition-colors mt-auto"
+          className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition-colors mt-auto"
         >
           <LogOut className="w-5 h-5" />
           Sign Out
@@ -108,19 +108,19 @@ export default function AdminLayout() {
       {/* Main content */}
       <main className="flex-1 min-w-0">
         {/* Top bar (mobile) */}
-        <div className="sticky top-0 z-30 bg-[#0A0A0A]/80 backdrop-blur-lg border-b border-white/5 px-4 py-3 flex items-center justify-between lg:hidden">
+        <div className="sticky top-0 z-30 bg-white/90 backdrop-blur-lg border-b border-gray-200 px-4 py-3 flex items-center justify-between lg:hidden">
           <div className="flex items-center gap-3">
             <button
-              className="text-[#A3A3A3] hover:text-white"
+              className="text-gray-500 hover:text-gray-900"
               onClick={() => setSidebarOpen(true)}
             >
               <Menu className="w-5 h-5" />
             </button>
-            <span className="text-white font-semibold text-sm">Admin Panel</span>
+            <span className="text-gray-900 font-semibold text-sm">Admin Panel</span>
           </div>
           <button
             onClick={handleLogout}
-            className="text-red-400 text-sm font-medium"
+            className="text-red-500 text-sm font-medium"
           >
             Sign Out
           </button>

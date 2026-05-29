@@ -159,7 +159,7 @@ export default function AdminRoster() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -167,20 +167,20 @@ export default function AdminRoster() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-bold text-white">Stylist Roster</h1>
+        <h1 className="text-xl font-bold text-gray-900">Stylist Roster</h1>
         <button
           onClick={openAdd}
-          className="px-4 py-2.5 rounded-xl bg-[#D4AF37] text-black text-sm font-semibold hover:opacity-85 transition-opacity"
+          className="px-4 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
         >
           + Add New Stylist
         </button>
       </div>
 
-      <div className="bg-[#0F0F0F] border border-white/5 rounded-xl overflow-hidden">
+      <div className="white-card rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-[#D4AF37] border-b border-white/5 bg-[#1A1814]">
+              <tr className="text-left text-gray-600 border-b border-gray-100 bg-gray-50">
                 <th className="p-4 font-semibold text-xs uppercase tracking-wider">Name</th>
                 <th className="p-4 font-semibold text-xs uppercase tracking-wider">Role</th>
                 <th className="p-4 font-semibold text-xs uppercase tracking-wider">Status</th>
@@ -190,19 +190,19 @@ export default function AdminRoster() {
             <tbody>
               {stylists.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="p-8 text-center text-[#6B655A] italic">No stylists found.</td>
+                  <td colSpan={4} className="p-8 text-center text-gray-400 italic">No stylists found.</td>
                 </tr>
               ) : (
                 stylists.map((stylist) => (
-                  <tr key={stylist.id} className="border-b border-white/5">
-                    <td className="p-4 text-white">{stylist.name}</td>
-                    <td className="p-4 text-[#A3A3A3]">{stylist.role || '—'}</td>
+                  <tr key={stylist.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                    <td className="p-4 text-gray-900 font-medium">{stylist.name}</td>
+                    <td className="p-4 text-gray-500">{stylist.role || '—'}</td>
                     <td className="p-4">
                       <span
                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                           stylist.is_active
-                            ? 'bg-emerald-500/10 text-emerald-400'
-                            : 'bg-red-500/10 text-red-400'
+                            ? 'bg-green-50 text-green-700'
+                            : 'bg-red-50 text-red-600'
                         }`}
                       >
                         {stylist.is_active ? 'Available' : 'Unavailable'}
@@ -211,13 +211,13 @@ export default function AdminRoster() {
                     <td className="p-4 flex gap-2">
                       <button
                         onClick={() => openEdit(stylist)}
-                        className="px-3 py-1.5 rounded-lg bg-[#D4AF37] text-black text-xs font-semibold"
+                        className="px-3 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-semibold hover:bg-gray-800 transition-colors"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => openDelete(stylist.id)}
-                        className="px-3 py-1.5 rounded-lg bg-[#3D1A1A] text-[#E87A7A] text-xs font-semibold"
+                        className="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 text-xs font-semibold hover:bg-red-100 transition-colors"
                       >
                         Delete
                       </button>
@@ -233,43 +233,43 @@ export default function AdminRoster() {
       {/* Add/Edit Modal */}
       {modalOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4"
           onClick={(e) => { if (e.target === e.currentTarget) setModalOpen(false); }}
         >
-          <div className="bg-[#12110E] border border-white/10 rounded-xl p-6 w-full max-w-md">
-            <h2 id="modal-title" className="text-lg font-semibold text-white mb-4">
+          <div className="bg-white border border-gray-200 rounded-xl p-6 w-full max-w-md shadow-lg">
+            <h2 id="modal-title" className="text-lg font-semibold text-gray-900 mb-4">
               {editingId ? 'Edit Stylist' : 'Add New Stylist'}
             </h2>
             <form onSubmit={handleSave} className="space-y-4">
               <div>
-                <label className="block text-sm text-[#A3A3A3] mb-1.5">Name</label>
+                <label className="block text-sm text-gray-600 mb-1.5">Name</label>
                 <input
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="w-full px-3 py-2.5 rounded-lg bg-[#0A0A0A] border border-white/10 text-white text-sm focus:outline-none focus:border-[#D4AF37] transition-colors"
+                  className="w-full px-3 py-2.5 rounded-lg refined-input"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm text-[#A3A3A3] mb-1.5">Role</label>
+                <label className="block text-sm text-gray-600 mb-1.5">Role</label>
                 <input
                   value={form.role}
                   onChange={(e) => setForm({ ...form, role: e.target.value })}
                   placeholder="e.g. Barber, Nail Technician"
-                  className="w-full px-3 py-2.5 rounded-lg bg-[#0A0A0A] border border-white/10 text-white text-sm focus:outline-none focus:border-[#D4AF37] transition-colors"
+                  className="w-full px-3 py-2.5 rounded-lg refined-input"
                 />
               </div>
               <div className="flex gap-3 pt-2">
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="flex-1 px-4 py-2.5 rounded-lg border border-white/10 text-[#A3A3A3] text-sm font-medium hover:text-white transition-colors"
+                  className="flex-1 px-4 py-2.5 rounded-lg border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2.5 rounded-lg bg-[#D4AF37] text-black text-sm font-semibold hover:opacity-85 transition-opacity"
+                  className="flex-1 px-4 py-2.5 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
                 >
                   {editingId ? 'Update Stylist' : 'Save Stylist'}
                 </button>
@@ -282,24 +282,24 @@ export default function AdminRoster() {
       {/* Delete Modal */}
       {deleteModalOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4"
           onClick={(e) => { if (e.target === e.currentTarget) setDeleteModalOpen(false); }}
         >
-          <div className="bg-[#12110E] border border-white/10 rounded-xl p-6 w-full max-w-sm">
-            <h2 className="text-lg font-semibold text-white mb-2">Delete Stylist</h2>
-            <p className="text-sm text-[#A3A3A3] mb-6">
+          <div className="bg-white border border-gray-200 rounded-xl p-6 w-full max-w-sm shadow-lg">
+            <h2 className="text-lg font-semibold text-gray-900 mb-2">Delete Stylist</h2>
+            <p className="text-sm text-gray-500 mb-6">
               Are you sure you want to remove this stylist? They will be marked as unavailable.
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setDeleteModalOpen(false)}
-                className="flex-1 px-4 py-2.5 rounded-lg border border-white/10 text-[#A3A3A3] text-sm font-medium hover:text-white transition-colors"
+                className="flex-1 px-4 py-2.5 rounded-lg border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="flex-1 px-4 py-2.5 rounded-lg bg-[#3D1A1A] text-[#E87A7A] text-sm font-semibold hover:bg-red-500/20 transition-colors"
+                className="flex-1 px-4 py-2.5 rounded-lg bg-red-50 text-red-600 text-sm font-semibold hover:bg-red-100 transition-colors"
               >
                 Delete
               </button>

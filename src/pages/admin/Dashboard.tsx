@@ -19,6 +19,14 @@ interface TodayBooking {
   stylist_name: string;
 }
 
+const iconColors: Record<string, string> = {
+  'Total Bookings': 'text-blue-600 bg-blue-50',
+  'Active Services': 'text-emerald-600 bg-emerald-50',
+  'Active Stylists': 'text-purple-600 bg-purple-50',
+  'Total Revenue': 'text-gray-900 bg-gray-100',
+  'Most Popular': 'text-amber-600 bg-amber-50',
+};
+
 export default function AdminDashboard() {
   const [metrics, setMetrics] = useState<Metrics>({
     totalBookings: 0,
@@ -33,17 +41,16 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     async function load() {
-      // 1. Fetch bookings
       let dbBookings: any[] = [];
       try {
         const fetchPromise = supabase
           .from('bookings')
           .select('id, service_id, booking_time, status, customer_id, services(name), customers(full_name)');
-          
+
         const timeoutPromise = new Promise<never>((_, reject) =>
           setTimeout(() => reject(new Error('Bookings fetch timed out')), 2500)
         );
-        
+
         const raceResult = await Promise.race([fetchPromise, timeoutPromise]);
         if (raceResult?.data) {
           dbBookings = raceResult.data;
@@ -52,7 +59,6 @@ export default function AdminDashboard() {
         console.warn('Dashboard bookings load failed/timed out:', e);
       }
 
-      // Merge with localStorage bookings
       const localBookings = JSON.parse(localStorage.getItem('chelsea_local_bookings') || '[]');
       const combinedBookings = [...dbBookings.map((b: any) => ({
         id: b.id,
@@ -78,17 +84,16 @@ export default function AdminDashboard() {
         }
       });
 
-      // 2. Fetch services
       let dbServices: any[] = [];
       try {
         const fetchPromise = supabase
           .from('services')
           .select('id, name, price');
-          
+
         const timeoutPromise = new Promise<never>((_, reject) =>
           setTimeout(() => reject(new Error('Services fetch timed out')), 2500)
         );
-        
+
         const raceResult = await Promise.race([fetchPromise, timeoutPromise]);
         if (raceResult?.data) {
           dbServices = raceResult.data;
@@ -97,7 +102,6 @@ export default function AdminDashboard() {
         console.warn('Dashboard services load failed/timed out:', e);
       }
 
-      // Merge with localStorage services
       const localServices = JSON.parse(localStorage.getItem('chelsea_local_services') || '[]');
       const combinedServices = [...dbServices];
       localServices.forEach((localSvc: any) => {
@@ -106,18 +110,17 @@ export default function AdminDashboard() {
         }
       });
 
-      // 3. Fetch stylists
       let dbStylists: any[] = [];
       try {
         const fetchPromise = supabase
           .from('stylists')
           .select('id, name, is_active')
           .eq('is_active', true);
-          
+
         const timeoutPromise = new Promise<never>((_, reject) =>
           setTimeout(() => reject(new Error('Stylists fetch timed out')), 2500)
         );
-        
+
         const raceResult = await Promise.race([fetchPromise, timeoutPromise]);
         if (raceResult?.data) {
           dbStylists = raceResult.data;
@@ -126,7 +129,6 @@ export default function AdminDashboard() {
         console.warn('Dashboard stylists load failed/timed out:', e);
       }
 
-      // Merge with localStorage stylists
       const localStylists = JSON.parse(localStorage.getItem('chelsea_local_stylists') || '[]');
       const combinedStylists = [...dbStylists];
       localStylists.forEach((localSty: any) => {
@@ -135,7 +137,6 @@ export default function AdminDashboard() {
         }
       });
 
-      // Calculate Metrics
       const totalBookings = combinedBookings.length;
       const activeServices = combinedServices.length;
       const activeStylists = combinedStylists.length;
@@ -166,7 +167,6 @@ export default function AdminDashboard() {
 
       setMetrics({ totalBookings, activeServices, activeStylists, totalRevenue, popularService });
 
-      // Today's Bookings filter
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       const tomorrow = new Date(today);
@@ -177,7 +177,6 @@ export default function AdminDashboard() {
         return time >= today && time < tomorrow;
       });
 
-      // Sort by booking time ascending
       todayList.sort((a, b) => new Date(a.booking_time).getTime() - new Date(b.booking_time).getTime());
 
       setTodayBookings(todayList);
@@ -188,88 +187,62 @@ export default function AdminDashboard() {
   }, []);
 
   const metricCards = [
-    {
-      label: 'Total Bookings',
-      value: metrics.totalBookings,
-      icon: CalendarCheck,
-      color: 'text-blue-400',
-      bg: 'bg-blue-500/10',
-    },
-    {
-      label: 'Active Services',
-      value: metrics.activeServices,
-      icon: Scissors,
-      color: 'text-emerald-400',
-      bg: 'bg-emerald-500/10',
-    },
-    {
-      label: 'Active Stylists',
-      value: metrics.activeStylists,
-      icon: Users,
-      color: 'text-purple-400',
-      bg: 'bg-purple-500/10',
-    },
-    {
-      label: 'Total Revenue',
-      value: `$${metrics.totalRevenue.toLocaleString()}`,
-      icon: DollarSign,
-      color: 'text-[#D4AF37]',
-      bg: 'bg-[#D4AF37]/10',
-    },
-    {
-      label: 'Most Popular',
-      value: metrics.popularService,
-      icon: Star,
-      color: 'text-amber-400',
-      bg: 'bg-amber-500/10',
-    },
+    { label: 'Total Bookings', value: metrics.totalBookings, icon: CalendarCheck },
+    { label: 'Active Services', value: metrics.activeServices, icon: Scissors },
+    { label: 'Active Stylists', value: metrics.activeStylists, icon: Users },
+    { label: 'Total Revenue', value: `AED ${metrics.totalRevenue.toLocaleString()}`, icon: DollarSign },
+    { label: 'Most Popular', value: metrics.popularService, icon: Star },
   ];
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-white mb-6">Dashboard</h1>
+      <h1 className="text-xl font-bold text-gray-900 mb-6">Dashboard</h1>
 
       {/* Metrics */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-        {metricCards.map((card) => (
-          <div
-            key={card.label}
-            className="bg-[#0F0F0F] border border-white/5 rounded-xl p-4"
-          >
-            <div className={`w-9 h-9 rounded-lg ${card.bg} flex items-center justify-center mb-3`}>
-              <card.icon className={`w-5 h-5 ${card.color}`} />
+        {metricCards.map((card) => {
+          const colors = iconColors[card.label] || 'text-gray-600 bg-gray-100';
+          const [textColor, bgColor] = colors.split(' ');
+          return (
+            <div
+              key={card.label}
+              className="white-card rounded-xl p-4"
+            >
+              <div className={`w-9 h-9 rounded-lg ${bgColor} flex items-center justify-center mb-3`}>
+                <card.icon className={`w-5 h-5 ${textColor}`} />
+              </div>
+              <p className="text-xl font-bold text-gray-900">{card.value}</p>
+              <p className="text-xs text-gray-500 mt-1">{card.label}</p>
             </div>
-            <p className="text-2xl font-bold text-white">{card.value}</p>
-            <p className="text-xs text-[#A3A3A3] mt-1">{card.label}</p>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Today's Bookings */}
-      <div className="bg-[#0F0F0F] border border-white/5 rounded-xl p-4 lg:p-6 mb-8">
-        <h2 className="text-lg font-semibold text-white mb-4">Bookings Today</h2>
+      <div className="white-card rounded-xl p-4 lg:p-6 mb-8">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Bookings Today</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-[#A3A3A3] border-b border-white/5">
-                <th className="pb-3 font-medium">Customer</th>
-                <th className="pb-3 font-medium">Service</th>
-                <th className="pb-3 font-medium">Stylist</th>
-                <th className="pb-3 font-medium">Time</th>
+              <tr className="text-left text-gray-500 border-b border-gray-100">
+                <th className="pb-3 font-medium text-xs uppercase tracking-wider">Customer</th>
+                <th className="pb-3 font-medium text-xs uppercase tracking-wider">Service</th>
+                <th className="pb-3 font-medium text-xs uppercase tracking-wider">Stylist</th>
+                <th className="pb-3 font-medium text-xs uppercase tracking-wider">Time</th>
               </tr>
             </thead>
             <tbody>
               {todayBookings.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="pt-6 pb-6 text-center text-[#6B655A] italic">
+                  <td colSpan={4} className="pt-6 pb-6 text-center text-gray-400 italic">
                     No bookings today.
                   </td>
                 </tr>
@@ -281,11 +254,11 @@ export default function AdminDashboard() {
                     minute: '2-digit',
                   });
                   return (
-                    <tr key={b.id} className="border-b border-white/5">
-                      <td className="py-3 text-white">{b.customer_name}</td>
-                      <td className="py-3 text-[#A3A3A3]">{b.service_name}</td>
-                      <td className="py-3 text-[#A3A3A3]">{b.stylist_name}</td>
-                      <td className="py-3 text-[#A3A3A3]">{formatted}</td>
+                    <tr key={b.id} className="border-b border-gray-50">
+                      <td className="py-3 text-gray-900 font-medium">{b.customer_name}</td>
+                      <td className="py-3 text-gray-500">{b.service_name}</td>
+                      <td className="py-3 text-gray-500">{b.stylist_name}</td>
+                      <td className="py-3 text-gray-500">{formatted}</td>
                     </tr>
                   );
                 })
@@ -296,7 +269,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Quick Actions */}
-      <h2 className="text-lg font-semibold text-white mb-4">Quick Actions</h2>
+      <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           { label: 'Manage Services', desc: 'Add, edit or remove services', to: '/admin/services', icon: Scissors },
@@ -306,11 +279,11 @@ export default function AdminDashboard() {
           <button
             key={action.to}
             onClick={() => navigate(action.to)}
-            className="text-left bg-[#0F0F0F] border border-white/5 rounded-xl p-5 hover:border-[#D4AF37]/30 transition-colors group"
+            className="text-left white-card rounded-xl p-5 hover:shadow-md transition-all group"
           >
-            <action.icon className="w-5 h-5 text-[#D4AF37] mb-3" />
-            <p className="text-white font-medium text-sm mb-1">{action.label}</p>
-            <p className="text-[#A3A3A3] text-xs">{action.desc}</p>
+            <action.icon className="w-5 h-5 text-gray-700 mb-3" />
+            <p className="text-gray-900 font-medium text-sm mb-1">{action.label}</p>
+            <p className="text-gray-500 text-xs">{action.desc}</p>
           </button>
         ))}
       </div>
