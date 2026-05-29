@@ -23,8 +23,8 @@ export interface SignInPageProps {
 
 // --- SUB-COMPONENTS ---
 
-const GlassInputWrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="rounded-xl border border-white/10 bg-[#171717] backdrop-blur-sm transition-colors focus-within:border-[#D4AF37]/50 focus-within:bg-[#D4AF37]/5">
+const InputWrapper = ({ children }: { children: React.ReactNode }) => (
+  <div className="rounded-xl border border-gray-200 bg-white transition-colors focus-within:border-gray-900 focus-within:ring-1 focus-within:ring-gray-900/10 shadow-sm">
     {children}
   </div>
 );
@@ -49,14 +49,14 @@ export const SignInPage: React.FC<SignInPageProps> = ({
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="h-[100dvh] flex flex-col md:flex-row w-[100dvw] bg-[#0A0A0A]">
+    <div className="h-[100dvh] flex flex-col md:flex-row w-[100dvw] bg-gray-50 grid-bg">
       {/* Left column: sign-in form */}
       <section className="flex-1 flex items-center justify-center p-6 md:p-8 relative">
         {/* Back button */}
         {onBack && (
           <button
             onClick={onBack}
-            className="signin-animate signin-delay-100 absolute top-6 left-6 w-10 h-10 flex items-center justify-center rounded-full border border-white/10 text-[#A3A3A3] hover:text-white hover:border-[#D4AF37]/40 transition-all"
+            className="signin-animate signin-delay-100 absolute top-6 left-6 w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-400 hover:text-gray-900 hover:border-gray-400 transition-all bg-white shadow-sm"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
@@ -66,25 +66,23 @@ export const SignInPage: React.FC<SignInPageProps> = ({
           <div className="flex flex-col gap-5">
             {/* Logo / Title */}
             <div className="text-center mb-2">
-              <h1 className="signin-animate signin-delay-100 font-display italic text-4xl md:text-5xl font-bold gold-gradient-text leading-tight">
+              <h1 className="signin-animate signin-delay-100 font-display italic text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
                 Chelsea
               </h1>
-              <p className="signin-animate signin-delay-200 text-[#A3A3A3] text-sm mt-2">
+              <p className="signin-animate signin-delay-200 text-gray-500 text-sm mt-2">
                 {mode === 'login' ? 'Welcome back, gentleman' : 'Create your account'}
               </p>
             </div>
 
             {/* Mode Toggle */}
-            <div
-              className="signin-animate signin-delay-200 flex bg-[#171717] rounded-full p-1"
-            >
+            <div className="signin-animate signin-delay-200 flex bg-gray-100 rounded-full p-1">
               <button
                 type="button"
                 onClick={() => onModeChange('login')}
                 className={`flex-1 py-2.5 rounded-full text-xs font-medium transition-all ${
                   mode === 'login'
-                    ? 'bg-[#D4AF37] text-[#0A0A0A]'
-                    : 'text-[#A3A3A3] hover:text-white'
+                    ? 'bg-gray-900 text-white shadow-sm'
+                    : 'text-gray-500 hover:text-gray-900'
                 }`}
               >
                 Sign In
@@ -94,8 +92,8 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                 onClick={() => onModeChange('register')}
                 className={`flex-1 py-2.5 rounded-full text-xs font-medium transition-all ${
                   mode === 'register'
-                    ? 'bg-[#D4AF37] text-[#0A0A0A]'
-                    : 'text-[#A3A3A3] hover:text-white'
+                    ? 'bg-gray-900 text-white shadow-sm'
+                    : 'text-gray-500 hover:text-gray-900'
                 }`}
               >
                 Sign Up
@@ -106,10 +104,10 @@ export const SignInPage: React.FC<SignInPageProps> = ({
               {/* Full Name (register only) */}
               {mode === 'register' && (
                 <div className="signin-animate signin-delay-300">
-                  <label className="text-[#A3A3A3] text-xs mb-1.5 block font-medium">Full Name</label>
-                  <GlassInputWrapper>
+                  <label className="text-gray-600 text-xs mb-1.5 block font-medium">Full Name</label>
+                  <InputWrapper>
                     <div className="relative">
-                      <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A3A3A3]" />
+                      <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                       <input
                         name="fullName"
                         type="text"
@@ -117,19 +115,19 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                         onChange={(e) => onFullNameChange(e.target.value)}
                         placeholder="Your full name"
                         required
-                        className="w-full bg-transparent text-sm text-white p-3.5 pl-11 rounded-xl focus:outline-none placeholder:text-[#525252]"
+                        className="w-full bg-transparent text-sm text-gray-900 p-3.5 pl-11 rounded-xl focus:outline-none placeholder:text-gray-400"
                       />
                     </div>
-                  </GlassInputWrapper>
+                  </InputWrapper>
                 </div>
               )}
 
               {/* Email */}
               <div className="signin-animate signin-delay-300">
-                <label className="text-[#A3A3A3] text-xs mb-1.5 block font-medium">Email Address</label>
-                <GlassInputWrapper>
+                <label className="text-gray-600 text-xs mb-1.5 block font-medium">Email Address</label>
+                <InputWrapper>
                   <div className="relative">
-                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A3A3A3]" />
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
                       name="email"
                       type="email"
@@ -137,18 +135,18 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                       onChange={(e) => onEmailChange(e.target.value)}
                       placeholder="your@email.com"
                       required
-                      className="w-full bg-transparent text-sm text-white p-3.5 pl-11 rounded-xl focus:outline-none placeholder:text-[#525252]"
+                      className="w-full bg-transparent text-sm text-gray-900 p-3.5 pl-11 rounded-xl focus:outline-none placeholder:text-gray-400"
                     />
                   </div>
-                </GlassInputWrapper>
+                </InputWrapper>
               </div>
 
               {/* Password */}
               <div className="signin-animate signin-delay-400">
-                <label className="text-[#A3A3A3] text-xs mb-1.5 block font-medium">Password</label>
-                <GlassInputWrapper>
+                <label className="text-gray-600 text-xs mb-1.5 block font-medium">Password</label>
+                <InputWrapper>
                   <div className="relative">
-                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A3A3A3]" />
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
                       name="password"
                       type={showPassword ? 'text' : 'password'}
@@ -157,7 +155,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                       placeholder={mode === 'register' ? 'Min 6 characters' : 'Enter your password'}
                       required
                       minLength={6}
-                      className="w-full bg-transparent text-sm text-white p-3.5 pl-11 pr-12 rounded-xl focus:outline-none placeholder:text-[#525252]"
+                      className="w-full bg-transparent text-sm text-gray-900 p-3.5 pl-11 pr-12 rounded-xl focus:outline-none placeholder:text-gray-400"
                     />
                     <button
                       type="button"
@@ -165,13 +163,13 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                       className="absolute inset-y-0 right-3 flex items-center"
                     >
                       {showPassword ? (
-                        <EyeOff className="w-4 h-4 text-[#A3A3A3] hover:text-white transition-colors" />
+                        <EyeOff className="w-4 h-4 text-gray-400 hover:text-gray-900 transition-colors" />
                       ) : (
-                        <Eye className="w-4 h-4 text-[#A3A3A3] hover:text-white transition-colors" />
+                        <Eye className="w-4 h-4 text-gray-400 hover:text-gray-900 transition-colors" />
                       )}
                     </button>
                   </div>
-                </GlassInputWrapper>
+                </InputWrapper>
               </div>
 
               {/* Remember me / Reset (login only) */}
@@ -181,11 +179,11 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                     <input
                       type="checkbox"
                       name="rememberMe"
-                      className="w-4 h-4 rounded border-white/20 bg-[#171717] accent-[#D4AF37] cursor-pointer"
+                      className="w-4 h-4 rounded border-gray-300 bg-white accent-gray-900 cursor-pointer"
                     />
-                    <span className="text-[#A3A3A3] text-xs">Keep me signed in</span>
+                    <span className="text-gray-500 text-xs">Keep me signed in</span>
                   </label>
-                  <button type="button" className="text-[#D4AF37] hover:underline text-xs transition-colors">
+                  <button type="button" className="text-gray-900 hover:underline text-xs transition-colors font-medium">
                     Reset password
                   </button>
                 </div>
@@ -193,7 +191,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
 
               {/* Error */}
               {error && (
-                <p className="text-red-400 text-xs text-center signin-animate">
+                <p className="text-red-600 text-xs text-center signin-animate">
                   {error}
                 </p>
               )}
@@ -202,11 +200,11 @@ export const SignInPage: React.FC<SignInPageProps> = ({
               <button
                 type="submit"
                 disabled={loading}
-                className="signin-animate signin-delay-600 gold-btn w-full h-14 rounded-2xl text-sm font-semibold mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="signin-animate signin-delay-600 black-btn w-full h-14 rounded-2xl text-sm font-semibold mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">
-                    <span className="w-4 h-4 border-2 border-[#0A0A0A] border-t-transparent rounded-full animate-spin" />
+                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                     Please wait...
                   </span>
                 ) : mode === 'login' ? (
@@ -219,18 +217,18 @@ export const SignInPage: React.FC<SignInPageProps> = ({
 
             {/* Divider */}
             <div className="signin-animate signin-delay-700 relative flex items-center justify-center">
-              <span className="w-full border-t border-white/10" />
-              <span className="px-4 text-xs text-[#525252] bg-[#0A0A0A] absolute whitespace-nowrap">Or continue with</span>
+              <span className="w-full border-t border-gray-200" />
+              <span className="px-4 text-xs text-gray-400 bg-gray-50 absolute whitespace-nowrap">Or continue with</span>
             </div>
 
             {/* Google button */}
-            <button className="signin-animate signin-delay-800 w-full flex items-center justify-center gap-3 border border-white/10 rounded-2xl py-3.5 text-sm text-[#A3A3A3] hover:text-white hover:border-[#D4AF37]/30 hover:bg-[#171717] transition-all">
+            <button className="signin-animate signin-delay-800 w-full flex items-center justify-center gap-3 border border-gray-200 rounded-2xl py-3.5 text-sm text-gray-600 hover:text-gray-900 hover:border-gray-400 hover:bg-gray-100 transition-all bg-white shadow-sm">
               <GoogleIcon />
               Continue with Google
             </button>
 
             {/* Footer */}
-            <p className="signin-animate signin-delay-900 text-center text-[#525252] text-xs mt-2">
+            <p className="signin-animate signin-delay-900 text-center text-gray-400 text-xs mt-2">
               By continuing, you agree to our Terms of Service and Privacy Policy.
             </p>
           </div>
@@ -245,22 +243,22 @@ export const SignInPage: React.FC<SignInPageProps> = ({
             style={{ backgroundImage: `url(${heroImageSrc})` }}
           >
             {/* Gradient overlay for branding */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/80 via-transparent to-[#0A0A0A]/20" />
+            <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-transparent to-white/20" />
 
             {/* Bottom branding on the hero */}
             <div className="absolute bottom-8 left-8 right-8">
-              <div className="glass-card rounded-2xl p-6">
-                <p className="text-white font-display text-xl font-bold">Chelsea Man Spa</p>
-                <p className="text-[#A3A3A3] text-sm mt-1">
+              <div className="white-card rounded-2xl p-6">
+                <p className="text-gray-900 font-display text-xl font-bold">Chelsea Man Spa</p>
+                <p className="text-gray-500 text-sm mt-1">
                   Dubai's premier men's grooming destination — where tradition meets modern luxury.
                 </p>
                 <div className="flex items-center gap-4 mt-3">
                   <div className="flex items-center gap-1">
-                    <span className="gold-gradient-text text-sm font-bold">4.9</span>
-                    <span className="text-[#D4AF37] text-xs">★★★★★</span>
+                    <span className="text-gray-900 text-sm font-bold">4.9</span>
+                    <span className="text-gray-900 text-xs">★★★★★</span>
                   </div>
-                  <span className="text-[#525252] text-xs">|</span>
-                  <span className="text-[#A3A3A3] text-xs">50K+ Happy Clients</span>
+                  <span className="text-gray-300 text-xs">|</span>
+                  <span className="text-gray-500 text-xs">50K+ Happy Clients</span>
                 </div>
               </div>
             </div>
