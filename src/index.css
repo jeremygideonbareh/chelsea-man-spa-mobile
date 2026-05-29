@@ -297,3 +297,125 @@
   animation: pulse-gold-glow 3s infinite ease-in-out;
 }
 
+/* ========== White Theme Utilities (Booking Flow) ========== */
+
+.white-card {
+  background: #FFFFFF;
+  border: 1px solid #E5E5E5;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+}
+
+.white-card-selected {
+  background: #FFFFFF;
+  border: 1px solid #111111;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.02);
+}
+
+.black-btn {
+  background: #111111;
+  color: #FFFFFF;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.black-btn:hover {
+  background: #2A2A2A;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.black-btn:active {
+  transform: scale(0.98);
+}
+
+.black-btn-outline {
+  background: transparent;
+  color: #111111;
+  border: 1px solid #D1D5DB;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.black-btn-outline:hover {
+  background: #F9FAFB;
+  border-color: #111111;
+}
+
+.black-btn-outline:active {
+  transform: scale(0.98);
+}
+
+/* Subtle grid background pattern */
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Refined input */
+.refined-input {
+  background: #FFFFFF;
+  border: 1px solid #E5E5E5;
+  color: #111111;
+  transition: all 0.2s ease;
+}
+
+.refined-input:focus {
+  outline: none;
+  border-color: #111111;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
+}
+
+.refined-input::placeholder {
+  color: #9CA3AF;
+}
+
+/* Toggle switch */
+.toggle-track {
+  width: 36px;
+  height: 20px;
+  border-radius: 999px;
+  position: relative;
+  transition: all 0.2s ease;
+  background: #E5E5E5;
+  cursor: pointer;
+}
+
+.toggle-track.active {
+  background: #111111;
+}
+
+.toggle-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  background: white;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+.toggle-track.active .toggle-thumb {
+  left: 18px;
+}
+
+/* Refined divider */
+.refined-divider {
+  height: 1px;
+  background: #EEEEEE;
+}
+
+/* White theme shimmer loading */
+@keyframes white-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-loading {
+  background: linear-gradient(90deg, #F3F4F6 0%, #E5E7EB 50%, #F3F4F6 100%);
+  background-size: 200% auto;
+  animation: white-shimmer 1.5s linear infinite;
+}
+

@@ -49,7 +49,7 @@ export default function BookingSheet({ isOpen, onClose, userId, userName = 'Gent
     try {
       let realCustomerId = userId;
 
-      // If it's a mock user, we need to create/find a real customer record to satisfy foreign keys
+      // If it's a mock user, create/find a real customer record for foreign keys
       if (userId.startsWith('mock-')) {
         try {
           const { data: custData } = await (supabase as any)
@@ -63,9 +63,9 @@ export default function BookingSheet({ isOpen, onClose, userId, userName = 'Gent
           } else {
             const { data: newCust } = await (supabase as any)
               .from('customers')
-              .insert([{ 
-                full_name: userName, 
-                email: `${userName.toLowerCase().replace(/\\s+/g, '.')}@example.com` 
+              .insert([{
+                full_name: userName,
+                email: `${userName.toLowerCase().replace(/\s+/g, '.')}@example.com`
               }])
               .select('id')
               .single();
@@ -83,7 +83,6 @@ export default function BookingSheet({ isOpen, onClose, userId, userName = 'Gent
         status: 'confirmed' as const,
       };
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { data, error: insertError } = await (supabase as any)
         .from('bookings')
         .insert([payload])
@@ -100,10 +99,9 @@ export default function BookingSheet({ isOpen, onClose, userId, userName = 'Gent
       flow.confirmBooking();
     } catch (err) {
       console.warn('Supabase booking write failed, falling back to localStorage:', err);
-      // Generate a mock ID and reference code
       const mockId = `mock-bk-${Date.now()}`;
       const ref = `CHL-MCK-${String(Date.now()).slice(-4)}`;
-      
+
       const localBooking = {
         id: mockId,
         customer_id: userId,
@@ -119,7 +117,7 @@ export default function BookingSheet({ isOpen, onClose, userId, userName = 'Gent
         const localBookings = JSON.parse(localStorage.getItem('chelsea_local_bookings') || '[]');
         localBookings.push(localBooking);
         localStorage.setItem('chelsea_local_bookings', JSON.stringify(localBookings));
-        
+
         setBookingRef(ref);
         flow.confirmBooking();
       } catch (storageErr) {
@@ -163,33 +161,33 @@ export default function BookingSheet({ isOpen, onClose, userId, userName = 'Gent
       `}</style>
 
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 backdrop-fade"
+        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 backdrop-fade"
         onClick={handleClose}
       />
 
-      <div className="fixed inset-x-0 bottom-0 z-50 bg-[#0A0A0A] rounded-t-3xl max-h-[92dvh] flex flex-col sheet-slide-in">
+      <div className="fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-3xl max-h-[92dvh] flex flex-col sheet-slide-in shadow-2xl">
         <div className="flex justify-center pt-3 pb-1">
-          <div className="w-10 h-1 bg-white/20 rounded-full" />
+          <div className="w-10 h-1 bg-gray-300 rounded-full" />
         </div>
 
-        <div className="flex items-center justify-between px-5 py-3 border-b border-white/5">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
           <div className="flex items-center gap-3">
             {flow.step < 5 && flow.step > 1 && (
               <button
                 onClick={flow.goBack}
-                className="w-8 h-8 flex items-center justify-center text-white"
+                className="w-8 h-8 flex items-center justify-center text-gray-700"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
             )}
-            <h2 className="text-white text-base font-semibold">
+            <h2 className="text-gray-900 text-base font-semibold">
               {stepTitles[flow.step] || 'Booking'}
             </h2>
           </div>
           {flow.step < 5 && (
             <button
               onClick={handleClose}
-              className="w-8 h-8 flex items-center justify-center text-[#A3A3A3]"
+              className="w-8 h-8 flex items-center justify-center text-gray-400"
             >
               <X className="w-5 h-5" />
             </button>
@@ -203,7 +201,7 @@ export default function BookingSheet({ isOpen, onClose, userId, userName = 'Gent
                 <div
                   key={s}
                   className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                    s <= flow.step ? 'bg-[#D4AF37]' : 'bg-white/10'
+                    s <= flow.step ? 'bg-gray-900' : 'bg-gray-200'
                   }`}
                 />
               ))}
@@ -213,8 +211,8 @@ export default function BookingSheet({ isOpen, onClose, userId, userName = 'Gent
 
         <div className="flex-1 overflow-y-auto scrollbar-hide px-5 pb-8">
           {error && (
-            <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 mb-4 step-content">
-              <p className="text-red-400 text-xs text-center">{error}</p>
+            <div className="bg-red-50 border border-red-200 rounded-xl p-3 mb-4 step-content">
+              <p className="text-red-600 text-xs text-center">{error}</p>
             </div>
           )}
 

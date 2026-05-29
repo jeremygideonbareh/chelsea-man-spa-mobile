@@ -28,16 +28,16 @@ export default function BottomNav({ activeTab, onTabChange, showManagerIcon }: B
             className="relative flex-1 flex flex-col items-center gap-0.5 py-2 rounded-full transition-all"
           >
             {isActive && (
-              <div className="absolute inset-0 bg-[#D4AF37]/10 rounded-full" />
+              <div className="absolute inset-0 bg-white/10 rounded-full" />
             )}
             <Icon
               className={`w-5 h-5 transition-colors relative z-10 ${
-                isActive ? 'text-[#D4AF37]' : 'text-[#525252]'
+                isActive ? 'text-white' : 'text-[#525252]'
               }`}
             />
             <span
               className={`text-[9px] font-medium transition-colors relative z-10 ${
-                isActive ? 'text-[#D4AF37]' : 'text-[#525252]'
+                isActive ? 'text-white' : 'text-[#525252]'
               }`}
             >
               {tab.label}
@@ -52,16 +52,16 @@ export default function BottomNav({ activeTab, onTabChange, showManagerIcon }: B
           className="relative flex flex-col items-center gap-0.5 py-2 px-3 rounded-full"
         >
           {activeTab === 'manager' && (
-            <div className="absolute inset-0 bg-[#D4AF37]/10 rounded-full" />
+            <div className="absolute inset-0 bg-white/10 rounded-full" />
           )}
           <Settings
             className={`w-5 h-5 transition-colors relative z-10 ${
-              activeTab === 'manager' ? 'text-[#D4AF37]' : 'text-[#525252]'
+              activeTab === 'manager' ? 'text-white' : 'text-[#525252]'
             }`}
           />
           <span
             className={`text-[9px] font-medium transition-colors relative z-10 ${
-              activeTab === 'manager' ? 'text-[#D4AF37]' : 'text-[#525252]'
+              activeTab === 'manager' ? 'text-white' : 'text-[#525252]'
             }`}
           >
             Admin

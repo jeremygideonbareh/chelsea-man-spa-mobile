@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Check, ToggleLeft, ToggleRight } from 'lucide-react';
+import { Check } from 'lucide-react';
 import type { Service, Profile } from '@/types';
 import { ADDONS, VAT_RATE } from '@/types';
 import { useCustomer } from '@/hooks/useServices';
@@ -27,7 +27,6 @@ export default function CheckoutSummary({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [customerName, setCustomerName] = useState('');
 
-  // Auto-fill name if available from profile
   useEffect(() => {
     if (customer?.full_name && !customerName) {
       setCustomerName(customer.full_name);
@@ -68,53 +67,53 @@ export default function CheckoutSummary({
   return (
     <div className="space-y-5">
       {/* Booking Summary Card */}
-      <div className="glass-card rounded-2xl p-4 space-y-3">
-        <h3 className="text-white text-sm font-semibold">Booking Summary</h3>
+      <div className="white-card rounded-2xl p-4 space-y-3">
+        <h3 className="text-gray-900 text-sm font-semibold">Booking Summary</h3>
 
         <div className="space-y-2.5">
           <div className="flex justify-between items-center">
-            <span className="text-[#A3A3A3] text-xs">Service</span>
-            <span className="text-white text-xs font-medium">{service.name}</span>
+            <span className="text-gray-500 text-xs">Service</span>
+            <span className="text-gray-900 text-xs font-medium">{service.name}</span>
           </div>
-          <div className="h-px bg-white/5" />
+          <div className="refined-divider" />
           <div className="flex justify-between items-center">
-            <span className="text-[#A3A3A3] text-xs">Stylist</span>
-            <span className="text-white text-xs font-medium">{stylist.full_name}</span>
+            <span className="text-gray-500 text-xs">Stylist</span>
+            <span className="text-gray-900 text-xs font-medium">{stylist.full_name}</span>
           </div>
-          <div className="h-px bg-white/5" />
+          <div className="refined-divider" />
           <div className="flex justify-between items-center">
-            <span className="text-[#A3A3A3] text-xs">Date & Time</span>
-            <span className="text-white text-xs font-medium">{formattedDate}, {formattedTime}</span>
+            <span className="text-gray-500 text-xs">Date & Time</span>
+            <span className="text-gray-900 text-xs font-medium">{formattedDate}, {formattedTime}</span>
           </div>
         </div>
       </div>
 
       {/* Customer Info */}
-      <div className="glass-card rounded-2xl p-4 space-y-3">
-        <h3 className="text-white text-sm font-semibold">Your Details</h3>
+      <div className="white-card rounded-2xl p-4 space-y-3">
+        <h3 className="text-gray-900 text-sm font-semibold">Your Details</h3>
         <div>
-          <label className="block text-[#A3A3A3] text-xs mb-1.5">Full Name *</label>
+          <label className="block text-gray-500 text-xs mb-1.5">Full Name *</label>
           <input
             type="text"
             value={customerName}
             onChange={(e) => setCustomerName(e.target.value)}
             placeholder="Enter your name"
-            className="w-full px-3 py-2.5 rounded-xl bg-[#0A0A0A] border border-white/10 text-white text-sm focus:outline-none focus:border-[#D4AF37] transition-colors"
+            className="w-full px-3 py-2.5 rounded-xl refined-input"
             required
           />
         </div>
         {customer?.email && (
           <div className="flex justify-between items-center mt-2">
-            <span className="text-[#A3A3A3] text-xs">Email</span>
-            <span className="text-white text-xs font-medium">{customer.email}</span>
+            <span className="text-gray-500 text-xs">Email</span>
+            <span className="text-gray-900 text-xs font-medium">{customer.email}</span>
           </div>
         )}
       </div>
 
       {/* Add-ons */}
-      <div className="glass-card rounded-2xl p-4 space-y-3">
-        <h3 className="text-white text-sm font-semibold">Enhance Your Visit</h3>
-        <p className="text-[#A3A3A3] text-[10px]">Optional add-ons to elevate your experience</p>
+      <div className="white-card rounded-2xl p-4 space-y-3">
+        <h3 className="text-gray-900 text-sm font-semibold">Enhance Your Visit</h3>
+        <p className="text-gray-400 text-[10px]">Optional add-ons to elevate your experience</p>
 
         {ADDONS.map((addon) => {
           const isActive = addon.id === 'scalp-massage' ? addons.scalpMassage : addons.luxuryTreatment;
@@ -123,25 +122,23 @@ export default function CheckoutSummary({
             <button
               key={addon.id}
               className={`w-full flex items-center justify-between p-3 rounded-xl transition-all active:scale-[0.98] ${
-                isActive ? 'bg-[#D4AF37]/10 border border-[#D4AF37]/30' : 'bg-[#171717] border border-white/5'
+                isActive ? 'bg-gray-50 border border-gray-300' : 'bg-white border border-gray-100'
               }`}
               onClick={() => onToggleAddon(toggleKey as 'scalpMassage' | 'luxuryTreatment')}
             >
               <div className="text-left">
-                <span className={`text-xs font-medium ${isActive ? 'text-[#D4AF37]' : 'text-white'}`}>
+                <span className={`text-xs font-medium ${isActive ? 'text-gray-900' : 'text-gray-700'}`}>
                   {addon.name}
                 </span>
-                <p className="text-[#A3A3A3] text-[10px]">+{addon.duration} min</p>
+                <p className="text-gray-400 text-[10px]">+{addon.duration} min</p>
               </div>
               <div className="flex items-center gap-2">
-                <span className={`text-xs font-semibold ${isActive ? 'text-[#D4AF37]' : 'text-white'}`}>
+                <span className={`text-xs font-semibold ${isActive ? 'text-gray-900' : 'text-gray-500'}`}>
                   +AED {addon.price}
                 </span>
-                {isActive ? (
-                  <ToggleRight className="w-5 h-5 text-[#D4AF37]" />
-                ) : (
-                  <ToggleLeft className="w-5 h-5 text-[#525252]" />
-                )}
+                <div className={`toggle-track ${isActive ? 'active' : ''}`}>
+                  <div className="toggle-thumb" />
+                </div>
               </div>
             </button>
           );
@@ -149,41 +146,41 @@ export default function CheckoutSummary({
       </div>
 
       {/* Price Breakdown */}
-      <div className="glass-card rounded-2xl p-4 space-y-2.5">
+      <div className="white-card rounded-2xl p-4 space-y-2.5">
         <div className="flex justify-between items-center">
-          <span className="text-[#A3A3A3] text-xs">Service</span>
-          <span className="text-white text-xs">AED {servicePrice.toFixed(2)}</span>
+          <span className="text-gray-500 text-xs">Service</span>
+          <span className="text-gray-900 text-xs">AED {servicePrice.toFixed(2)}</span>
         </div>
         {addonTotal > 0 && (
           <div className="flex justify-between items-center">
-            <span className="text-[#A3A3A3] text-xs">Add-ons</span>
-            <span className="text-[#D4AF37] text-xs">AED {addonTotal.toFixed(2)}</span>
+            <span className="text-gray-500 text-xs">Add-ons</span>
+            <span className="text-gray-900 text-xs">AED {addonTotal.toFixed(2)}</span>
           </div>
         )}
         <div className="flex justify-between items-center">
-          <span className="text-[#A3A3A3] text-xs">Subtotal</span>
-          <span className="text-white text-xs">AED {subtotal.toFixed(2)}</span>
+          <span className="text-gray-500 text-xs">Subtotal</span>
+          <span className="text-gray-900 text-xs">AED {subtotal.toFixed(2)}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-[#A3A3A3] text-xs">VAT (5%)</span>
-          <span className="text-white text-xs">AED {vat.toFixed(2)}</span>
+          <span className="text-gray-500 text-xs">VAT (5%)</span>
+          <span className="text-gray-900 text-xs">AED {vat.toFixed(2)}</span>
         </div>
-        <div className="h-px bg-white/10" />
+        <div className="refined-divider" />
         <div className="flex justify-between items-center">
-          <span className="text-white text-sm font-semibold">Grand Total</span>
-          <span className="text-[#D4AF37] text-lg font-bold">AED {grandTotal.toFixed(2)}</span>
+          <span className="text-gray-900 text-sm font-semibold">Grand Total</span>
+          <span className="text-gray-900 text-lg font-bold">AED {grandTotal.toFixed(2)}</span>
         </div>
       </div>
 
       {/* Confirm Button */}
       <button
-        className="gold-btn w-full h-14 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
+        className="black-btn w-full h-14 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
         onClick={handleConfirm}
         disabled={isSubmitting}
       >
         {isSubmitting ? (
           <>
-            <span className="w-4 h-4 border-2 border-[#0A0A0A] border-t-transparent rounded-full animate-spin" />
+            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
             Processing...
           </>
         ) : (
