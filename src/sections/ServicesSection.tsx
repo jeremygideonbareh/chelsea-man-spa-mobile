@@ -1,43 +1,90 @@
 import { useNavigate } from 'react-router';
-import { Scissors, Sparkles, Droplets, Flame, ChevronRight, Clock } from 'lucide-react';
+import { Scissors, Palette, Sparkles, Heart, Sun, Wind, Clock, ChevronRight } from 'lucide-react';
 import { FadeIn } from '@/components/Animate';
 
-const services = [
+interface ServiceItem {
+  name: string;
+  duration: string;
+  price: string;
+}
+
+interface CategoryGroup {
+  name: string;
+  icon: any;
+  items: ServiceItem[];
+}
+
+const categories: CategoryGroup[] = [
   {
-    id: 1,
-    title: 'Signature Cut',
-    description: 'Precision haircut tailored to your face shape and personal style.',
-    image: 'images/signaturecut.jpg',
+    name: 'Haircut & Styling',
     icon: Scissors,
-    duration: '45 min',
-    price: 'AED 150',
+    items: [
+      { name: 'Hair Cut & Beard', duration: '1 hr', price: 'AED 190' },
+      { name: "Men's Hair Cut", duration: '30 min', price: 'AED 130' },
+      { name: 'Skin Fade (Perfect Skin Fade Hair Cut)', duration: '30 min', price: 'AED 160' },
+      { name: 'Buzz Cut', duration: '20 min', price: 'AED 110' },
+      { name: 'Kids Hair Cut (Juniors)', duration: '30 min', price: 'AED 110' },
+      { name: 'Line Up & Clean The Neck (From the back)', duration: '15 min', price: 'AED 55' },
+      { name: 'Hair Wash and Blow Dry', duration: '15 min', price: 'AED 80' },
+    ],
   },
   {
-    id: 2,
-    title: 'Beard Sculpting',
-    description: 'Masterful beard shaping with straight razor finish.',
-    image: 'images/beardsculpting.jpg',
+    name: 'Hair Color & Treatments',
+    icon: Palette,
+    items: [
+      { name: 'Shades of Colors (Zero Ammonia)', duration: '15 min', price: 'AED 160' },
+      { name: 'Hair Color for Men', duration: '40 min', price: 'AED 160' },
+      { name: 'Silver Hair Color', duration: '1 hr', price: 'AED 600' },
+      { name: 'Highlights (Short Hair)', duration: '1 hr', price: 'AED 360' },
+      { name: 'Highlights (Long Hair)', duration: '1 hr', price: 'AED 485' },
+      { name: 'Beard Color / Dye', duration: '15 min', price: 'AED 80' },
+      { name: 'Mask Hair Treatment (Deep conditioning)', duration: '15 min', price: 'AED 150' },
+      { name: 'Keratin Treatment', duration: '1 hr', price: 'AED 550' },
+      { name: 'Collagen Hair Treatment', duration: '1 hr', price: 'AED 600' },
+    ],
+  },
+  {
+    name: 'Shaving & Beard Care',
     icon: Sparkles,
-    duration: '30 min',
-    price: 'AED 100',
+    items: [
+      { name: 'Beard Style (Trim/Shaping)', duration: '30 min', price: 'AED 80' },
+      { name: 'Royal Shave Spa', duration: '30 min', price: 'AED 160' },
+      { name: 'Shave (Razor / Straight Razor)', duration: '15 min', price: 'AED 65' },
+      { name: 'Express Shave Machine', duration: '15 min', price: 'AED 60' },
+    ],
   },
   {
-    id: 3,
-    title: "Gentleman's Facial",
-    description: 'Rejuvenating facial treatment designed specifically for men.',
-    image: 'images/facial.jpg',
-    icon: Droplets,
-    duration: '60 min',
-    price: 'AED 250',
+    name: 'Nail Care & Grooming',
+    icon: Heart,
+    items: [
+      { name: 'Manicure', duration: '30 min', price: 'AED 90' },
+      { name: 'Pedicure', duration: '45 min', price: 'AED 120' },
+      { name: 'Manicure & Pedicure', duration: '1 hr', price: 'AED 190' },
+      { name: 'Spa Manicure', duration: '1 hr', price: 'AED 150' },
+      { name: 'Spa Pedicure', duration: '1 hr', price: 'AED 180' },
+      { name: 'Nails Cut & Shape', duration: '1 hr', price: 'AED 60' },
+      { name: 'Paraffin Wax Treatments (Feet and Hands)', duration: '1 hr', price: 'AED 200' },
+    ],
   },
   {
-    id: 4,
-    title: 'Hot Stone Massage',
-    description: 'Deep relaxation with heated basalt stones and aromatherapy.',
-    image: 'images/stonemassage.jpg',
-    icon: Flame,
-    duration: '75 min',
-    price: 'AED 300',
+    name: 'Skincare & Massages',
+    icon: Sun,
+    items: [
+      { name: 'Soothing Facial', duration: '1 hr', price: 'AED 250' },
+      { name: 'Facial Deep Cleansing Skin', duration: '1 hr', price: 'AED 400' },
+      { name: 'Facial for Sensitive Skin', duration: '1 hr', price: 'AED 350' },
+      { name: 'Face Massage', duration: '—', price: 'AED 50' },
+    ],
+  },
+  {
+    name: 'Waxing & Hair Removal',
+    icon: Wind,
+    items: [
+      { name: 'Underarms Waxing', duration: '1 hr', price: 'AED 60' },
+      { name: 'Full Arms/Legs Wax Hair Removal', duration: '1 hr', price: 'AED 150' },
+      { name: 'Full Chest Wax Hair Removal', duration: '1 hr', price: 'AED 100' },
+      { name: 'Full Back Wax Hair Removal', duration: '1 hr', price: 'AED 150' },
+    ],
   },
 ];
 
@@ -45,82 +92,71 @@ export default function ServicesSection() {
   const navigate = useNavigate();
 
   return (
-    <section className="relative bg-white py-24 px-6">
-      <div className="max-w-6xl mx-auto">
+    <section className="relative bg-white py-24 px-6" id="services">
+      <div className="max-w-4xl mx-auto">
         <FadeIn className="text-center mb-16">
           <span className="text-amber-500 text-xs tracking-[0.3em] uppercase font-medium">
             Our Services
           </span>
           <h2 className="font-display text-4xl md:text-5xl font-bold text-slate-800 mt-4 leading-tight">
-            The Chelsea Experience
+            The Chelsea Menu
           </h2>
           <p className="text-slate-500 mt-4 max-w-lg mx-auto text-sm leading-relaxed">
-            Every service is performed with meticulous attention to detail
-            using premium products and techniques.
+            Premium grooming and self-care services tailored for the modern gentleman.
           </p>
         </FadeIn>
 
-        {/* Service Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {services.map((service, index) => {
-            const Icon = service.icon;
+        <div className="space-y-10">
+          {categories.map((cat, catIndex) => {
+            const Icon = cat.icon;
             return (
-              <FadeIn key={service.id} delay={index * 0.1} direction="up">
-                <button
-                  onClick={() => navigate('/login')}
-                  className="group w-full text-left amber-card rounded-2xl overflow-hidden hover:border-amber-500/30 hover:shadow-md transition-all duration-300 h-full"
-                >
-                  <div className="flex flex-col sm:flex-row h-full">
-                    {/* Image */}
-                    <div className="relative w-full sm:w-48 h-48 overflow-hidden flex-shrink-0">
-                      <img
-                        src={service.image}
-                        alt={service.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                      <div className="absolute top-3 left-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur border border-slate-200 flex items-center justify-center shadow-sm">
-                        <Icon className="w-4 h-4 text-amber-500" />
-                      </div>
+              <FadeIn key={cat.name} delay={catIndex * 0.08} direction="up">
+                <div className="white-card rounded-2xl overflow-hidden border border-slate-100">
+                  <div className="flex items-center gap-3 px-6 py-4 bg-slate-50 border-b border-slate-100">
+                    <div className="w-9 h-9 rounded-full bg-amber-100 flex items-center justify-center">
+                      <Icon className="w-4.5 h-4.5 text-amber-600" />
                     </div>
-
-                    {/* Content */}
-                    <div className="flex-1 p-5 flex flex-col justify-between min-h-[180px]">
-                      <div>
-                        <div className="flex items-start justify-between gap-2">
-                          <h3 className="text-slate-800 text-lg font-semibold">{service.title}</h3>
-                          <span className="text-amber-600 text-sm font-semibold whitespace-nowrap">{service.price}</span>
-                        </div>
-                        <p className="text-slate-500 text-sm mt-2 leading-relaxed">
-                          {service.description}
-                        </p>
-                      </div>
-                      <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100">
-                        <span className="flex items-center gap-1.5 text-slate-400 text-xs">
-                          <Clock className="w-3.5 h-3.5" />
-                          {service.duration}
-                        </span>
-                        <span className="text-amber-500 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
-                          Book Now <ChevronRight className="w-4 h-4" />
-                        </span>
-                      </div>
-                    </div>
+                    <h3 className="text-slate-800 text-base font-semibold tracking-wide">
+                      {cat.name}
+                    </h3>
                   </div>
-                </button>
+                  <div className="divide-y divide-slate-50">
+                    {cat.items.map((item) => (
+                      <button
+                        key={item.name}
+                        onClick={() => navigate('/login')}
+                        className="w-full text-left px-6 py-3.5 flex items-center justify-between gap-4 hover:bg-amber-50/50 transition-colors group"
+                      >
+                        <span className="text-slate-700 text-sm font-medium group-hover:text-slate-900 transition-colors">
+                          {item.name}
+                        </span>
+                        <div className="flex items-center gap-3 flex-shrink-0">
+                          <span className="flex items-center gap-1 text-slate-400 text-xs whitespace-nowrap">
+                            <Clock className="w-3 h-3" />
+                            {item.duration}
+                          </span>
+                          <span className="text-amber-600 text-sm font-semibold whitespace-nowrap min-w-[5rem] text-right">
+                            {item.price}
+                          </span>
+                          <ChevronRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-amber-500 group-hover:translate-x-0.5 transition-all" />
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </FadeIn>
             );
           })}
         </div>
 
-        {/* CTA */}
-        <div className="flex justify-center mt-12">
+        <FadeIn className="flex justify-center mt-12" delay={0.3} direction="up">
           <button
             onClick={() => navigate('/login')}
-            className="amber-btn-outline px-8 py-3 rounded-full text-sm font-semibold"
+            className="amber-btn px-10 py-3.5 rounded-full text-sm font-semibold shadow-lg shadow-amber-500/20"
           >
-            View All Services
+            Book Your Appointment
           </button>
-        </div>
+        </FadeIn>
       </div>
     </section>
   );

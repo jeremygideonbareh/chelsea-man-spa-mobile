@@ -9,43 +9,51 @@ interface StylistWithAvatar {
   avatar_url: string;
 }
 
+const CATEGORY_IMAGES: Record<string, string> = {
+  'Haircut & Styling': 'images/service-haircut.jpg',
+  'Hair Color & Treatments': 'images/service-haircut.jpg',
+  'Shaving & Beard Care': 'images/service-beard.jpg',
+  'Nail Care & Grooming': 'images/service-facial.jpg',
+  'Skincare & Massages': 'images/service-facial.jpg',
+  'Waxing & Hair Removal': 'images/service-massage.jpg',
+};
+
 const DEFAULT_SERVICES: Service[] = [
-  {
-    id: 'svc-1',
-    name: 'Classic Haircut',
-    price: 95,
-    duration_minutes: 45,
-    category: 'Hair',
-    image_url: 'images/service-haircut.jpg',
-    description: 'Premium haircut tailored to your style.'
-  },
-  {
-    id: 'svc-2',
-    name: 'Beard Grooming & Trim',
-    price: 65,
-    duration_minutes: 30,
-    category: 'Beard',
-    image_url: 'images/service-beard.jpg',
-    description: 'Beard shaping, line-up, and beard oil treatment.'
-  },
-  {
-    id: 'svc-3',
-    name: 'Signature Facial Spa',
-    price: 150,
-    duration_minutes: 60,
-    category: 'Spa',
-    image_url: 'images/service-facial.jpg',
-    description: 'Deep cleansing and skin rejuvenation facial.'
-  },
-  {
-    id: 'svc-4',
-    name: 'Royal Hot Stone Massage',
-    price: 220,
-    duration_minutes: 90,
-    category: 'Spa',
-    image_url: 'images/service-massage.jpg',
-    description: 'Ultimate relaxation massage using heated volcanic stones.'
-  },
+  { id: 'svc-hc1', name: 'Hair Cut & Beard', price: 190, duration_minutes: 60, category: 'Haircut & Styling', image_url: 'images/service-haircut.jpg', description: 'Complete haircut with beard trim and shaping.' },
+  { id: 'svc-hc2', name: "Men's Hair Cut", price: 130, duration_minutes: 30, category: 'Haircut & Styling', image_url: 'images/service-haircut.jpg', description: 'Precision haircut tailored to your style.' },
+  { id: 'svc-hc3', name: 'Skin Fade (Perfect Skin Fade Hair Cut)', price: 160, duration_minutes: 30, category: 'Haircut & Styling', image_url: 'images/service-haircut.jpg', description: 'Perfect skin fade haircut for a clean look.' },
+  { id: 'svc-hc4', name: 'Buzz Cut', price: 110, duration_minutes: 20, category: 'Haircut & Styling', image_url: 'images/service-haircut.jpg', description: 'Quick and clean buzz cut.' },
+  { id: 'svc-hc5', name: 'Kids Hair Cut (Juniors)', price: 110, duration_minutes: 30, category: 'Haircut & Styling', image_url: 'images/service-haircut.jpg', description: 'Haircut for juniors in a comfortable setting.' },
+  { id: 'svc-hc6', name: 'Line Up & Clean The Neck (From the back)', price: 55, duration_minutes: 15, category: 'Haircut & Styling', image_url: 'images/service-haircut.jpg', description: 'Neat line up and neck clean-up.' },
+  { id: 'svc-hc7', name: 'Hair Wash and Blow Dry', price: 80, duration_minutes: 15, category: 'Haircut & Styling', image_url: 'images/service-haircut.jpg', description: 'Refreshing hair wash with blow dry finish.' },
+  { id: 'svc-col1', name: 'Shades of Colors (Zero Ammonia)', price: 160, duration_minutes: 15, category: 'Hair Color & Treatments', image_url: 'images/service-haircut.jpg', description: 'Ammonia-free color shades for a natural look.' },
+  { id: 'svc-col2', name: 'Hair Color for Men', price: 160, duration_minutes: 40, category: 'Hair Color & Treatments', image_url: 'images/service-haircut.jpg', description: 'Professional hair color application for men.' },
+  { id: 'svc-col3', name: 'Silver Hair Color', price: 600, duration_minutes: 60, category: 'Hair Color & Treatments', image_url: 'images/service-haircut.jpg', description: 'Premium silver hair color treatment.' },
+  { id: 'svc-col4', name: 'Highlights (Short Hair)', price: 360, duration_minutes: 60, category: 'Hair Color & Treatments', image_url: 'images/service-haircut.jpg', description: 'Professional highlights for short hair.' },
+  { id: 'svc-col5', name: 'Highlights (Long Hair)', price: 485, duration_minutes: 60, category: 'Hair Color & Treatments', image_url: 'images/service-haircut.jpg', description: 'Professional highlights for long hair.' },
+  { id: 'svc-col6', name: 'Beard Color / Dye', price: 80, duration_minutes: 15, category: 'Hair Color & Treatments', image_url: 'images/service-beard.jpg', description: 'Beard color and dye application.' },
+  { id: 'svc-col7', name: 'Mask Hair Treatment (Deep conditioning)', price: 150, duration_minutes: 15, category: 'Hair Color & Treatments', image_url: 'images/service-haircut.jpg', description: 'Deep conditioning mask treatment for healthy hair.' },
+  { id: 'svc-col8', name: 'Keratin Treatment', price: 550, duration_minutes: 60, category: 'Hair Color & Treatments', image_url: 'images/service-haircut.jpg', description: 'Smoothing keratin treatment for frizz-free hair.' },
+  { id: 'svc-col9', name: 'Collagen Hair Treatment', price: 600, duration_minutes: 60, category: 'Hair Color & Treatments', image_url: 'images/service-haircut.jpg', description: 'Collagen hair restoration treatment.' },
+  { id: 'svc-sv1', name: 'Beard Style (Trim/Shaping)', price: 80, duration_minutes: 30, category: 'Shaving & Beard Care', image_url: 'images/service-beard.jpg', description: 'Beard trim and shaping for a sharp look.' },
+  { id: 'svc-sv2', name: 'Royal Shave Spa', price: 160, duration_minutes: 30, category: 'Shaving & Beard Care', image_url: 'images/service-beard.jpg', description: 'Luxurious straight razor shave with hot towels.' },
+  { id: 'svc-sv3', name: 'Shave (Razor / Straight Razor)', price: 65, duration_minutes: 15, category: 'Shaving & Beard Care', image_url: 'images/service-beard.jpg', description: 'Clean shave with razor or straight razor.' },
+  { id: 'svc-sv4', name: 'Express Shave Machine', price: 60, duration_minutes: 15, category: 'Shaving & Beard Care', image_url: 'images/service-beard.jpg', description: 'Quick and precise machine shave.' },
+  { id: 'svc-nl1', name: 'Manicure', price: 90, duration_minutes: 30, category: 'Nail Care & Grooming', image_url: 'images/service-facial.jpg', description: 'Professional manicure for well-groomed hands.' },
+  { id: 'svc-nl2', name: 'Pedicure', price: 120, duration_minutes: 45, category: 'Nail Care & Grooming', image_url: 'images/service-facial.jpg', description: 'Professional pedicure for refreshed feet.' },
+  { id: 'svc-nl3', name: 'Manicure & Pedicure', price: 190, duration_minutes: 60, category: 'Nail Care & Grooming', image_url: 'images/service-facial.jpg', description: 'Complete hand and foot grooming package.' },
+  { id: 'svc-nl4', name: 'Spa Manicure', price: 150, duration_minutes: 60, category: 'Nail Care & Grooming', image_url: 'images/service-facial.jpg', description: 'Luxury spa manicure experience.' },
+  { id: 'svc-nl5', name: 'Spa Pedicure', price: 180, duration_minutes: 60, category: 'Nail Care & Grooming', image_url: 'images/service-facial.jpg', description: 'Luxury spa pedicure experience.' },
+  { id: 'svc-nl6', name: 'Nails Cut & Shape', price: 60, duration_minutes: 60, category: 'Nail Care & Grooming', image_url: 'images/service-facial.jpg', description: 'Nail cutting and shaping service.' },
+  { id: 'svc-nl7', name: 'Paraffin Wax Treatments (Feet and Hands)', price: 200, duration_minutes: 60, category: 'Nail Care & Grooming', image_url: 'images/service-facial.jpg', description: 'Paraffin wax treatment for soft hands and feet.' },
+  { id: 'svc-sk1', name: 'Soothing Facial', price: 250, duration_minutes: 60, category: 'Skincare & Massages', image_url: 'images/service-facial.jpg', description: 'Relaxing and rejuvenating facial treatment.' },
+  { id: 'svc-sk2', name: 'Facial Deep Cleansing Skin', price: 400, duration_minutes: 60, category: 'Skincare & Massages', image_url: 'images/service-facial.jpg', description: 'Deep cleansing facial for clear, healthy skin.' },
+  { id: 'svc-sk3', name: 'Facial for Sensitive Skin', price: 350, duration_minutes: 60, category: 'Skincare & Massages', image_url: 'images/service-facial.jpg', description: 'Gentle facial treatment for sensitive skin.' },
+  { id: 'svc-sk4', name: 'Face Massage', price: 50, duration_minutes: 15, category: 'Skincare & Massages', image_url: 'images/service-facial.jpg', description: 'Quick face massage for relaxation.' },
+  { id: 'svc-wx1', name: 'Underarms Waxing', price: 60, duration_minutes: 60, category: 'Waxing & Hair Removal', image_url: 'images/service-massage.jpg', description: 'Underarm waxing for smooth skin.' },
+  { id: 'svc-wx2', name: 'Full Arms/Legs Wax Hair Removal', price: 150, duration_minutes: 60, category: 'Waxing & Hair Removal', image_url: 'images/service-massage.jpg', description: 'Full arm or leg waxing service.' },
+  { id: 'svc-wx3', name: 'Full Chest Wax Hair Removal', price: 100, duration_minutes: 60, category: 'Waxing & Hair Removal', image_url: 'images/service-massage.jpg', description: 'Full chest waxing for a smooth look.' },
+  { id: 'svc-wx4', name: 'Full Back Wax Hair Removal', price: 150, duration_minutes: 60, category: 'Waxing & Hair Removal', image_url: 'images/service-massage.jpg', description: 'Full back waxing service.' },
 ];
 
 const DEFAULT_STYLISTS = [
@@ -77,27 +85,26 @@ function getLocalStorageArray<T>(key: string, defaultVal: T[]): T[] {
 
 function getServiceCategory(name: string): string {
   const n = name.toLowerCase();
-  if (n.includes('beard') || n.includes('shave') || n.includes('mustache') || n.includes('trim')) {
-    return 'Beard';
+  if (n.includes('beard') || n.includes('shave') || n.includes('shaver') || n.includes('razor')) {
+    return 'Shaving & Beard Care';
   }
-  if (n.includes('spa') || n.includes('facial') || n.includes('massage') || n.includes('scrub') || n.includes('towel') || n.includes('stone') || n.includes('wash')) {
-    return 'Spa';
+  if (n.includes('color') || n.includes('dye') || n.includes('highlight') || n.includes('keratin') || n.includes('collagen') || n.includes('treatment') || n.includes('mask')) {
+    return 'Hair Color & Treatments';
   }
-  return 'Hair';
+  if (n.includes('manicure') || n.includes('pedicure') || n.includes('nail') || n.includes('paraffin') || n.includes('wax')) {
+    return 'Nail Care & Grooming';
+  }
+  if (n.includes('facial') || n.includes('massage') || n.includes('skincare')) {
+    return 'Skincare & Massages';
+  }
+  if (n.includes('waxing') || n.includes('hair removal')) {
+    return 'Waxing & Hair Removal';
+  }
+  return 'Haircut & Styling';
 }
 
 function getServiceImageUrl(name: string, category: string): string {
-  const cat = category.toLowerCase();
-  if (cat === 'beard') {
-    return 'images/service-beard.jpg';
-  }
-  if (cat === 'spa') {
-    if (name.toLowerCase().includes('massage')) {
-      return 'images/service-massage.jpg';
-    }
-    return 'images/service-facial.jpg';
-  }
-  return 'images/service-haircut.jpg';
+  return CATEGORY_IMAGES[category] || 'images/service-haircut.jpg';
 }
 
 export function useServices() {

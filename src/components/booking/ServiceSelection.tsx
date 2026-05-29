@@ -7,7 +7,7 @@ interface ServiceSelectionProps {
   onSelect: (service: Service) => void;
 }
 
-const categories = ['All', 'Hair', 'Beard', 'Spa'];
+const categories = ['All', 'Haircut & Styling', 'Hair Color & Treatments', 'Shaving & Beard Care', 'Nail Care & Grooming', 'Skincare & Massages', 'Waxing & Hair Removal'];
 
 export default function ServiceSelection({ onSelect }: ServiceSelectionProps) {
   const { services, loading } = useServices();
