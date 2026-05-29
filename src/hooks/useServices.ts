@@ -140,40 +140,11 @@ export function useServices() {
         };
       });
 
-      const localCustom = getLocalStorageArray('chelsea_local_services', DEFAULT_SERVICES);
-      const mappedLocalCustom = localCustom.map((svc: any) => {
-        const category = svc.category || getServiceCategory(svc.name || '');
-        const image_url = svc.image_url || getServiceImageUrl(svc.name || '', category);
-        return {
-          ...svc,
-          category,
-          image_url
-        };
-      });
-
-      // Merge: local customized versions take precedence (override database categories/descriptions/etc.)
-      const combined = mappedDbServices.map((dbSvc) => {
-        const localVersion = mappedLocalCustom.find((s: any) => s.id === dbSvc.id);
-        if (localVersion) {
-          return {
-            ...dbSvc,
-            ...localVersion,
-          };
-        }
-        return dbSvc;
-      });
-
-      mappedLocalCustom.forEach((customSvc: any) => {
-        if (!combined.some(s => s.id === customSvc.id)) {
-          combined.push(customSvc);
-        }
-      });
-
-      setServices(combined);
+      // When DB returns services, use them directly (ignore stale localStorage cache)
+      setServices(mappedDbServices);
     } catch (err) {
-      console.warn('Failed to fetch services from DB, using localStorage:', err);
-      const localServices = getLocalStorageArray('chelsea_local_services', DEFAULT_SERVICES);
-      const mappedLocal = localServices.map((svc: any) => {
+      console.warn('Failed to fetch services from DB, using defaults:', err);
+      const mappedLocal = DEFAULT_SERVICES.map((svc: any) => {
         const category = svc.category || getServiceCategory(svc.name || '');
         const image_url = svc.image_url || getServiceImageUrl(svc.name || '', category);
         return {

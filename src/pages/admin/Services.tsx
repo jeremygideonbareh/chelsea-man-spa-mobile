@@ -144,38 +144,10 @@ export default function AdminServices() {
         };
       });
 
-      const localCustom = getLocalStorageArray('chelsea_local_services', DEFAULT_SERVICES);
-      const mappedLocalCustom = localCustom.map((svc: any) => {
-        const category = svc.category || getServiceCategory(svc.name || '');
-        const image_url = svc.image_url || getServiceImageUrl(svc.name || '', category);
-        return {
-          ...svc,
-          category,
-          image_url
-        };
-      });
-
-      const combined = mappedDbServices.map((dbSvc) => {
-        const localVersion = mappedLocalCustom.find((s: any) => s.id === dbSvc.id);
-        if (localVersion) {
-          return {
-            ...dbSvc,
-            ...localVersion,
-          };
-        }
-        return dbSvc;
-      });
-
-      mappedLocalCustom.forEach((customSvc: any) => {
-        if (!combined.some(s => s.id === customSvc.id)) {
-          combined.push(customSvc);
-        }
-      });
-      setServices(combined);
+      setServices(mappedDbServices);
     } catch (e) {
-      console.warn('Failed to load services from DB, using localStorage:', e);
-      const localServices = getLocalStorageArray('chelsea_local_services', DEFAULT_SERVICES);
-      const mappedLocal = localServices.map((svc: any) => {
+      console.warn('Failed to load services from DB, using defaults:', e);
+      const mappedLocal = DEFAULT_SERVICES.map((svc: any) => {
         const category = svc.category || getServiceCategory(svc.name || '');
         const image_url = svc.image_url || getServiceImageUrl(svc.name || '', category);
         return {
