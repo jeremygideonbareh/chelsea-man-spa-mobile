@@ -166,7 +166,13 @@ function renderServices() {
         + '<div class="s-price">AED ' + (s.price != null ? Number(s.price).toLocaleString() : '—') + '</div>'
         + duration
         + '</div>';
-      card.addEventListener('click', function () {
+      card.addEventListener('click', async function () {
+        var { data: { session } } = await window.supabaseClient.auth.getSession();
+        if (!session) {
+          localStorage.setItem('redirectAfterLogin', window.location.href);
+          window.location.href = 'login.html';
+          return;
+        }
         bookingState.serviceId = s.id;
         bookingState.serviceName = s.name || '';
         bookingState.servicePrice = s.price || 0;

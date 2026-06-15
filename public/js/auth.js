@@ -37,7 +37,9 @@ window.signIn = async function (email, password) {
 
     if (profile) {
       localStorage.setItem('userRole', profile.role);
-      window.location.href = 'index.html';
+      var redirect = localStorage.getItem('redirectAfterLogin');
+      localStorage.removeItem('redirectAfterLogin');
+      window.location.href = redirect || 'index.html';
       return;
     }
 
@@ -49,7 +51,9 @@ window.signIn = async function (email, password) {
 
     if (customer) {
       localStorage.setItem('userRole', 'customer');
-      window.location.href = 'index.html';
+      var redirect = localStorage.getItem('redirectAfterLogin');
+      localStorage.removeItem('redirectAfterLogin');
+      window.location.href = redirect || 'index.html';
       return;
     }
 
@@ -93,7 +97,7 @@ async function logout() {
   await window.supabaseClient.auth.signOut();
   localStorage.clear();
   sessionStorage.clear();
-  location.reload();
+  window.location.href = 'login.html';
 }
 
 function onAuthStateChange(callback) {
