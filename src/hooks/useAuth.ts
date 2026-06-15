@@ -20,7 +20,23 @@ export function useAuth() {
     isAuthenticated: false,
   });
 
+  const isAdminEmail = useCallback((email: string): boolean => {
+    const lower = email.toLowerCase();
+    return lower.startsWith('admin') || lower.includes('+admin') || lower.includes('admin@') || ['princeraymondpaul911@gmail.com', 'cloudlyconfusing@gmail.com'].includes(lower);
+  }, []);
+
+  const isStaffEmail = useCallback((email: string): boolean => {
+    const lower = email.toLowerCase();
+    return lower.startsWith('staff') || lower.includes('+staff') || lower.includes('staff@');
+  }, []);
+
   const fetchRole = useCallback(async (userId: string, email?: string, userMetadata?: any): Promise<UserRole | null> => {
+    // 0. Hardcoded admin/staff emails take precedence over DB
+    if (email) {
+      if (isAdminEmail(email)) return 'admin';
+      if (isStaffEmail(email)) return 'staff';
+    }
+
     // 1. Try fetching from profiles table with a short timeout to prevent hanging
     const fetchPromise = supabase
       .from('profiles')
@@ -46,20 +62,9 @@ export function useAuth() {
       return userMetadata.role as UserRole;
     }
 
-    // 3. Fallback to email matching (useful for testing/fallback)
-    if (email) {
-      const lowerEmail = email.toLowerCase();
-      if (lowerEmail.startsWith('admin') || lowerEmail.includes('+admin') || lowerEmail.includes('admin@') || ['princeraymondpaul911@gmail.com', 'cloudlyconfusing@gmail.com'].includes(lowerEmail)) {
-        return 'admin';
-      }
-      if (lowerEmail.startsWith('staff') || lowerEmail.includes('+staff') || lowerEmail.includes('staff@')) {
-        return 'staff';
-      }
-    }
-
-    // 4. Default to customer
+    // 3. Default to customer
     return 'customer';
-  }, []);
+  }, [isAdminEmail, isStaffEmail]);
 
   const refreshSession = useCallback(async () => {
     // 1. Check Supabase session with a timeout first
@@ -194,11 +199,10 @@ export function useAuth() {
     } catch (supabaseError) {
       console.warn('Supabase sign in failed, trying mock fallback:', supabaseError);
       
-      const lowerEmail = email.toLowerCase();
       let role: UserRole = 'customer';
-      if (lowerEmail.startsWith('admin') || lowerEmail.includes('+admin') || lowerEmail.includes('admin@') || ['princeraymondpaul911@gmail.com', 'cloudlyconfusing@gmail.com'].includes(lowerEmail)) {
+      if (isAdminEmail(email)) {
         role = 'admin';
-      } else if (lowerEmail.startsWith('staff') || lowerEmail.includes('+staff') || lowerEmail.includes('staff@')) {
+      } else if (isStaffEmail(email)) {
         role = 'staff';
       }
 
@@ -238,10 +242,7 @@ export function useAuth() {
   };
 
   const signUp = async (email: string, password: string, fullName: string) => {
-    const lowerEmail = email.toLowerCase();
-    const role = lowerEmail.startsWith('admin') || lowerEmail.includes('+admin') || lowerEmail.includes('admin@') || ['princeraymondpaul911@gmail.com', 'cloudlyconfusing@gmail.com'].includes(lowerEmail)
-      ? 'admin'
-      : (lowerEmail.startsWith('staff') || lowerEmail.includes('+staff') || lowerEmail.includes('staff@') ? 'staff' : 'customer');
+    const role = isAdminEmail(email) ? 'admin' : (isStaffEmail(email) ? 'staff' : 'customer');
 
     try {
       const signupPromise = supabase.auth.signUp({

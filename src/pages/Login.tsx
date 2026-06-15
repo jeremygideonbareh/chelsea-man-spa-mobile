@@ -1,8 +1,17 @@
 import { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router';
-import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/hooks/useAuth';
 import { SignInPage, type AuthMode } from '@/components/ui/sign-in';
+
+function isAdminEmail(email: string): boolean {
+  const lower = email.toLowerCase();
+  return lower.startsWith('admin') || lower.includes('+admin') || lower.includes('admin@') || ['princeraymondpaul911@gmail.com', 'cloudlyconfusing@gmail.com'].includes(lower);
+}
+
+function isStaffEmail(email: string): boolean {
+  const lower = email.toLowerCase();
+  return lower.startsWith('staff') || lower.includes('+staff') || lower.includes('staff@');
+}
 
 export default function Login() {
   const navigate = useNavigate();
@@ -25,20 +34,9 @@ export default function Login() {
 
     try {
       if (mode === 'login') {
-        const data = await signIn(email, password);
-        
-        // Immediate redirection check
-        let targetRoute = '/dashboard';
-        const userMetadata = data?.user?.user_metadata;
-        const lowerEmail = email.toLowerCase();
-        const isEmailAdmin = lowerEmail.startsWith('admin') || lowerEmail.includes('+admin') || lowerEmail.includes('admin@') || ['princeraymondpaul911@gmail.com', 'cloudlyconfusing@gmail.com'].includes(lowerEmail);
-        const isEmailStaff = lowerEmail.startsWith('staff') || lowerEmail.includes('+staff') || lowerEmail.includes('staff@');
-        
-        if (userMetadata?.role === 'admin' || userMetadata?.role === 'staff' || isEmailAdmin || isEmailStaff) {
-          targetRoute = '/admin';
-        }
-        
-        navigate(targetRoute);
+        await signIn(email, password);
+        // Navigate handled by useAuth state + the Navigate component above
+        navigate(isAdminEmail(email) || isStaffEmail(email) ? '/admin' : '/dashboard');
       } else {
         await signUp(email, password, fullName);
         setMode('login');
