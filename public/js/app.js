@@ -63,42 +63,151 @@ function showSkeletons(containerId, type, count) {
   }
 }
 
+// ---------- Service categories ----------
+var CATEGORIES = [
+  { id: 'all', label: 'All', icon: '' },
+  { id: 'haircuts', label: 'Haircuts', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"><path d="M12 3c-1.5 2-3 3.5-5 4 2 1 3.5 2.5 4 5 .5-2.5 2-4 4-5-2-.5-3.5-2-5-4z"/><path d="M8 14c-1 1.5-1.5 4-1 6 .5-1.5 2-2.5 4-2.5s3.5 1 4 2.5c.5-2 0-4.5-1-6"/><path d="M14 11a2 2 0 110-4 2 2 0 010 4z"/></svg>' },
+  { id: 'beard', label: 'Beard & Shave', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"><path d="M4 14c0-4 1.5-7 4-9"/><path d="M8 5c2-1 4-1.5 6-1.5s4 .5 6 1.5"/><path d="M20 14c0-4-1.5-7-4-9"/><path d="M6 14c0 3 2 6 6 6s6-3 6-6"/><path d="M9 14v-2"/><path d="M15 14v-2"/></svg>' },
+  { id: 'hair-care', label: 'Hair Care', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"><path d="M12 3v12"/><path d="M8 8c0 2 1.5 4 4 4s4-2 4-4"/><path d="M4 15c0 3 3 6 8 6s8-3 8-6"/><path d="M12 15v3"/></svg>' },
+  { id: 'facials', label: 'Facials', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M12 12c-4 0-6 2-6 4v2h12v-2c0-2-2-4-6-4z"/></svg>' },
+  { id: 'waxing', label: 'Waxing', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L8 8h8z"/><path d="M6 8c0 4 2 8 6 10 4-2 6-6 6-10"/><path d="M12 18v4"/></svg>' },
+  { id: 'nails', label: 'Nails & Spa', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"><path d="M5 18V6a1 1 0 011-1h12a1 1 0 011 1v12"/><path d="M5 18h14"/><path d="M9 10v4"/><path d="M15 10v4"/></svg>' },
+  { id: 'other', label: 'Other', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>' }
+];
+
+function categorizeService(name) {
+  var n = (name || '').toLowerCase();
+  if (/\b(hair cut|buzz cut|skin fade|kids|line up|haircut|fade)\b/.test(n)) return 'haircuts';
+  if (/\b(shave|beard|royal)\b/.test(n)) return 'beard';
+  if (/\b(collagen|keratin|mask|treatment|color|highlights|silver|shades|wash|blow|conditioning)\b/.test(n)) return 'hair-care';
+  if (/\b(facial|face massage|soothing)\b/.test(n)) return 'facials';
+  if (/\b(wax|waxing|underarm)\b/.test(n)) return 'waxing';
+  if (/\b(manicure|pedicure|nails|paraffin)\b/.test(n)) return 'nails';
+  return 'other';
+}
+
+function categoryIcon(catId) {
+  var c = CATEGORIES.find(function (x) { return x.id === catId; });
+  return c ? c.icon : CATEGORIES[CATEGORIES.length - 1].icon;
+}
+
+var allServices = [];
+var activeCat = 'all';
+var searchQuery = '';
+
+function renderCategoryChips() {
+  var chips = document.getElementById('cat-chips');
+  chips.innerHTML = '';
+  CATEGORIES.forEach(function (cat) {
+    var c = document.createElement('button');
+    c.className = 'cat-chip' + (cat.id === activeCat ? ' active' : '');
+    c.textContent = cat.label;
+    c.addEventListener('click', function () {
+      activeCat = cat.id;
+      renderCategoryChips();
+      filterServices();
+    });
+    chips.appendChild(c);
+  });
+}
+
+function filterServices() {
+  var input = document.getElementById('search-input');
+  searchQuery = (input ? input.value : '').toLowerCase().trim();
+  renderServices();
+}
+
+function renderServices() {
+  var container = document.getElementById('services-container');
+  container.innerHTML = '';
+
+  var filtered = allServices.filter(function (s) {
+    var name = (s.name || '').toLowerCase();
+    var desc = (s.description || '').toLowerCase();
+    var matchesSearch = !searchQuery || name.indexOf(searchQuery) !== -1 || desc.indexOf(searchQuery) !== -1;
+    var matchesCat = activeCat === 'all' || categorizeService(s.name) === activeCat;
+    return matchesSearch && matchesCat;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="no-results">No treatments match your search.</div>';
+    return;
+  }
+
+  var grouped = {};
+  filtered.forEach(function (s) {
+    var cat = categorizeService(s.name);
+    if (!grouped[cat]) grouped[cat] = [];
+    grouped[cat].push(s);
+  });
+
+  var catOrder = CATEGORIES.slice(1).map(function (c) { return c.id; });
+  catOrder.forEach(function (catId) {
+    if (!grouped[catId]) return;
+    var services = grouped[catId];
+    var catLabel = CATEGORIES.find(function (c) { return c.id === catId; });
+    var header = document.createElement('div');
+    header.className = 'cat-title';
+    header.innerHTML = (catLabel ? catLabel.label : catId) + ' (' + services.length + ')';
+    container.appendChild(header);
+
+    var grid = document.createElement('div');
+    grid.className = 'services-grid';
+
+    services.forEach(function (s) {
+      var card = document.createElement('div');
+      card.className = 'service-card';
+      var icon = categoryIcon(categorizeService(s.name));
+      var duration = s.duration_minutes ? '<div class="s-dur">' + s.duration_minutes + ' min</div>' : '';
+      card.innerHTML = ''
+        + '<div class="s-img">' + icon + '</div>'
+        + '<div class="s-body">'
+        + '<div class="s-name">' + (s.name || '') + '</div>'
+        + '<div class="s-price">AED ' + (s.price != null ? Number(s.price).toLocaleString() : '—') + '</div>'
+        + duration
+        + '</div>';
+      card.addEventListener('click', function () {
+        bookingState.serviceId = s.id;
+        bookingState.serviceName = s.name || '';
+        bookingState.servicePrice = s.price || 0;
+        document.querySelectorAll('.service-card').forEach(function (c) { c.classList.remove('selected'); });
+        card.classList.add('selected');
+        showView('stylist');
+        loadStylistView();
+      });
+      grid.appendChild(card);
+    });
+
+    container.appendChild(grid);
+  });
+}
+
 // ---------- Load services ----------
 async function loadServices() {
-  showSkeletons('services-scroll', 'svc', 6);
+  var container = document.getElementById('services-container');
+  container.innerHTML = '';
+  var skGrid = document.createElement('div');
+  skGrid.className = 'services-grid';
+  for (var i = 0; i < 6; i++) {
+    var sk = document.createElement('div');
+    sk.className = 'skeleton skeleton-svc';
+    skGrid.appendChild(sk);
+  }
+  container.appendChild(skGrid);
 
   var { data, error } = await window.supabaseClient
     .from('services')
     .select('*')
     .order('name', { ascending: true });
 
-  var scroll = document.getElementById('services-scroll');
-  scroll.innerHTML = '';
-
   if (error || !data || data.length === 0) {
-    scroll.innerHTML = '<div style="color:#666;padding:12px;">No treatments available.</div>';
+    container.innerHTML = '<div style="color:#666;padding:12px;text-align:center">No treatments available.</div>';
     return;
   }
 
-  scroll.classList.add('stagger-grid');
-  data.forEach(function (s) {
-    var card = document.createElement('div');
-    card.className = 'service-card';
-    card.innerHTML = ''
-      + '<div class="s-name">' + (s.name || '') + '</div>'
-      + '<div class="s-price">AED ' + (s.price != null ? Number(s.price).toLocaleString() : '—') + '</div>'
-      + (s.duration_minutes ? '<div class="s-dur">' + s.duration_minutes + ' min</div>' : '');
-    card.addEventListener('click', function () {
-      bookingState.serviceId = s.id;
-      bookingState.serviceName = s.name || '';
-      bookingState.servicePrice = s.price || 0;
-      document.querySelectorAll('.service-card').forEach(function (c) { c.classList.remove('selected'); });
-      card.classList.add('selected');
-      showView('stylist');
-      loadStylistView();
-    });
-    scroll.appendChild(card);
-  });
+  allServices = data;
+  renderCategoryChips();
+  renderServices();
 }
 
 // ---------- Stylist preview on home ----------
@@ -430,6 +539,9 @@ function resetBooking() {
   };
   selectedDate = null;
   selectedPeriod = 'am';
+  activeCat = 'all';
+  var input = document.getElementById('search-input');
+  if (input) input.value = '';
   showView('home');
   loadServices();
   loadStylistPreviews();
