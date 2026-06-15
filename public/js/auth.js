@@ -37,7 +37,7 @@ window.signIn = async function (email, password) {
 
     if (profile) {
       localStorage.setItem('userRole', profile.role);
-      window.location.href = 'home.html';
+      window.location.href = 'index.html';
       return;
     }
 
@@ -49,7 +49,7 @@ window.signIn = async function (email, password) {
 
     if (customer) {
       localStorage.setItem('userRole', 'customer');
-      window.location.href = 'home.html';
+      window.location.href = 'index.html';
       return;
     }
 

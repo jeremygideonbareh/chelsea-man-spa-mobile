@@ -65,14 +65,14 @@ function showSkeletons(containerId, type, count) {
 
 // ---------- Service categories ----------
 var CATEGORIES = [
-  { id: 'all', label: 'All', icon: '' },
-  { id: 'haircuts', label: 'Haircuts', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"><path d="M12 3c-1.5 2-3 3.5-5 4 2 1 3.5 2.5 4 5 .5-2.5 2-4 4-5-2-.5-3.5-2-5-4z"/><path d="M8 14c-1 1.5-1.5 4-1 6 .5-1.5 2-2.5 4-2.5s3.5 1 4 2.5c.5-2 0-4.5-1-6"/><path d="M14 11a2 2 0 110-4 2 2 0 010 4z"/></svg>' },
-  { id: 'beard', label: 'Beard & Shave', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"><path d="M4 14c0-4 1.5-7 4-9"/><path d="M8 5c2-1 4-1.5 6-1.5s4 .5 6 1.5"/><path d="M20 14c0-4-1.5-7-4-9"/><path d="M6 14c0 3 2 6 6 6s6-3 6-6"/><path d="M9 14v-2"/><path d="M15 14v-2"/></svg>' },
-  { id: 'hair-care', label: 'Hair Care', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"><path d="M12 3v12"/><path d="M8 8c0 2 1.5 4 4 4s4-2 4-4"/><path d="M4 15c0 3 3 6 8 6s8-3 8-6"/><path d="M12 15v3"/></svg>' },
-  { id: 'facials', label: 'Facials', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M12 12c-4 0-6 2-6 4v2h12v-2c0-2-2-4-6-4z"/></svg>' },
-  { id: 'waxing', label: 'Waxing', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L8 8h8z"/><path d="M6 8c0 4 2 8 6 10 4-2 6-6 6-10"/><path d="M12 18v4"/></svg>' },
-  { id: 'nails', label: 'Nails & Spa', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"><path d="M5 18V6a1 1 0 011-1h12a1 1 0 011 1v12"/><path d="M5 18h14"/><path d="M9 10v4"/><path d="M15 10v4"/></svg>' },
-  { id: 'other', label: 'Other', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>' }
+  { id: 'all', label: 'All', img: '' },
+  { id: 'haircuts', label: 'Haircuts', img: 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=400&h=250&fit=crop' },
+  { id: 'beard', label: 'Beard & Shave', img: 'https://images.unsplash.com/photo-1621607512214-68297480165e?w=400&h=250&fit=crop' },
+  { id: 'hair-care', label: 'Hair Care', img: 'https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&h=250&fit=crop' },
+  { id: 'facials', label: 'Facials', img: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&h=250&fit=crop' },
+  { id: 'waxing', label: 'Waxing', img: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&h=250&fit=crop' },
+  { id: 'nails', label: 'Nails & Spa', img: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=250&fit=crop' },
+  { id: 'other', label: 'Other', img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&h=250&fit=crop' }
 ];
 
 function categorizeService(name) {
@@ -86,9 +86,9 @@ function categorizeService(name) {
   return 'other';
 }
 
-function categoryIcon(catId) {
+function categoryImg(catId) {
   var c = CATEGORIES.find(function (x) { return x.id === catId; });
-  return c ? c.icon : CATEGORIES[CATEGORIES.length - 1].icon;
+  return c ? c.img : CATEGORIES[CATEGORIES.length - 1].img;
 }
 
 var allServices = [];
@@ -157,10 +157,10 @@ function renderServices() {
     services.forEach(function (s) {
       var card = document.createElement('div');
       card.className = 'service-card';
-      var icon = categoryIcon(categorizeService(s.name));
+      var imgUrl = categoryImg(categorizeService(s.name));
       var duration = s.duration_minutes ? '<div class="s-dur">' + s.duration_minutes + ' min</div>' : '';
       card.innerHTML = ''
-        + '<div class="s-img">' + icon + '</div>'
+        + '<div class="s-img">' + (imgUrl ? '<img src="' + imgUrl + '" alt="" loading="lazy">' : '') + '</div>'
         + '<div class="s-body">'
         + '<div class="s-name">' + (s.name || '') + '</div>'
         + '<div class="s-price">AED ' + (s.price != null ? Number(s.price).toLocaleString() : '—') + '</div>'
