@@ -47,27 +47,28 @@
       margin: 24px 0 12px;
     }
 
-    .services-scroll, .stylists-scroll {
-      display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px;
-      scroll-snap-type: x mandatory;
+    .services-grid, .stylists-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px; padding-bottom: 8px;
     }
     .service-card {
-      min-width: 180px; background: #1A1A1A; border-radius: 12px;
-      padding: 20px 16px; cursor: pointer; transition: border 0.2s;
-      border: 2px solid transparent; scroll-snap-align: start;
+      background: #1A1A1A; border-radius: 12px;
+      padding: 20px 16px; cursor: pointer; transition: border 0.2s, transform 0.2s;
+      border: 2px solid transparent;
     }
     .service-card:hover, .service-card.selected { border-color: #D4AF37; }
+    .service-card:active { transform: scale(0.97); }
     .service-card .s-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
     .service-card .s-price { color: #D4AF37; font-weight: 700; font-size: 1.1rem; }
     .service-card .s-dur { color: #888; font-size: 0.8rem; margin-top: 2px; }
 
     .stylist-preview-card {
-      min-width: 140px; background: #1A1A1A; border-radius: 12px;
+      background: #1A1A1A; border-radius: 12px;
       padding: 16px; text-align: center; cursor: pointer;
-      border: 2px solid transparent; transition: border 0.2s;
-      scroll-snap-align: start;
+      border: 2px solid transparent; transition: border 0.2s, transform 0.2s;
     }
     .stylist-preview-card:hover { border-color: #D4AF37; }
+    .stylist-preview-card:active { transform: scale(0.97); }
     .stylist-preview-card .avatar {
       width: 48px; height: 48px; border-radius: 50%; background: #D4AF37;
       color: #0F0F0F; display: flex; align-items: center; justify-content: center;
@@ -78,6 +79,52 @@
     .stylist-preview-card .sp-status {
       display: inline-block; margin-top: 6px; font-size: 0.7rem;
       color: #4CAF50; font-weight: 600;
+    }
+
+    .stagger-grid > * {
+      animation: fadeUp 0.35s ease-out both;
+    }
+    .stagger-grid > *:nth-child(1) { animation-delay: 0.02s; }
+    .stagger-grid > *:nth-child(2) { animation-delay: 0.05s; }
+    .stagger-grid > *:nth-child(3) { animation-delay: 0.08s; }
+    .stagger-grid > *:nth-child(4) { animation-delay: 0.11s; }
+    .stagger-grid > *:nth-child(5) { animation-delay: 0.14s; }
+    .stagger-grid > *:nth-child(6) { animation-delay: 0.17s; }
+    .stagger-grid > *:nth-child(7) { animation-delay: 0.20s; }
+    .stagger-grid > *:nth-child(8) { animation-delay: 0.23s; }
+    .stagger-grid > *:nth-child(9) { animation-delay: 0.26s; }
+    .stagger-grid > *:nth-child(10) { animation-delay: 0.29s; }
+    .stagger-grid > *:nth-child(11) { animation-delay: 0.32s; }
+    .stagger-grid > *:nth-child(12) { animation-delay: 0.35s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Kinetic / Shimmer Loading */
+    .skeleton {
+      background: #1A1A1A; border-radius: 12px; position: relative;
+      overflow: hidden;
+    }
+    .skeleton::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .skeleton-svc {
+      height: 120px;
+    }
+    .skeleton-stylist {
+      height: 140px;
+    }
+    .skeleton-stylist-row {
+      height: 64px; border-radius: 12px;
     }
 
     .promo-banner {
@@ -250,7 +297,8 @@
     .success-screen .summary-box .row { display: flex; justify-content: space-between; padding: 4px 0; }
 
     @media (max-width: 480px) {
-      .service-card { min-width: 150px; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .stylists-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .slots-grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); }
     }
   </style>
@@ -270,10 +318,10 @@
     </div>
 
     <div class="section-title">Available Treatments</div>
-    <div class="services-scroll" id="services-scroll"></div>
+    <div class="services-grid" id="services-scroll"></div>
 
     <div class="section-title">Our Stylists</div>
-    <div class="stylists-scroll" id="stylists-scroll"></div>
+    <div class="stylists-grid" id="stylists-scroll"></div>
   </div>
 
   <div class="view" id="view-stylist">

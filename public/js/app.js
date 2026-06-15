@@ -52,8 +52,21 @@ function switchTab(tab) {
   if (tab === 'home') { showView('home'); }
 }
 
+// ---------- Kinetic skeleton loader ----------
+function showSkeletons(containerId, type, count) {
+  var container = document.getElementById(containerId);
+  container.innerHTML = '';
+  for (var i = 0; i < count; i++) {
+    var sk = document.createElement('div');
+    sk.className = 'skeleton skeleton-' + type;
+    container.appendChild(sk);
+  }
+}
+
 // ---------- Load services ----------
 async function loadServices() {
+  showSkeletons('services-scroll', 'svc', 6);
+
   var { data, error } = await window.supabaseClient
     .from('services')
     .select('*')
@@ -67,6 +80,7 @@ async function loadServices() {
     return;
   }
 
+  scroll.classList.add('stagger-grid');
   data.forEach(function (s) {
     var card = document.createElement('div');
     card.className = 'service-card';
@@ -89,6 +103,8 @@ async function loadServices() {
 
 // ---------- Stylist preview on home ----------
 async function loadStylistPreviews() {
+  showSkeletons('stylists-scroll', 'stylist', 4);
+
   var { data, error } = await window.supabaseClient
     .from('stylists')
     .select('*')
@@ -103,6 +119,7 @@ async function loadStylistPreviews() {
     return;
   }
 
+  scroll.classList.add('stagger-grid');
   data.forEach(function (s) {
     var card = document.createElement('div');
     card.className = 'stylist-preview-card';
@@ -118,13 +135,20 @@ async function loadStylistPreviews() {
 
 // ---------- View 2: Stylist selection ----------
 async function loadStylistView() {
+  var list = document.getElementById('stylist-list');
+  list.innerHTML = '';
+  for (var si = 0; si < 5; si++) {
+    var sk = document.createElement('div');
+    sk.className = 'skeleton skeleton-stylist-row';
+    list.appendChild(sk);
+  }
+
   var { data, error } = await window.supabaseClient
     .from('stylists')
     .select('*')
     .eq('is_active', true)
     .order('name', { ascending: true });
 
-  var list = document.getElementById('stylist-list');
   list.innerHTML = '';
 
   if (error || !data || data.length === 0) {
