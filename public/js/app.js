@@ -554,7 +554,16 @@ function resetBooking() {
 }
 
 // ---------- Init ----------
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
+  var { data: { session } } = await window.supabaseClient.auth.getSession();
+  document.getElementById('btn-login-header').style.display = session ? 'none' : '';
+  document.getElementById('btn-logout-header').style.display = session ? '' : 'none';
+  if (session) {
+    var role = (localStorage.getItem('userRole') || '').toLowerCase();
+    if (role === 'admin' || role === 'staff') {
+      document.getElementById('btn-manager-dashboard').style.display = '';
+    }
+  }
   loadServices();
   loadStylistPreviews();
 });
