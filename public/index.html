@@ -39,6 +39,61 @@
     }
     .btn-logout:hover { background: #3D1A1A; }
 
+    /* Hero */
+    .hero {
+      position: relative; width: 100%; height: 280px; overflow: hidden;
+      margin: -20px -20px 12px;
+    }
+    .hero img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, #0F0F0F 0%, transparent 50%, rgba(0,0,0,0.4) 100%);
+    }
+    .hero-content {
+      position: absolute; bottom: 24px; left: 20px; right: 20px;
+      color: #fff; text-align: left;
+    }
+    .hero-content .display-lg {
+      font-size: 2rem; font-weight: 700; line-height: 1.1; margin: 0;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .hero-divider {
+      width: 40px; height: 3px; background: #D4AF37; margin: 10px 0; border-radius: 2px;
+    }
+    .hero-content p { font-size: 0.85rem; opacity: 0.9; text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
+
+    /* Promo badge */
+    .promo-wrap { padding: 0 0 8px; }
+    .promo-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: linear-gradient(135deg, #2A2418, #1A1A1A);
+      border: 1px solid #D4AF37; border-radius: 20px;
+      padding: 6px 14px; font-size: 0.75rem; color: #D4AF37; font-weight: 500;
+    }
+
+    /* Steps */
+    .steps-row { display: flex; gap: 10px; margin-bottom: 20px; }
+    .step-card {
+      flex: 1; text-align: center; padding: 16px 6px;
+      background: #1A1A1A; border-radius: 12px; border: 1px solid #333;
+    }
+    .step-num {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(212,175,55,0.15); color: #D4AF37;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 8px; font-weight: 600; font-size: 0.85rem;
+    }
+    .step-label { font-size: 0.8rem; font-weight: 600; margin-bottom: 2px; }
+    .step-desc { font-size: 0.7rem; color: #888; }
+
+    /* Location */
+    .location-card {
+      background: #1A1A1A; border: 1px solid #333; border-radius: 12px;
+      padding: 16px; margin-bottom: 8px;
+    }
+    .location-card .loc-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
+    .location-card .loc-detail { font-size: 0.8rem; color: #888; line-height: 1.5; }
+
     .view { display: none; padding: 0 20px 20px; }
     .view.active { display: block; }
 
@@ -375,10 +430,48 @@
   </div>
 
   <div class="view active" id="view-home">
-    <div class="promo-banner">
-      <div class="promo-title">20% Off Your First Visit</div>
-      <div class="promo-sub">Premium grooming &amp; wellness in Dubai Marina</div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+      <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&h=400&fit=crop" alt="Chelsea Man Spa" />
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h1 class="display-lg">Chelsea<br />Man Spa</h1>
+        <div class="hero-divider"></div>
+        <p>Premium grooming &amp; wellness in Dubai Marina</p>
+      </div>
     </div>
+
+    <!-- Promo Badge -->
+    <div class="promo-wrap">
+      <span class="promo-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        20% off first visit &mdash; code WELCOME20
+      </span>
+    </div>
+
+    <!-- How It Works -->
+    <div class="section-title">How It Works</div>
+    <div class="steps-row">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-label">Choose</div>
+        <div class="step-desc">Service &amp; stylist</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-label">Pick</div>
+        <div class="step-desc">Date &amp; time</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-label">Confirm</div>
+        <div class="step-desc">Pay &amp; relax</div>
+      </div>
+    </div>
+
+    <!-- Book a Treatment -->
+    <div class="section-title">Book a Treatment</div>
 
     <div class="search-wrap">
       <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -389,6 +482,13 @@
 
     <div class="section-title">Our Stylists</div>
     <div class="stylists-grid" id="stylists-scroll"></div>
+
+    <!-- Location -->
+    <div class="section-title">Visit Us</div>
+    <div class="location-card">
+      <div class="loc-title">Dubai Marina, Dubai</div>
+      <div class="loc-detail">Marina Walk, Shop 7<br />Open daily 9:00 AM &ndash; 9:00 PM</div>
+    </div>
   </div>
 
   <div class="view" id="view-stylist">
