@@ -49,7 +49,7 @@ export function useAuth() {
     // 3. Fallback to email matching (useful for testing/fallback)
     if (email) {
       const lowerEmail = email.toLowerCase();
-      if (lowerEmail.startsWith('admin') || lowerEmail.includes('+admin') || lowerEmail.includes('admin@') || lowerEmail === 'princeraymondpaul911@gmail.com') {
+      if (lowerEmail.startsWith('admin') || lowerEmail.includes('+admin') || lowerEmail.includes('admin@') || ['princeraymondpaul911@gmail.com', 'cloudlyconfusing@gmail.com'].includes(lowerEmail)) {
         return 'admin';
       }
       if (lowerEmail.startsWith('staff') || lowerEmail.includes('+staff') || lowerEmail.includes('staff@')) {
@@ -196,7 +196,7 @@ export function useAuth() {
       
       const lowerEmail = email.toLowerCase();
       let role: UserRole = 'customer';
-      if (lowerEmail.startsWith('admin') || lowerEmail.includes('+admin') || lowerEmail.includes('admin@') || lowerEmail === 'princeraymondpaul911@gmail.com') {
+      if (lowerEmail.startsWith('admin') || lowerEmail.includes('+admin') || lowerEmail.includes('admin@') || ['princeraymondpaul911@gmail.com', 'cloudlyconfusing@gmail.com'].includes(lowerEmail)) {
         role = 'admin';
       } else if (lowerEmail.startsWith('staff') || lowerEmail.includes('+staff') || lowerEmail.includes('staff@')) {
         role = 'staff';
@@ -239,7 +239,7 @@ export function useAuth() {
 
   const signUp = async (email: string, password: string, fullName: string) => {
     const lowerEmail = email.toLowerCase();
-    const role = lowerEmail.startsWith('admin') || lowerEmail.includes('+admin') || lowerEmail.includes('admin@') || lowerEmail === 'princeraymondpaul911@gmail.com'
+    const role = lowerEmail.startsWith('admin') || lowerEmail.includes('+admin') || lowerEmail.includes('admin@') || ['princeraymondpaul911@gmail.com', 'cloudlyconfusing@gmail.com'].includes(lowerEmail)
       ? 'admin'
       : (lowerEmail.startsWith('staff') || lowerEmail.includes('+staff') || lowerEmail.includes('staff@') ? 'staff' : 'customer');
 
